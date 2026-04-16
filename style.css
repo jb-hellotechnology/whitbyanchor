@@ -734,9 +734,9 @@ footer a:hover{
 }
 
 @media screen and (max-width:480px){
-	footer .site-info p,
-	footer .site-info a{
-		font-size:80%;
+	footer.site-footer p,
+	footer.site-footer a{
+		font-size:0.8rem;
 	}
 }
 
