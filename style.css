@@ -506,14 +506,14 @@ article img{
 	border-radius: 3px;
 }
 
-article h2{
+/* article h2{
 	font-size:var(--size-step-3);
 	margin-top:1rem;
 }
 
 .articles article h2{
 	font-size:var(--size-step-2);
-}
+} */
 
 article .article-link{
 	position: absolute;
