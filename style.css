@@ -1262,3 +1262,7 @@ figcaption span{
 		height: 350px;
 	}
 }
+
+[hidden] {
+	display: none !important;
+}

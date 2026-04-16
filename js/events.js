@@ -58,7 +58,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			}
 
 			currentPage = data.page;
-			updateLoadMore( data.has_more );
+			updateLoadMore( data.has_more && !!data.html );
 
 		} catch ( err ) {
 			console.error( 'Events fetch failed:', err );
@@ -116,6 +116,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	function updateLoadMore( hasMore ) {
+		console.log(hasMore);
 		if ( ! loadMore ) return;
 		loadMore.hidden = ! hasMore;
 	}
