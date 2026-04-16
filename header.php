@@ -54,7 +54,7 @@
 			<div>
 			<?php $times = get_sunrise_sunset(); ?>
 			<p>Sunrise <?= $times['sunrise'] ?> | Sunset <?= $times['sunset'] ?></p>
-			<p><?= date('nS F Y') ?></p>
+			<p><?= date('l M j Y') ?></p>
 			<p>
 			<?php
 			$next_tides = get_next_tides();

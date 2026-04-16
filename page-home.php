@@ -123,9 +123,11 @@ if(!user_can( $current_user, 'administrator' )){
 			wp_reset_postdata();
 		}
 		
-		echo do_shortcode('[newspaper_advert placement="home"]');
-		
 		echo '</section>';
+		
+		echo '<div class="ad-wide">';
+		echo do_shortcode('[newspaper_advert placement="home"]');
+		echo '</div>';
 		
 		$args = array(
 			'category_name' => 'features',

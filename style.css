@@ -258,6 +258,10 @@ nav.primary-navigation{
 	position: relative;
 }
 
+nav.primary-navigation ul li a{
+	text-decoration: none;
+}
+
 nav.secondary-navigation{
 	margin-bottom:2rem;
 	font-family:"Inter";
@@ -1028,6 +1032,29 @@ article .npg-gallery__images figcaption{
 .npa-adverts-injected,
 .npa-adverts-shortcode {
 	margin-bottom: 1.5em;
+}
+
+.ad-wide .npa-advert__link{
+	display:flex;
+	align-items: center;
+	
+}
+
+.ad-wide .npa-advert__image img {
+	display: block;
+	width: 320px;
+	height: auto;
+	object-fit:cover;
+	aspect-ratio: 16 / 9;
+}
+
+@media screen and (max-width:768px){
+	.ad-wide .npa-advert__image img {
+		width:100%;	
+	}
+	.ad-wide .npa-advert__link{
+		display:block;
+	}
 }
 
 figure{
