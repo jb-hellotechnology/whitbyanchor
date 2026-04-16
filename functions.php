@@ -834,7 +834,7 @@ function whitbyanchor_get_pinned_category_post($term_id) {
 
 wp_enqueue_script(
 	'whitbyanchor-events',
-	get_template_directory_uri() . '/js/events.js',
+	get_template_directory_uri() . '/js/events.js?v='.rand(),
 	[],
 	'1.0',
 	true // footer = true, so it runs after the inline config

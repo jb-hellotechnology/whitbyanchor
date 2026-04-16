@@ -24,6 +24,14 @@ function whitbyanchor_render_event_article( array $event ): string {
 			$tags_string .= esc_attr( $tag->slug ) . ',';
 		}
 	}
+	
+	$locations        = get_the_terms( $post->ID, 'event_location' );
+	$locations_string = '';
+	if ( $locations && ! is_wp_error( $locations ) ) {
+		foreach ( $locations as $location ) {
+			$locations_string .= esc_attr( $location->slug ) . ',';
+		}
+	}
 
 	ob_start();
 	
@@ -32,7 +40,7 @@ function whitbyanchor_render_event_article( array $event ): string {
 	}
 
 	?>
-	<article class="flow event" data-tags="<?php echo $tags_string; ?>">
+	<article class="flow event" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $venues_string; ?>">
 		<h2><?php echo esc_html( $post->post_title ); ?></h2>
 
 		<p class="event-excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>
@@ -78,6 +86,7 @@ function whitbyanchor_ajax_get_events(): void {
 	$page     = max( 1, absint( $_POST['page']     ?? 1 ) );
 	$per_page = max( 1, absint( $_POST['per_page'] ?? WHITBYANCHOR_EVENTS_PER_PAGE ) );
 	$tag      = sanitize_key( $_POST['tag'] ?? '' );
+	$location      = sanitize_key( $_POST['location'] ?? '' );
 
 	// Fetch all future events. If get_events() grows tag/offset support later,
 	// pass those args here instead of filtering in PHP below.
@@ -94,6 +103,20 @@ function whitbyanchor_ajax_get_events(): void {
 				if ( ! $terms || is_wp_error( $terms ) ) return false;
 				foreach ( $terms as $term ) {
 					if ( $term->slug === $tag ) return true;
+				}
+				return false;
+			} )
+		);
+	}
+	
+	// ── Location filter ───────────────────────────────────────────────────────────
+	if ( $location ) {
+		$all_events = array_values(
+			array_filter( $all_events, function ( $event ) use ( $location ) {
+				$terms = get_the_terms( $event['post']->ID, 'event_location' );
+				if ( ! $terms || is_wp_error( $terms ) ) return false;
+				foreach ( $terms as $term ) {
+					if ( $term->slug === $location ) return true;
 				}
 				return false;
 			} )

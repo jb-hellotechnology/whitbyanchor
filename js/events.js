@@ -7,6 +7,7 @@
 document.addEventListener( 'DOMContentLoaded', () => {
 	const list     = document.getElementById( 'events-list' );
 	const select   = document.getElementById( 'event-tag-select' );
+	const location = document.getElementById( 'event-location-select' );
 	const loadMore = document.getElementById( 'events-load-more' );
 
 	if ( ! list ) return;
@@ -14,11 +15,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// ── State ──────────────────────────────────────────────────────────────────
 	let currentPage = 1;
 	let currentTag  = '';
+	let currentLocation  = '';
 	let loading     = false;
 
 	// ── Core fetch function ────────────────────────────────────────────────────
 
-	async function fetchEvents( { page, tag, mode } ) {
+	async function fetchEvents( { page, tag, location, mode } ) {
 		if ( loading ) return;
 		loading = true;
 		setLoadingState( true );
@@ -29,6 +31,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			page:     page,
 			per_page: EventsConfig.perPage,
 			tag:      tag,
+			location: location,
 		} );
 
 		try {
@@ -74,6 +77,16 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			fetchEvents( { page: 1, tag: currentTag, mode: 'replace' } );
 		} );
 	}
+	
+	// ── Location filter ─────────────────────────────────────────────────────────────
+	
+	if ( location ) {
+		location.addEventListener( 'change', function () {
+			currentLocation  = this.value.trim();
+			currentPage = 1;
+			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, mode: 'replace' } );
+		} );
+	}
 
 	// ── Load more ──────────────────────────────────────────────────────────────
 
@@ -84,7 +97,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 
 		loadMore.addEventListener( 'click', () => {
-			fetchEvents( { page: currentPage + 1, tag: currentTag, mode: 'append' } );
+			fetchEvents( { page: currentPage + 1, tag: currentTag, location: currentLocation, mode: 'append' } );
 		} );
 	}
 

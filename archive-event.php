@@ -31,6 +31,23 @@ foreach ( $all_events as $event ) {
 		}
 	}
 }
+
+$location_counts = [];
+foreach ( $all_events as $event ) {
+	$terms = get_the_terms( $event['post']->ID, 'event_location' );
+	if ( ! $terms || is_wp_error( $terms ) ) continue;
+	foreach ( $terms as $term ) {
+		if ( isset( $location_counts[ $term->slug ] ) ) {
+			$location_counts[ $term->slug ]['count']++;
+		} else {
+			$location_counts[ $term->slug ] = [
+				'name'  => $term->name,
+				'slug'  => $term->slug,
+				'count' => 1,
+			];
+		}
+	}
+}
 ?>
 
 <main id="primary" class="site-main events">
@@ -38,17 +55,30 @@ foreach ( $all_events as $event ) {
 
 	<section class="events">
 		<header>
-		<h2>Filter by Tag</h2>
+		<h2>Filter Events</h2>
 
 		<?php if ( $tag_counts ) : ?>
 			<label for="event-tag-select" class="screen-reader-text">
-				<?php esc_html_e( 'Filter by tag', 'whitbyanchor' ); ?>
+				<?php esc_html_e( 'Event type', 'whitbyanchor' ); ?>
 			</label>
 			<select id="event-tag-select" name="event_tag">
 				<option value=""><?php esc_html_e( 'All Tags', 'whitbyanchor' ); ?></option>
 				<?php foreach ( $tag_counts as $tag ) : ?>
 					<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
 						<?php echo esc_html( $tag['name'] ); ?> (<?php echo absint( $tag['count'] ); ?>)
+					</option>
+				<?php endforeach; ?>
+			</select>
+		<?php endif; ?>
+		<?php if ( $location_counts ) : ?>
+			<label for="event-location-select" class="screen-reader-text">
+				<?php esc_html_e( 'Event location', 'whitbyanchor' ); ?>
+			</label>
+			<select id="event-location-select" name="event_location">
+				<option value=""><?php esc_html_e( 'All Locations', 'whitbyanchor' ); ?></option>
+				<?php foreach ( $location_counts as $venue ) : ?>
+					<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
+						<?php echo esc_html( $venue['name'] ); ?> (<?php echo absint( $venue['count'] ); ?>)
 					</option>
 				<?php endforeach; ?>
 			</select>
