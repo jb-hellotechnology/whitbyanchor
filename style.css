@@ -105,6 +105,12 @@ h3 {
 	h1 {
 	  font-size: var(--size-step-3);
 	}
+	h2 {
+	  font-size: var(--size-step-2);
+	}
+	h3 {
+	  font-size: var(--size-step-1);
+	}
 }
 
 @media screen and (max-width:480px){
