@@ -10,7 +10,7 @@
  */
 
 ?>
-
+	<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" class="footer_icon" />
 	<footer id="colophon" class="site-footer">
 		<div class="menus">
 			<div>
@@ -47,18 +47,19 @@
 			?>
 			</div>
 		</div>
+		<img src="<?php echo get_stylesheet_directory_uri(); ?>/the_anchor_white.png" alt="The Whitby Anchor" class="the_anchor" />
+		<button class="mailing-list-trigger">Sign up to our newsletter</button>
 		<div class="site-info">
 			<p><a href="">Designed &amp; Built in Whitby by Hello Technology</a>
 			<span class="sep"> | </span>
 				&copy; Ink &amp; Tide Publishing <?= date('Y') ?></p>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
-	<button class="mailing-list-trigger">Sign up to our newsletter</button>
 </div><!-- #page -->
 
 <div class="mailing-list-wrapper">
 	<button class="close">Close</button>
-	<iframe width="360" height="560" src="https://55fe7bef.sibforms.com/serve/MUIFAPpLZHCi43qNpINCiqS4InXyrFol5HEKl_Z2TN6HiYowk91-mztfi8dkMZgFLCFn1lUusVf1gTX-1CAsD6g05Em3IkJ9IDtw7wweEHb9Ye0DxYTxZTiJpUa0yN5c0LnZcyxxI5uCBYwcXXkksoejughDncvZDLuOr8xec5FMdLJExjg8KcYBGUFHe_EHK2uo9809gcaH4uRQyA==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+	<iframe width="360" height="560" src="https://55fe7bef.sibforms.com/serve/MUIFAPpLZHCi43qNpINCiqS4InXyrFol5HEKl_Z2TN6HiYowk91-mztfi8dkMZgFLCFn1lUusVf1gTX-1CAsD6g05Em3IkJ9IDtw7wweEHb9Ye0DxYTxZTiJpUa0yN5c0LnZcyxxI5uCBYwcXXkksoejughDncvZDLuOr8xec5FMdLJExjg8KcYBGUFHe_EHK2uo9809gcaH4uRQyA==" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
 </div>
 
 <script>

@@ -101,6 +101,7 @@ if(!user_can( $current_user, 'administrator' )){
 		$all_posts = array_merge($pinned_posts, $regular_posts);
 		
 		echo '<section class="articles home">';
+		echo '<header><h2 class="section-heading">Latest News</h2></header>';
 		
 		if (!empty($all_posts)) {
 		
@@ -115,7 +116,7 @@ if(!user_can( $current_user, 'administrator' )){
 				whitbyanchor_posted_by();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link" href="' . get_the_permalink() . '"></a>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
 			}
 		
@@ -135,9 +136,8 @@ if(!user_can( $current_user, 'administrator' )){
 		
 		$query = new WP_Query($args);
 		
-		echo '<h2 class="section-heading">Features</h2>';
-		
 		echo '<section class="articles features">';
+		echo '<header><h2 class="section-heading">Features</h2></header>';
 		
 		if ($query->have_posts()) {
 		
@@ -152,7 +152,7 @@ if(!user_can( $current_user, 'administrator' )){
 				whitbyanchor_posted_by();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link" href="'.get_the_permalink().'"></a>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
 			}
 		
@@ -170,9 +170,8 @@ if(!user_can( $current_user, 'administrator' )){
 		
 		$query = new WP_Query($args);
 		
-		echo '<h2 class="section-heading">The Villages</h2>';
-		
 		echo '<section class="articles">';
+		echo '<header><h2 class="section-heading">The Villages</h2></header>';
 		
 		if ($query->have_posts()) {
 		
@@ -187,7 +186,7 @@ if(!user_can( $current_user, 'administrator' )){
 				whitbyanchor_posted_by();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link" href="'.get_the_permalink().'"></a>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
 			}
 		

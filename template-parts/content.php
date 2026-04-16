@@ -9,7 +9,7 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> class="post flow">
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header flow">
 		<?php
 		if ( is_singular() ) :
@@ -27,6 +27,7 @@
 		if ( 'post' === get_post_type() ) :
 			?>
 			<div class="entry-meta">
+				<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" />
 				<?php
 				whitbyanchor_posted_on();
 				whitbyanchor_posted_by();
@@ -56,8 +57,4 @@
 		);
 		?>
 	</div><!-- .entry-content -->
-
-	<!-- <footer class="entry-footer">
-		<?php whitbyanchor_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

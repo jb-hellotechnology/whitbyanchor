@@ -13,6 +13,7 @@ if ( ! defined( '_S_VERSION' ) ) {
 }
 
 require_once get_template_directory() . '/inc/photo-gallery-cpt.php';
+require_once get_template_directory() . '/inc/events-ajax.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -120,6 +121,12 @@ function whitbyanchor_content_width() {
 	$GLOBALS['content_width'] = apply_filters( 'whitbyanchor_content_width', 640 );
 }
 add_action( 'after_setup_theme', 'whitbyanchor_content_width', 0 );
+
+add_filter('post_class','whitby_anchor_classes');
+function whitby_anchor_classes( $classes ) {
+  $classes[] = 'flow';
+  return $classes;
+}
 
 /**
  * Register widget area.
@@ -402,6 +409,7 @@ function event_meta_box_html( $post ) {
 
 	$start_date  = get_post_meta( $post->ID, '_event_start_date', true );
 	$start_time  = get_post_meta( $post->ID, '_event_start_time', true );
+	$end_date 	 = get_post_meta( $post->ID, '_event_end_date', true );
 	$end_time    = get_post_meta( $post->ID, '_event_end_time', true );
 	$recurring   = get_post_meta( $post->ID, '_event_recurring', true );
 	$recur_rule  = get_post_meta( $post->ID, '_event_recur_rule', true );
@@ -418,6 +426,10 @@ function event_meta_box_html( $post ) {
 		<tr>
 			<th><label for="event_start_time">Start Time</label></th>
 			<td><input type="time" id="event_start_time" name="event_start_time" value="<?php echo esc_attr( $start_time ); ?>"></td>
+		</tr>
+		<tr>
+			<th><label for="event_end_date">End Date</label></th>
+			<td><input type="date" id="event_end_date" name="event_end_date" value="<?php echo esc_attr( $end_date ); ?>"></td>
 		</tr>
 		<tr>
 			<th><label for="event_end_time">End Time</label></th>
@@ -471,6 +483,7 @@ function event_meta_save( $post_id ) {
 		'_event_start_date'  => 'event_start_date',
 		'_event_start_time'  => 'event_start_time',
 		'_event_end_time'    => 'event_end_time',
+		'_event_end_date'    => 'event_end_date',
 		'_event_venue'       => 'event_venue',
 		'_event_recurring'   => 'event_recurring',
 		'_event_recur_until' => 'event_recur_until',
@@ -536,6 +549,7 @@ function get_events( $args = [] ) {
 	foreach ( $posts as $post ) {
 		$start_date  = get_post_meta( $post->ID, '_event_start_date', true );
 		$start_time  = get_post_meta( $post->ID, '_event_start_time', true );
+		$end_date    = get_post_meta( $post->ID, '_event_end_date', true );
 		$end_time    = get_post_meta( $post->ID, '_event_end_time', true );
 		$venue       = get_post_meta( $post->ID, '_event_venue', true );
 		$recurring   = get_post_meta( $post->ID, '_event_recurring', true );
@@ -558,9 +572,10 @@ function get_events( $args = [] ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
-					'date_label' => $current->format( 'D j M Y' ),
+					'date_label' => $current->format( 'D jS F Y' ),
 					'start_time' => $start_time,
 					'end_time'   => $end_time,
+					'end_date'   => $end_date,
 					'venue'      => $venue,
 				];
 			}
@@ -573,9 +588,10 @@ function get_events( $args = [] ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
-					'date_label' => $current->format( 'D j M Y' ),
+					'date_label' => $current->format( 'D jS F Y' ),
 					'start_time' => $start_time,
 					'end_time'   => $end_time,
+					'end_date'   => $end_date,
 					'venue'      => $venue,
 				];
 			}
@@ -815,3 +831,11 @@ function whitbyanchor_get_pinned_category_post($term_id) {
 	$query = new WP_Query($args);
 	return $query->have_posts() ? $query->posts[0] : null;
 }
+
+wp_enqueue_script(
+	'whitbyanchor-events',
+	get_template_directory_uri() . '/js/events.js',
+	[],
+	'1.0',
+	true // footer = true, so it runs after the inline config
+);
