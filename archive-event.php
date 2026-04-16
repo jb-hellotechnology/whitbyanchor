@@ -65,7 +65,7 @@ foreach ( $all_events as $event ) {
 				<option value=""><?php esc_html_e( 'All Tags', 'whitbyanchor' ); ?></option>
 				<?php foreach ( $tag_counts as $tag ) : ?>
 					<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
-						<?php echo esc_html( $tag['name'] ); ?> (<?php echo absint( $tag['count'] ); ?>)
+						<?php echo esc_html( $tag['name'] ); ?>
 					</option>
 				<?php endforeach; ?>
 			</select>
@@ -78,7 +78,7 @@ foreach ( $all_events as $event ) {
 				<option value=""><?php esc_html_e( 'All Locations', 'whitbyanchor' ); ?></option>
 				<?php foreach ( $location_counts as $venue ) : ?>
 					<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
-						<?php echo esc_html( $venue['name'] ); ?> (<?php echo absint( $venue['count'] ); ?>)
+						<?php echo esc_html( $venue['name'] ); ?>
 					</option>
 				<?php endforeach; ?>
 			</select>
@@ -102,7 +102,7 @@ foreach ( $all_events as $event ) {
 			<?php endif; ?>
 
 		<?php else : ?>
-			<p><?php esc_html_e( 'No upcoming events.', 'whitbyanchor' ); ?></p>
+			<p><?php esc_html_e( 'No events found - try changing your filters.', 'whitbyanchor' ); ?></p>
 		<?php endif; ?>
 	</section>
 

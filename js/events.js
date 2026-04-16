@@ -49,7 +49,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const data = json.data;
 
 			if ( mode === 'replace' ) {
-				list.innerHTML = data.html || '<p>No events found.</p>';
+				list.innerHTML = data.html || '<p>No events found - try changing your filters.</p>';
 				list.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 			} else {
 				// append
