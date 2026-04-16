@@ -21,6 +21,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// ── Core fetch function ────────────────────────────────────────────────────
 
 	async function fetchEvents( { page, tag, location, mode } ) {
+		console.log(tag + location);
 		if ( loading ) return;
 		loading = true;
 		setLoadingState( true );
@@ -74,7 +75,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		select.addEventListener( 'change', function () {
 			currentTag  = this.value.trim();
 			currentPage = 1;
-			fetchEvents( { page: 1, tag: currentTag, mode: 'replace' } );
+			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, mode: 'replace' } );
 		} );
 	}
 	

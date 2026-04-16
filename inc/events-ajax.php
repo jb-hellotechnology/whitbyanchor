@@ -40,7 +40,7 @@ function whitbyanchor_render_event_article( array $event ): string {
 	}
 
 	?>
-	<article class="flow event" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $venues_string; ?>">
+	<article class="flow event" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $locations_string; ?>">
 		<h2><?php echo esc_html( $post->post_title ); ?></h2>
 
 		<p class="event-excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>

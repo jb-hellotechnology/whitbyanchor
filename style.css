@@ -239,6 +239,9 @@ header img{
 	.site-branding{
 		padding:1rem
 	}
+	.data div{
+		padding:0.3rem 1rem;
+	}
 }
 
 nav{
