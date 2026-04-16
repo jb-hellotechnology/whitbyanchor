@@ -590,6 +590,12 @@ section.articles.features article:first-of-type{
 	grid-column: 1 / 4;
 }
 
+@media screen and (max-width:480px){
+	section.articles.home article h2 {
+		font-size: var(--size-step-3);
+	}
+}
+
 section.articles.has-events{
 	grid-template-columns: 2fr 1fr;
 }
