@@ -136,12 +136,12 @@ get_header();
 					<p>No upcoming events.</p>
 				<?php endif; ?>
 				<?php echo '<p><a class="button more-events" href="/events">More Events</a></p>';?>
+				<?php echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="' . $category_id . '"]'); ?>
 				<?php echo '</section>'; // .events 
 
 			} // end if ($show_events)
 
 		if ($show_events) {
-			echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="' . $category_id . '"]');
 			echo '</section>'; // .articles.villages
 		}
 		
