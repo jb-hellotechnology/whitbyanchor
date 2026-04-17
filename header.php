@@ -8,7 +8,10 @@
  *
  * @package whitbyanchor
  */
-
+$current_user = wp_get_current_user();
+if(!user_can( $current_user, 'administrator' )){
+	header("location: /");	 
+}
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
