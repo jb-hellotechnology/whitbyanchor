@@ -350,6 +350,11 @@ nav.desktop button{
 		background:var(--color-secondary);
 		color:#fff;
 	}
+	nav.primary-navigation{
+		position: sticky;
+		top:0;
+		background:var(--color-light);
+	}
 	nav.mobile{
 		display:none;
 		position: fixed;

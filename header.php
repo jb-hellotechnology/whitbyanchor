@@ -72,40 +72,40 @@
 		<div class="site-branding">
 			<a href="/"><img src="<?= get_template_directory_uri() ?>/masthead.svg?v=1" alt="The Whitby Anchor" /></a>
 		</div><!-- .site-branding -->
-
-		<nav id="site-navigation" class="primary-navigation desktop">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Menu', 'whitbyanchor' ); ?></button>
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
-				)
-			);
-			echo get_search_form();
-			?>
-		</nav><!-- #site-navigation -->
-		<nav class="secondary-navigation desktop">
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'menu-2',
-					'menu_id'        => 'secondary-menu',
-				)
-			);
-			?>
-		</nav>
-		<nav class="mobile">
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'menu-6',
-					'menu_id'        => 'mobile-menu',
-				)
-			);
-			echo get_search_form();
-			?>
-			
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><span>Close</span>&times;</button>
-		</nav><!-- #site-navigation -->
 	</header><!-- #masthead -->
+	
+	<nav id="site-navigation" class="primary-navigation desktop">
+		<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Menu', 'whitbyanchor' ); ?></button>
+		<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'menu-1',
+				'menu_id'        => 'primary-menu',
+			)
+		);
+		echo get_search_form();
+		?>
+	</nav><!-- #site-navigation -->
+	<nav class="secondary-navigation desktop">
+		<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'menu-2',
+				'menu_id'        => 'secondary-menu',
+			)
+		);
+		?>
+	</nav>
+	<nav class="mobile">
+		<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'menu-6',
+				'menu_id'        => 'mobile-menu',
+			)
+		);
+		echo get_search_form();
+		?>
+		
+		<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><span>Close</span>&times;</button>
+	</nav><!-- #site-navigation -->
