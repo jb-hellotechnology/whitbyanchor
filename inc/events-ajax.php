@@ -38,14 +38,22 @@ function whitbyanchor_render_event_article( array $event ): string {
 	if ( ! empty( $event['end_date'] ) && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $event['end_date'] ) ) {
 		$end_date = new DateTime( $event['end_date'] );
 	}
-
+	
+	$has_image = false;
+	$has_image = has_post_thumbnail( $post->ID );
 	?>
-	<article class="flow event" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $locations_string; ?>">
+	<article class="flow event <?php if ( $has_image ) : ?>premium<?php endif; ?>" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $locations_string; ?>">
+	<?php if ( $has_image ) : ?>
+		<div class="event-media__image">
+			<?php echo get_the_post_thumbnail( $post->ID, 'large' ); ?>
+		</div>
+	<?php endif; ?>
+		<div>
 		<h2><?php echo esc_html( $post->post_title ); ?></h2>
 
 		<p class="event-excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>
 
-		<div>
+		<div class="meta">
 			<?php if ( $event['venue'] ) : ?>
 				<p class="event-venue">
 					<span class="material-symbols-outlined">location_on</span>
@@ -73,6 +81,7 @@ function whitbyanchor_render_event_article( array $event ): string {
 		</div>
 
 		<a class="event-link" href="<?php echo esc_url( get_permalink( $post->ID ) . '?date=' . $event['date'] ); ?>"><span>More details about<?php echo esc_html( $post->post_title ); ?></span></a>
+		</div>
 	</article>
 	<?php
 	return ob_get_clean();
