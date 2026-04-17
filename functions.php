@@ -435,6 +435,25 @@ function event_meta_box_html( $post ) {
 			<th><label for="event_end_time">End Time</label></th>
 			<td><input type="time" id="event_end_time" name="event_end_time" value="<?php echo esc_attr( $end_time ); ?>"></td>
 		</tr>
+		<?php
+		$excluded = get_post_meta( $post->ID, '_event_excluded_dates', true );
+		$excluded = $excluded ? json_decode( $excluded, true ) : [];
+		?>
+		<tr id="event-excluded-dates-row">
+			<th><label>Excluded Dates</label></th>
+			<td>
+				<div id="event-excluded-dates">
+					<?php foreach ( $excluded as $date ) : ?>
+						<div class="excluded-date-entry">
+							<input type="date" name="event_excluded_dates[]" value="<?php echo esc_attr( $date ); ?>">
+							<button type="button" class="button remove-excluded-date">Remove</button>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<button type="button" class="button" id="add-excluded-date">Add Date</button>
+				<p class="description">Dates on which this recurring event does not occur.</p>
+			</td>
+		</tr>
 		<tr>
 			<th><label for="event_venue">Venue Name</label></th>
 			<td><input type="text" id="event_venue" name="event_venue" value="<?php echo esc_attr( $venue ); ?>" class="regular-text"></td>
@@ -470,6 +489,21 @@ function event_meta_box_html( $post ) {
 			<td><input type="text" id="event_lng" name="event_lng" value="<?php echo esc_attr( $lng ); ?>" class="regular-text"></td>
 		</tr>
 	</table>
+	<script>
+	document.getElementById('add-excluded-date').addEventListener('click', function () {
+		var div = document.createElement('div');
+		div.className = 'excluded-date-entry';
+		div.innerHTML = '<input type="date" name="event_excluded_dates[]"> '
+					  + '<button type="button" class="button remove-excluded-date">Remove</button>';
+		document.getElementById('event-excluded-dates').appendChild(div);
+	});
+	
+	document.getElementById('event-excluded-dates').addEventListener('click', function (e) {
+		if ( e.target.classList.contains('remove-excluded-date') ) {
+			e.target.closest('.excluded-date-entry').remove();
+		}
+	});
+	</script>
 	<?php
 }
 
@@ -505,6 +539,18 @@ function event_meta_save( $post_id ) {
 			}
 		}
 	}
+	
+	$excluded_dates = [];
+	if ( ! empty( $_POST['event_excluded_dates'] ) && is_array( $_POST['event_excluded_dates'] ) ) {
+		foreach ( $_POST['event_excluded_dates'] as $date ) {
+			$date = sanitize_text_field( $date );
+			// Validate it's a real YYYY-MM-DD date before storing
+			if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
+				$excluded_dates[] = $date;
+			}
+		}
+	}
+	update_post_meta( $post_id, '_event_excluded_dates', wp_json_encode( $excluded_dates ) );
 }
 add_action( 'save_post_event', 'event_meta_save' );
 
@@ -554,6 +600,9 @@ function get_events( $args = [] ) {
 		$venue       = get_post_meta( $post->ID, '_event_venue', true );
 		$recurring   = get_post_meta( $post->ID, '_event_recurring', true );
 		$recur_until = get_post_meta( $post->ID, '_event_recur_until', true );
+		
+		$excluded_raw    = get_post_meta( $post->ID, '_event_excluded_dates', true );
+		$excluded_dates  = $excluded_raw ? json_decode( $excluded_raw, true ) : [];
 
 		if ( ! $start_date ) continue;
 
@@ -568,7 +617,7 @@ function get_events( $args = [] ) {
 
 		// For one-off events, just check the single date
 		if ( ! $recurring ) {
-			if ( $current >= $from ) {
+			if ( $current >= $from && ! in_array( $current->format( 'Y-m-d' ), $excluded_dates, true ) ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
@@ -584,7 +633,8 @@ function get_events( $args = [] ) {
 
 		// For recurring events, walk through each occurrence
 		while ( $current <= $until ) {
-			if ( $current >= $from ) {
+			$date_str = $current->format( 'Y-m-d' );
+			if ( $current >= $from && ! in_array( $date_str, $excluded_dates, true ) ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
