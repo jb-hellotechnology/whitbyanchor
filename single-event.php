@@ -85,7 +85,7 @@ $use_two_column = $has_map && $has_image;
 					<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 					<script>
 						document.addEventListener('DOMContentLoaded', function () {
-							var map = L.map('event-map').setView([<?php echo esc_js( $lat ); ?>, <?php echo esc_js( $lng ); ?>], 15);
+							var map = L.map('event-map', { scrollWheelZoom: false }).setView([<?php echo esc_js( $lat ); ?>, <?php echo esc_js( $lng ); ?>], 15);
 							L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 								attribution: '© OpenStreetMap contributors'
 							}).addTo(map);
