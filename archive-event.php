@@ -107,7 +107,7 @@ foreach ( $all_events as $event ) {
 	</section>
 
 	<section>
-		<?php echo do_shortcode( '[newspaper_advert placement="category" category_id="24"]' ); ?>
+		<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="24"]' ); ?>
 
 		<?php
 		$args = [
@@ -138,6 +138,7 @@ foreach ( $all_events as $event ) {
 			wp_reset_postdata();
 		endif;
 		?>
+		<?php echo do_shortcode( '[newspaper_advert placement="category_bottom" category_id="24"]' ); ?>
 	</section>
 </main>
 
