@@ -57,4 +57,5 @@
 		);
 		?>
 	</div><!-- .entry-content -->
-</article><!-- #post-<?php the_ID(); ?> -->
+</article>
+<?php newspaper_render_related_posts(); ?>

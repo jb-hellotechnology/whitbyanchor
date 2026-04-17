@@ -520,7 +520,8 @@ article .article-link{
 	inset: 0;
 }
 
-article:has(.article-link:hover) h2{
+article:has(.article-link:hover) h2,
+article:has(.article-link:hover) h3{
 	color:var(--color-secondary);
 }
 
@@ -588,6 +589,16 @@ section.articles.home header{
 section.articles.home article:first-of-type,
 section.articles.features article:first-of-type{
 	grid-column: 1 / 4;
+}
+
+.more.articles{
+	margin-top:4rem;
+	padding-top:2rem;
+	border-top:1px solid var(--color-primary);
+}
+
+.more.articles header h2{
+	font-size:var(--size-step-1);
 }
 
 @media screen and (max-width:480px){

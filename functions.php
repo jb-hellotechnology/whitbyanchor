@@ -889,3 +889,71 @@ wp_enqueue_script(
 	'1.0',
 	true // footer = true, so it runs after the inline config
 );
+
+function newspaper_render_related_posts(): void {
+	if ( ! is_single() ) {
+		return;
+	}
+
+	$current_post_id  = get_the_ID();
+	$categories       = get_the_category( $current_post_id );
+
+	if ( empty( $categories ) ) {
+		return;
+	}
+
+	// WordPress doesn't have a native "primary category" concept, but Yoast
+	// stores one. Fall back to the first assigned category if not using Yoast.
+	$primary_cat_id = null;
+	if ( class_exists( 'WPSEO_Primary_Term' ) ) {
+		$wpseo_primary = new WPSEO_Primary_Term( 'category', $current_post_id );
+		$primary_cat_id = $wpseo_primary->get_primary_term();
+	}
+	if ( ! $primary_cat_id ) {
+		$primary_cat_id = $categories[0]->term_id;
+	}
+
+	$related = get_posts( [
+		'post_type'           => 'post',
+		'posts_per_page'      => 3,
+		'post_status'         => 'publish',
+		'post__not_in'        => [ $current_post_id ],
+		'category__in'        => [ $primary_cat_id ],
+		'orderby'             => 'date',
+		'order'               => 'DESC',
+		'ignore_sticky_posts' => true,
+	] );
+
+	if ( empty( $related ) ) {
+		return;
+	}
+
+	$category = get_term( $primary_cat_id, 'category' );
+	?>
+	<section class="more articles flow">
+		<header>
+			<h2 class="related-posts__heading">
+				More from
+				<a href="<?php echo esc_url( get_category_link( $primary_cat_id ) ); ?>">
+					<?php echo esc_html( $category->name ); ?>
+				</a>
+			</h2>
+		</header>
+		<?php global $post; ?>
+		<?php foreach ( $related as $post ) : setup_postdata( $post ); ?>
+			<?php
+				echo '<article class="flow">';
+				the_post_thumbnail('full');
+				the_title('<h2>', '</h2>');
+				echo '<div class="entry-meta">';
+				whitbyanchor_posted_on();
+				whitbyanchor_posted_by();
+				echo '</div>';
+				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: ' . get_the_title() . '</span></a>';
+				echo '</article>';
+			?>
+		<?php endforeach; wp_reset_postdata(); ?>
+	</section>
+	<?php
+}
