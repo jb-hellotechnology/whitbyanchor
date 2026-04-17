@@ -165,16 +165,14 @@ function npg_upsize_image_block( array $block, string $size = 'full' ): array {
     switch ( $block['blockName'] ) {
 
         case 'core/image':
-            $block['attrs']['sizeSlug'] = $size;
+            $block = npg_replace_image_src( $block, $size );
             break;
 
         case 'core/gallery':
-            // Update the gallery's own sizeSlug.
             $block['attrs']['sizeSlug'] = $size;
-            // Also update each image innerBlock.
             foreach ( $block['innerBlocks'] as &$inner ) {
                 if ( 'core/image' === $inner['blockName'] ) {
-                    $inner['attrs']['sizeSlug'] = $size;
+                    $inner = npg_replace_image_src( $inner, $size );
                 }
             }
             unset( $inner );
@@ -182,8 +180,44 @@ function npg_upsize_image_block( array $block, string $size = 'full' ): array {
 
         case 'core/media-text':
             $block['attrs']['mediaSizeSlug'] = $size;
+            $block = npg_replace_image_src( $block, $size );
             break;
     }
+    return $block;
+}
+
+function npg_replace_image_src( array $block, string $size ): array {
+    $id = $block['attrs']['id'] ?? null;
+    if ( ! $id ) {
+        return $block;
+    }
+
+    $new_src = wp_get_attachment_image_url( $id, $size );
+    if ( ! $new_src ) {
+        return $block;
+    }
+
+    // Replace the src URL in the raw block HTML.
+    $block['innerHTML'] = preg_replace(
+        '/(<img[^>]+src=")[^"]+(")/i',
+        '$1' . $new_src . '$2',
+        $block['innerHTML']
+    );
+
+    // innerContent mirrors innerHTML for leaf blocks — update it too.
+    foreach ( $block['innerContent'] as &$chunk ) {
+        if ( is_string( $chunk ) ) {
+            $chunk = preg_replace(
+                '/(<img[^>]+src=")[^"]+(")/i',
+                '$1' . $new_src . '$2',
+                $chunk
+            );
+        }
+    }
+    unset( $chunk );
+
+    $block['attrs']['sizeSlug'] = $size;
+
     return $block;
 }
 
