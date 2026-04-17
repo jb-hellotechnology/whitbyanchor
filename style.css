@@ -474,7 +474,7 @@ input[type=submit]:hover{
 	}
 	nav button,
 	nav input[type=submit]{
-		padding: 1rem;
+		padding: 1rem 1.5rem;
 		width:auto;
 	}
 	nav.desktop button{
@@ -1087,7 +1087,7 @@ article .npg-gallery__images figcaption{
 	line-height: 1.5;
 	font-family: 'Inter', sans-serif;
 }
-.npa-advert__text p{
+.npa-advert__text{
 	max-width:76ch;
 }
 .npa-advert__text p:last-child { margin-bottom: 0; }
