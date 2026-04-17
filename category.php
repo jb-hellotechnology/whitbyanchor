@@ -71,7 +71,7 @@ get_header();
 				echo '<section class="events">';
 				
 				$category_id = $category ? $category->term_id : null;
-				echo do_shortcode('[newspaper_advert placement="category" category_id="' . $category_id . '"]');
+				echo do_shortcode('[newspaper_advert placement="category_top" category_id="' . $category_id . '"]');
 				
 				$pinned_post = whitbyanchor_get_pinned_category_post($category->term_id);
 				if ($pinned_post) {
@@ -141,6 +141,7 @@ get_header();
 			} // end if ($show_events)
 
 		if ($show_events) {
+			echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="' . $category_id . '"]');
 			echo '</section>'; // .articles.villages
 		}
 		
