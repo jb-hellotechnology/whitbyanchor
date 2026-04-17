@@ -1141,6 +1141,10 @@ article .npg-gallery__images figcaption{
 	margin-bottom: 1.5em;
 }
 
+.ad-wide{
+	margin-bottom:2rem;
+}
+
 .ad-wide .npa-advert__link{
 	display:flex;
 	align-items: center;
