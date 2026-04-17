@@ -500,7 +500,7 @@ function npg_render_latest_gallery( array $args = [] ) {
 
     $args = wp_parse_args( $args, [
         'echo'           => true,
-        'thumbnail_size' => 'large',
+        'thumbnail_size' => 'full',
         'heading'        => __( 'Latest Gallery', 'newspaper' ),
         'preview_count'  => 5,
     ] );
