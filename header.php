@@ -83,6 +83,9 @@
 				'menu_id'        => 'primary-menu',
 			)
 		);
+		?>
+		<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" class="nav_icon" />
+		<?php
 		echo get_search_form();
 		?>
 	</nav><!-- #site-navigation -->
