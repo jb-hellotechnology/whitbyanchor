@@ -319,7 +319,7 @@ function npg_render_gallery_single( $post = null ): void {
 
     $title       = get_the_title( $post );
     $excerpt     = $post->post_excerpt ? wpautop( $post->post_excerpt ) : '';
-    $date        = get_the_date( get_option( 'date_format' ), $post );
+    $date        = get_the_date( 'l M j Y', $post );
     $author      = get_the_author_meta( 'display_name', $post->post_author );
     $img_count   = npg_count_gallery_images( $post );
     $content     = npg_split_gallery_content( $post );
@@ -333,7 +333,7 @@ function npg_render_gallery_single( $post = null ): void {
         <header class="npg-gallery__header flow">
             <h1 class="npg-gallery__title"><?php echo esc_html( $title ); ?></h1>
             <div class="entry-meta">
-                Posted on <time datetime="<?php echo esc_attr( get_the_date( 'c', $post ) ); ?>">
+                <time datetime="<?php echo esc_attr( get_the_date( 'c', $post ) ); ?>">
                     <?php echo esc_html( $date ); ?>
                 </time>
                 <?php if ( $author ) : ?>
@@ -531,7 +531,7 @@ function npg_render_latest_gallery( array $args = [] ) {
         'alt'   => esc_attr( $title ),
     ] );
     $img_count   = npg_count_gallery_images( $gid );
-    $date        = get_the_date();
+    $date        = get_the_date( 'l M j Y', $post );
 
     // Collect preview thumbnails from image blocks inside the post.
     $previews = [];
@@ -591,7 +591,7 @@ function npg_render_latest_gallery( array $args = [] ) {
                 </h3> -->
 
                 <div class="entry-meta">
-                    Posted on <time datetime="<?php echo esc_attr( get_the_date( 'c', $gid ) ); ?>">
+                    <time datetime="<?php echo esc_attr( get_the_date( 'l M j Y', $gid ) ); ?>">
                         <?php echo esc_html( $date ); ?>
                     </time>
                     <?php if ( $img_count > 0 ) : ?>

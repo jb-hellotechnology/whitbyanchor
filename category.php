@@ -68,7 +68,6 @@ get_header();
 					]);	
 				}
 				
-			
 				echo '<section class="events">';
 				
 				$category_id = $category ? $category->term_id : null;
