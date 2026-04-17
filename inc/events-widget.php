@@ -36,7 +36,7 @@ add_action( 'wp_dashboard_setup', 'past_events_register_widget' );
 function past_events_register_widget() {
 	wp_add_dashboard_widget(
 		'past_events_widget',
-		'⚠️ Events With Expired End Date',
+		'Expired Events',
 		'past_events_widget_render',
 		'past_events_widget_configure'   // optional config callback
 	);
