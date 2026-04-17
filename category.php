@@ -54,11 +54,20 @@ get_header();
 
 			if ($show_events) {
 
-				$events = get_events([
-					'location'  => $slug,
-					'from_date' => current_time('Y-m-d'),
-					'limit'     => 10,
-				]);
+				if($slug=='wellbeing'){
+					$events = get_events([
+						'tag'  => $slug,
+						'from_date' => current_time('Y-m-d'),
+						'limit'     => 10,
+					]);
+				}else{
+					$events = get_events([
+						'location'  => $slug,
+						'from_date' => current_time('Y-m-d'),
+						'limit'     => 10,
+					]);	
+				}
+				
 			
 				echo '<section class="events">';
 				
