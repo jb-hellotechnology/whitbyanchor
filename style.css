@@ -1087,6 +1087,9 @@ article .npg-gallery__images figcaption{
 	line-height: 1.5;
 	font-family: 'Inter', sans-serif;
 }
+.npa-advert__text p{
+	max-width:76ch;
+}
 .npa-advert__text p:last-child { margin-bottom: 0; }
 .npa-advert__label {
 	display: block;
