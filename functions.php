@@ -957,3 +957,20 @@ function newspaper_render_related_posts(): void {
 	</section>
 	<?php
 }
+
+function whitby_anchor_login_logo() { ?>
+	<style type="text/css">
+		body.login{
+			background:#f8fcff;
+		}
+		#login h1 a {
+			background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/icons/ms-icon-310x310.png);
+			height: 200px;
+			width: 200px;
+			border-radius:50%;
+			background-size: 200px;
+			background-repeat: no-repeat;
+		}
+	</style>
+<?php }
+add_action( 'login_enqueue_scripts', 'whitby_anchor_login_logo' );
