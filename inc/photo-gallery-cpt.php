@@ -143,6 +143,9 @@ function npg_split_gallery_content( $post = null ): array {
     $blocks = parse_blocks( $post->post_content );
 
     foreach ( $blocks as $block ) {
+        if ( in_array( $block['blockName'], $image_block_types, true ) ) {
+            $block = npg_upsize_image_block( $block );
+        }
         $rendered = render_block( $block );
 
         if ( in_array( $block['blockName'], $image_block_types, true ) ) {
@@ -156,6 +159,32 @@ function npg_split_gallery_content( $post = null ): array {
     }
 
     return $result;
+}
+
+function npg_upsize_image_block( array $block, string $size = 'full' ): array {
+    switch ( $block['blockName'] ) {
+
+        case 'core/image':
+            $block['attrs']['sizeSlug'] = $size;
+            break;
+
+        case 'core/gallery':
+            // Update the gallery's own sizeSlug.
+            $block['attrs']['sizeSlug'] = $size;
+            // Also update each image innerBlock.
+            foreach ( $block['innerBlocks'] as &$inner ) {
+                if ( 'core/image' === $inner['blockName'] ) {
+                    $inner['attrs']['sizeSlug'] = $size;
+                }
+            }
+            unset( $inner );
+            break;
+
+        case 'core/media-text':
+            $block['attrs']['mediaSizeSlug'] = $size;
+            break;
+    }
+    return $block;
 }
 
 
