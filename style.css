@@ -1303,6 +1303,11 @@ figcaption span{
 	min-height: 350px;
 }
 
+a.button.more-events{
+	display: inline-block;
+	width:auto;
+}
+
 @media ( max-width: 640px ) {
 	.event-media--two-col {
 		flex-direction: column;

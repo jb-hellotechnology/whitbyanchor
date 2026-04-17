@@ -59,9 +59,7 @@ get_header();
 					'from_date' => current_time('Y-m-d'),
 					'limit'     => 10,
 				]);
-
-				
-				
+			
 				echo '<section class="events">';
 				
 				$category_id = $category ? $category->term_id : null;
@@ -87,32 +85,41 @@ get_header();
 					foreach ($events as $event) :
 						$post = $event['post'];
 						?>
-						<article class="flow event">
-							<h2><?php echo esc_html($post->post_title); ?></h2>
-
-							<p class="event-excerpt"><?php echo esc_html($post->post_excerpt); ?></p>
-
-							<?php if ($event['venue']) : ?>
-								<p class="event-venue">
-									<span class="material-symbols-outlined">location_on</span>
-									<?php echo esc_html($event['venue']); ?>
-								</p>
+						<article class="flow event <?php if ( $has_image ) : ?>premium<?php endif; ?>">
+							<?php if ( $has_image ) : ?>
+							<div class="event-media__image">
+								<?php echo get_the_post_thumbnail( $post->ID, 'large' ); ?>
+							</div>
 							<?php endif; ?>
+							<div>
+								<h2><?php echo esc_html($post->post_title); ?></h2>
 
-							<?php if ($event['recurring']) : ?>
-								<p class="event-recurring">Repeats <?php echo esc_html($event['recurring']); ?></p>
-							<?php endif; ?>
-
-							<p class="event-date">
-								<span class="material-symbols-outlined">calendar_clock</span>
-								<?php echo esc_html($event['date_label']); ?>
-								<?php if ($event['start_time']) : ?>
-									at <?php echo esc_html(date('g:i A', strtotime($event['start_time']))); ?>
-									<?php if ($event['end_time']) : ?>
-										&ndash; <?php echo esc_html(date('g:i A', strtotime($event['end_time']))); ?>
+								<p class="event-excerpt"><?php echo esc_html($post->post_excerpt); ?></p>
+						
+								<div class="meta">
+									<?php if ($event['venue']) : ?>
+										<p class="event-venue">
+											<span class="material-symbols-outlined">location_on</span>
+											<?php echo esc_html($event['venue']); ?>
+										</p>
 									<?php endif; ?>
-								<?php endif; ?>
-							</p>
+		
+									<?php if ($event['recurring']) : ?>
+										<p class="event-recurring">Repeats <?php echo esc_html($event['recurring']); ?></p>
+									<?php endif; ?>
+		
+									<p class="event-date">
+										<span class="material-symbols-outlined">calendar_clock</span>
+										<?php echo esc_html($event['date_label']); ?>
+										<?php if ($event['start_time']) : ?>
+											at <?php echo esc_html(date('g:i A', strtotime($event['start_time']))); ?>
+											<?php if ($event['end_time']) : ?>
+												&ndash; <?php echo esc_html(date('g:i A', strtotime($event['end_time']))); ?>
+											<?php endif; ?>
+										<?php endif; ?>
+									</p>
+								</div>
+							</div>
 
 							<a class="event-link" href="<?php echo esc_url(get_permalink($post->ID) . '?date=' . $event['date']); ?>"></a>
 						</article>
@@ -120,7 +127,7 @@ get_header();
 				<?php else : ?>
 					<p>No upcoming events.</p>
 				<?php endif; ?>
-				<?php echo '<p><a class="button" href="/events">More Events</a></p>';?>
+				<?php echo '<p><a class="button more-events" href="/events">More Events</a></p>';?>
 				<?php echo '</section>'; // .events 
 
 			} // end if ($show_events)
