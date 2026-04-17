@@ -14,6 +14,7 @@ if ( ! defined( '_S_VERSION' ) ) {
 
 require_once get_template_directory() . '/inc/photo-gallery-cpt.php';
 require_once get_template_directory() . '/inc/events-ajax.php';
+require_once get_template_directory() . '/inc/events-widget.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
