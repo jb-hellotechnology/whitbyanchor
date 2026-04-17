@@ -470,11 +470,11 @@ input[type=submit]:hover{
 
 @media screen and (max-width:540px){
 	.search-form input[type="search"]{
-		width:150px;
+		width:140px;
 	}
 	nav button,
 	nav input[type=submit]{
-		padding: 1rem 1.5rem;
+		padding: 0.7rem 1rem;
 		width:auto;
 	}
 	nav.desktop button{
