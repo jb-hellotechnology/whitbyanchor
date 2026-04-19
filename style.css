@@ -532,7 +532,8 @@ article{
 	position: relative;
 }
 
-.post-thumbnail img{
+.post-thumbnail img,
+img.wp-post-image{
 	width:100%;
 	aspect-ratio: 16 / 9;
 	object-fit:cover;
