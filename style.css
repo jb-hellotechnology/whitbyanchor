@@ -1054,7 +1054,7 @@ main.events .tags .sticky{
 	
 }
 
-article .entry-meta img{
+.entry-meta img{
 	width:1.4rem;
 	height:1.4rem;
 	border-radius: 50%;
