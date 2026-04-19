@@ -894,7 +894,7 @@ main.events #events-list{
 /* Outer div and inner ul share the same area */
 .event .event-tags  { grid-area: tags; }
 
-.event .meta{border-top:1px solid var(--color-primary);}
+.event .meta{border-top:1px solid var(--color-primary);margin-top:1rem;}
 
 .event p{
 	display:flex;
