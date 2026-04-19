@@ -1060,6 +1060,7 @@ main.events .tags .sticky{
 	border-radius: 50%;
 	margin-bottom:-6px;
 	margin-right:6px;
+	display:inline-block;
 }
 
 .entry-meta .updated{
