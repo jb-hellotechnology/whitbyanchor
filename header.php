@@ -87,7 +87,7 @@ if(!user_can( $current_user, 'administrator' )){
 			)
 		);
 		?>
-		<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" class="nav_icon" />
+		<a href="/"><img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" class="nav_icon" /></a>
 		<?php
 		echo get_search_form();
 		?>
