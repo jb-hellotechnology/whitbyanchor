@@ -44,7 +44,7 @@ if(!user_can( $current_user, 'administrator' )){
 
 		<?php
 		
-		$max_posts  = 3;
+		$max_posts  = 4;
 		$post_ids_displayed = array();
 		
 		// --- Query 1: Pinned posts in this category ---
