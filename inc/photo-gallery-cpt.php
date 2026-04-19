@@ -333,6 +333,7 @@ function npg_render_gallery_single( $post = null ): void {
         <header class="npg-gallery__header flow">
             <h1 class="npg-gallery__title"><?php echo esc_html( $title ); ?></h1>
             <div class="entry-meta">
+                <img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />
                 <time datetime="<?php echo esc_attr( get_the_date( 'c', $post ) ); ?>">
                     <?php echo esc_html( $date ); ?>
                 </time>
@@ -437,6 +438,7 @@ function npg_render_gallery_archive( array $args = [] ): void {
                     the_post_thumbnail('full');
                     the_title('<h2>', '</h2>');
                     echo '<div class="entry-meta">';
+                    echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
                     whitbyanchor_posted_on();
                     whitbyanchor_posted_by();
                     echo '</div>';
@@ -591,6 +593,7 @@ function npg_render_latest_gallery( array $args = [] ) {
                 </h3> -->
 
                 <div class="entry-meta">
+                    <img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />
                     <time datetime="<?php echo esc_attr( get_the_date( 'l M j Y', $gid ) ); ?>">
                         <?php echo esc_html( $date ); ?>
                     </time>
