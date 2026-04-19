@@ -167,7 +167,7 @@ if(!user_can( $current_user, 'administrator' )){
 		
 		$args = array(
 			'category_name' => 'villages',
-			'posts_per_page' => 1,
+			'posts_per_page' => 3,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
 		);
