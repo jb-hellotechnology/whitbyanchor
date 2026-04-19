@@ -100,6 +100,10 @@ $use_two_column = $has_map && $has_image;
 
 			</div>
 		<?php endif; ?>
+		
+		<div class="flow">
+			<p>We strive to keep event details up to date. However, changes/cancellations are beyond our control and some regular events may not take place on bank holidays. Contact the venue/organiser before attending. Please <a href="/contact-the-whitby-anchor">contact us</a> if your event details need amending.</p>
+		</div>
 	</article>
 </main>
 <?php
