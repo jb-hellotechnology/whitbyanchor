@@ -112,7 +112,7 @@ if(!user_can( $current_user, 'administrator' )){
 				the_post_thumbnail('full');
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
-				echo '<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
+				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
 				whitbyanchor_posted_on();
 				whitbyanchor_posted_by();
 				echo '</div>';
@@ -151,7 +151,7 @@ if(!user_can( $current_user, 'administrator' )){
 				the_post_thumbnail('full');
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
-				echo '<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
+				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
 				whitbyanchor_posted_on();
 				whitbyanchor_posted_by();
 				echo '</div>';
@@ -186,7 +186,7 @@ if(!user_can( $current_user, 'administrator' )){
 				the_post_thumbnail('full');
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
-				echo '<img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
+				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
 				whitbyanchor_posted_on();
 				whitbyanchor_posted_by();
 				echo '</div>';
