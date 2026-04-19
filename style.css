@@ -540,11 +540,10 @@ article{
 	border-radius: 3px;
 }
 
-/* article h2{
-	font-size:var(--size-step-3);
+article h2{
 	margin-top:1rem;
 }
-
+/*
 .articles article h2{
 	font-size:var(--size-step-2);
 } */
