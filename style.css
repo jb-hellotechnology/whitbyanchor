@@ -532,7 +532,7 @@ article{
 	position: relative;
 }
 
-article img{
+.post-thumbnail img{
 	width:100%;
 	aspect-ratio: 16 / 9;
 	object-fit:cover;
@@ -1059,6 +1059,7 @@ main.events .tags .sticky{
 	height:1.4rem;
 	border-radius: 50%;
 	margin-bottom:-6px;
+	margin-right:6px;
 }
 
 .entry-meta .updated{
