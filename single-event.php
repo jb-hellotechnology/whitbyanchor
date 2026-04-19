@@ -67,6 +67,10 @@ $use_two_column = $has_map && $has_image;
 		<?php if ( $venue ) : ?>
 			<p class="event-venue"><strong>Venue:</strong> <?php echo esc_html( $venue ); ?></p>
 		<?php endif; ?>
+		
+		<div class="event-content flow">
+			<?php the_content(); ?>
+		</div>
 
 		<?php if ( $has_map || $has_image ) : ?>
 			<div class="event-media<?php echo $use_two_column ? ' event-media--two-col' : ''; ?>">
@@ -96,10 +100,6 @@ $use_two_column = $has_map && $has_image;
 
 			</div>
 		<?php endif; ?>
-
-		<div class="event-content">
-			<?php the_content(); ?>
-		</div>
 	</article>
 </main>
 <?php
