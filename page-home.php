@@ -12,32 +12,7 @@
  * @package whitbyanchor
  */
 
-$current_user = wp_get_current_user();
-if(!user_can( $current_user, 'administrator' )){
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Whitby Anchor</title>
-  <style>
-	  body,
-	  html{
-		  background:#f8fcff;
-	  }
-  </style>
-</head>
-
-<body>
-  <iframe width="100%" height="705" src="https://55fe7bef.sibforms.com/serve/MUIFAIeXAHraeDk2IDTqXBbnTxccfwcydbERN_k-OzxGVxbQklj7ytQ1fnnaU7wrOF1NWL483bArbj6qpZDU2gMmtX6ilrUq_pZ3z93gHqkjWM1vmMkUd8q7lX42N3jbz-UTF8OXcdqK9bW37WFOta1SaQtHaT33wlWngHbYouJAo2MD2o_2ImstD5XJl1qONWSgUAd_8RLhxMvaRQ==" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
-</body>
-
-</html>
-<?php
-}else{
-	get_header();
+get_header();
 ?>
 
 	<main id="primary" class="site-main">
@@ -228,4 +203,3 @@ if(!user_can( $current_user, 'administrator' )){
 <?php
 get_sidebar();
 get_footer();
-}
