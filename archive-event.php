@@ -58,39 +58,47 @@ foreach ( $all_events as $event ) {
 			<h2>Filter Events</h2>
 	
 			<?php if ( $tag_counts ) : ?>
-				<label for="event-tag-select">
-					<?php esc_html_e( 'Event type', 'whitbyanchor' ); ?>
-				</label>
-				<select id="event-tag-select" name="event_tag">
-					<option value=""><?php esc_html_e( 'Everything', 'whitbyanchor' ); ?></option>
-					<?php foreach ( $tag_counts as $tag ) : ?>
-						<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
-							<?php echo esc_html( $tag['name'] ); ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
+				<div>
+					<label for="event-tag-select">
+						<?php esc_html_e( 'Event type', 'whitbyanchor' ); ?>
+					</label>
+					<select id="event-tag-select" name="event_tag">
+						<option value=""><?php esc_html_e( 'Everything', 'whitbyanchor' ); ?></option>
+						<?php foreach ( $tag_counts as $tag ) : ?>
+							<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
+								<?php echo esc_html( $tag['name'] ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
 			<?php endif; ?>
 			<?php if ( $location_counts ) : ?>
-				<label for="event-location-select">
-					<?php esc_html_e( 'Event location', 'whitbyanchor' ); ?>
-				</label>
-				<select id="event-location-select" name="event_location">
-					<option value=""><?php esc_html_e( 'Anywhere', 'whitbyanchor' ); ?></option>
-					<?php foreach ( $location_counts as $venue ) : ?>
-						<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
-							<?php echo esc_html( $venue['name'] ); ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
+				<div>
+					<label for="event-location-select">
+						<?php esc_html_e( 'Event location', 'whitbyanchor' ); ?>
+					</label>
+					<select id="event-location-select" name="event_location">
+						<option value=""><?php esc_html_e( 'Anywhere', 'whitbyanchor' ); ?></option>
+						<?php foreach ( $location_counts as $venue ) : ?>
+							<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
+								<?php echo esc_html( $venue['name'] ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
 			<?php endif; ?>
-			<label for="event-date-start">
-				<?php esc_html_e( 'Event start', 'whitbyanchor' ); ?>
-			</label>
-			<input type="date" name="start" id="event-date-start" />
-			<label for="event-date-end">
-				<?php esc_html_e( 'Event end', 'whitbyanchor' ); ?>
-			</label>
-			<input type="date" name="end" id="event-date-end" />
+			<div>
+				<label for="event-date-start">
+					<?php esc_html_e( 'Event start', 'whitbyanchor' ); ?>
+				</label>
+				<input type="date" name="start" id="event-date-start" />
+			</div>
+			<div>
+				<label for="event-date-end">
+					<?php esc_html_e( 'Event end', 'whitbyanchor' ); ?>
+				</label>
+				<input type="date" name="end" id="event-date-end" />
+			</div>
 		</header>
 
 		<?php if ( $all_events ) : ?>

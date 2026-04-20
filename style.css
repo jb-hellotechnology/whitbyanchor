@@ -1386,3 +1386,47 @@ a.button.more-events{
 [hidden] {
 	display: none !important;
 }
+
+.events header {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 8px 16px;
+	align-items: end;
+	padding: 1rem;
+	border: 1px solid var(--color-primary);
+	border-radius: 6px;
+	margin-bottom: 2rem;
+	box-sizing: border-box;
+}
+
+.events header h2 {
+	grid-column: 1 / -1;
+	margin: 0 0 0.5rem;
+	font-size: 1.1rem;
+}
+
+.events header label {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 500;
+	margin-bottom: 4px;
+	color: #555;
+}
+
+.events header select,
+.events header input[type="date"] {
+	width: 100%;
+	padding: 8px 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 1rem;
+	box-sizing: border-box;
+	background: #fff;
+}
+
+.events header select:focus,
+.events header input[type="date"]:focus {
+	outline: 2px solid #0073aa;
+	outline-offset: 1px;
+	border-color: transparent;
+}
