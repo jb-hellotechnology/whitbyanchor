@@ -94,8 +94,10 @@ function whitbyanchor_ajax_get_events(): void {
 
 	$page     = max( 1, absint( $_POST['page']     ?? 1 ) );
 	$per_page = max( 1, absint( $_POST['per_page'] ?? WHITBYANCHOR_EVENTS_PER_PAGE ) );
-	$tag      = sanitize_key( $_POST['tag'] ?? '' );
-	$location      = sanitize_key( $_POST['location'] ?? '' );
+	$tag       = sanitize_key( $_POST['tag']        ?? '' );
+	$location  = sanitize_key( $_POST['location']   ?? '' );
+	$date_from = sanitize_text_field( $_POST['date_from'] ?? '' );
+	$date_to   = sanitize_text_field( $_POST['date_to']   ?? '' );
 
 	// Fetch all future events. If get_events() grows tag/offset support later,
 	// pass those args here instead of filtering in PHP below.
@@ -129,6 +131,20 @@ function whitbyanchor_ajax_get_events(): void {
 				}
 				return false;
 			} )
+		);
+	}
+	
+	// ── Date from filter ─────────────────────────────────────────────────────
+	if ( $date_from ) {
+		$all_events = array_values(
+			array_filter( $all_events, fn( $event ) => $event['date'] >= $date_from )
+		);
+	}
+	
+	// ── Date to filter ───────────────────────────────────────────────────────
+	if ( $date_to ) {
+		$all_events = array_values(
+			array_filter( $all_events, fn( $event ) => $event['date'] <= $date_to )
 		);
 	}
 

@@ -5,22 +5,26 @@
  * { ajaxUrl, nonce, perPage, hasMore, total }
  */
 document.addEventListener( 'DOMContentLoaded', () => {
-	const list     = document.getElementById( 'events-list' );
-	const select   = document.getElementById( 'event-tag-select' );
-	const location = document.getElementById( 'event-location-select' );
-	const loadMore = document.getElementById( 'events-load-more' );
+	const list      = document.getElementById( 'events-list' );
+	const select    = document.getElementById( 'event-tag-select' );
+	const location  = document.getElementById( 'event-location-select' );
+	const dateStart = document.getElementById( 'event-date-start' );
+	const dateEnd   = document.getElementById( 'event-date-end' );
+	const loadMore  = document.getElementById( 'events-load-more' );
 
 	if ( ! list ) return;
 
 	// ── State ──────────────────────────────────────────────────────────────────
 	let currentPage = 1;
-	let currentTag  = '';
-	let currentLocation  = '';
+	let currentTag      = '';
+	let currentLocation = '';
+	let currentDateFrom = '';
+	let currentDateTo   = '';
 	let loading     = false;
 
 	// ── Core fetch function ────────────────────────────────────────────────────
 
-	async function fetchEvents( { page, tag, location, mode } ) {
+	async function fetchEvents( { page, tag, location, date_from, date_to, mode } ) {
 		console.log(tag + location);
 		if ( loading ) return;
 		loading = true;
@@ -33,6 +37,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			per_page: EventsConfig.perPage,
 			tag:      tag,
 			location: location,
+			date_from:  date_from,
+			date_to:    date_to,
 		} );
 
 		try {
@@ -86,6 +92,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			currentLocation  = this.value.trim();
 			currentPage = 1;
 			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, mode: 'replace' } );
+		} );
+	}
+	
+	if ( dateStart ) {
+		dateStart.addEventListener( 'change', function () {
+			currentDateFrom = this.value;
+			currentPage = 1;
+			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, date_from: currentDateFrom, date_to: currentDateTo, mode: 'replace' } );
+		} );
+	}
+	
+	if ( dateEnd ) {
+		dateEnd.addEventListener( 'change', function () {
+			currentDateTo = this.value;
+			currentPage = 1;
+			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, date_from: currentDateFrom, date_to: currentDateTo, mode: 'replace' } );
 		} );
 	}
 

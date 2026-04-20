@@ -146,8 +146,5 @@
 </script>
 
 <?php wp_footer(); ?>
-<script>
-	var nav = priorityNav.init();
-</script>
 </body>
 </html>

@@ -557,10 +557,11 @@ add_action( 'save_post_event', 'event_meta_save' );
 
 function get_events( $args = [] ) {
 	$defaults = [
-		'location'     => '',   // event_location taxonomy slug
-		'tag'          => '',   // event_tag taxonomy slug
-		'from_date'    => current_time( 'Y-m-d' ),
-		'limit'        => 10,
+		'location'  => '',
+		'tag'       => '',
+		'from_date' => current_time( 'Y-m-d' ),
+		'to_date'   => '',   // add this
+		'limit'     => 10,
 	];
 	$args = wp_parse_args( $args, $defaults );
 
@@ -618,7 +619,10 @@ function get_events( $args = [] ) {
 
 		// For one-off events, just check the single date
 		if ( ! $recurring ) {
-			if ( $current >= $from && ! in_array( $current->format( 'Y-m-d' ), $excluded_dates, true ) ) {
+			// One-off
+			if ( $current >= $from
+				&& ( ! $until_filter || $current <= $until_filter )
+				&& ! in_array( $current->format( 'Y-m-d' ), $excluded_dates, true ) ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
@@ -635,7 +639,10 @@ function get_events( $args = [] ) {
 		// For recurring events, walk through each occurrence
 		while ( $current <= $until ) {
 			$date_str = $current->format( 'Y-m-d' );
-			if ( $current >= $from && ! in_array( $date_str, $excluded_dates, true ) ) {
+			// Recurring
+			if ( $current >= $from
+				&& ( ! $until_filter || $current <= $until_filter )
+				&& ! in_array( $date_str, $excluded_dates, true ) ) {
 				$events[] = [
 					'post'       => $post,
 					'date'       => $current->format( 'Y-m-d' ),
