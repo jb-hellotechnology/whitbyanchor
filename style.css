@@ -1211,16 +1211,17 @@ figure img{
 	display:block;
 }
 
-figcaption{
+.flow figcaption{
 	display:flex;
 	justify-content:space-between;
 	gap: 2rem;
 	font-size:80%;
 	border-bottom:1px solid #eee;
 	padding-bottom:1rem;
+	margin-top:1rem;
 }
 
-figcaption a{
+.flow figcaption a{
 	border-left:1px solid var(--color-primary);
 	padding: 0.5rem 0 0.5rem 1rem;
 	padding-left:1rem;
@@ -1467,7 +1468,6 @@ a.button.more-events{
 	grid-row: span 5;          /* figure, figcaption, h2, meta, excerpt */
 	grid-template-rows: subgrid;
 	align-content: start;
-	margin-bottom:4rem;
 }
 
 .wp-block-gallery.has-nested-images figcaption{
