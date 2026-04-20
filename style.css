@@ -1488,6 +1488,7 @@ a.button.more-events{
 	width:auto;
 	display:block;
 	margin:0 auto;
+	object-fit:contain;
 }
 
 .page-id-73 main,
