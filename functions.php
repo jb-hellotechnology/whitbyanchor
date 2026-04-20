@@ -634,6 +634,7 @@ function get_events( $args = [] ) {
 					'end_time'   => $end_time,
 					'end_date'   => $end_date,
 					'venue'      => $venue,
+					'recurring'  => $recurring, // ← missing from both branches
 				];
 			}
 			continue;
@@ -654,6 +655,7 @@ function get_events( $args = [] ) {
 					'end_time'   => $end_time,
 					'end_date'   => $end_date,
 					'venue'      => $venue,
+					'recurring'  => $recurring, // ← missing from both branches
 				];
 			}
 			$current->modify( $intervals[ $recurring ] );

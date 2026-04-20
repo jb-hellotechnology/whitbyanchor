@@ -65,6 +65,8 @@ get_header();
 						'limit'     => 10,
 					]);
 				}elseif($slug=='events' OR $slug=='wellbeing'){
+					$term = get_term_by( 'slug', $slug, 'event_tag' );
+					var_dump( $term );
 					$events = get_events([
 						'tag'  		=> $slug,
 						'from_date' => current_time('Y-m-d'),
