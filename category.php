@@ -151,7 +151,7 @@ get_header();
 				<?php else : ?>
 					<p>No upcoming events.</p>
 				<?php endif; ?>
-				<?php echo '<p><a class="button more-events" href="/events">More Events</a></p>';?>
+				<?php echo '<p><a class="button more-events" href="/whats-on">More Events</a></p>';?>
 				<br />
 				<?php echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="' . $category_id . '"]'); ?>
 				<?php echo '</section>'; // .events 
