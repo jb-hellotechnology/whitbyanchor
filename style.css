@@ -651,12 +651,13 @@ section.articles.features article:first-of-type{
 }
 
 section.articles.has-events{
+	display:grid;
+	grid-column-gap:2rem;
 	grid-template-columns: 2fr 1fr;
 }
 
 section.articles.has-events > section.articles{
-	display:grid;
-	grid-template-columns: 1fr 1fr;
+
 }
 
 section.events header{
@@ -691,7 +692,7 @@ section.events header{
 		grid-column: 1;
 	}
 	section.articles.has-events > section.articles{
-		grid-template-columns: 1fr;
+		
 	}
 }
 
@@ -1181,7 +1182,7 @@ article .npg-gallery__images figcaption{
 }
 
 figure{
-	border-bottom:1px solid var(--color-primary);
+	
 }
 
 figure img{

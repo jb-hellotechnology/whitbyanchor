@@ -143,10 +143,10 @@ foreach ( $all_events as $event ) {
 				echo '<article class="flow">';
 				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '</figure>';
 				echo '<figcaption>';
 				the_post_thumbnail_caption();
 				echo '</figcaption>';
-				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';

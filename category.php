@@ -17,10 +17,8 @@ get_header();
 		echo '<h1 class="category-heading">' . $category->cat_name . '</h1>';
 
 		echo '<section class="articles news'; if ($show_events) { echo ' has-events';} echo '">';
-		
-		if ($show_events) {
-			echo '<section class="articles">';
-		}
+		echo '<div>';
+		echo '<div class="cards-grid">';
 
 			$args = array(
 				'category_name'  => $slug,
@@ -38,10 +36,10 @@ get_header();
 					echo '<article class="flow">';
 					echo '<figure>';
 					the_post_thumbnail('full');
+					echo '</figure>';
 					echo '<figcaption>';
 					the_post_thumbnail_caption();
 					echo '</figcaption>';
-					echo '</figure>';
 					the_title('<h2>', '</h2>');
 					echo '<div class="entry-meta">';
 					echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -56,7 +54,8 @@ get_header();
 				wp_reset_postdata();
 			}
 			
-			echo '</section>';
+			echo '</div>';
+			echo '</div>';
 
 			if ($show_events) {
 
@@ -84,10 +83,10 @@ get_header();
 					echo '<article class="flow">';
 					echo '<figure>';
 					the_post_thumbnail('full');
+					echo '</figure>';
 					echo '<figcaption>';
 					the_post_thumbnail_caption();
 					echo '</figcaption>';
-					echo '</figure>';
 					the_title('<h2>', '</h2>');
 					echo '<div class="entry-meta">';
 					echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
