@@ -1474,6 +1474,10 @@ a.button.more-events{
 	display:none;
 }
 
+.wp-block-gallery.has-nested-images figure.wp-block-image:has(figcaption)::before{
+	backdrop-filter:none;
+}
+
 .wp-block-gallery.has-nested-images figure:hover figcaption{
 	display:block;
 	text-align: left;
