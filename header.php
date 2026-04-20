@@ -57,7 +57,7 @@ if(!user_can( $current_user, 'administrator' )){
 			<div>
 			<?php $times = get_sunrise_sunset(); ?>
 			<p>Sunrise <?= $times['sunrise'] ?> | Sunset <?= $times['sunset'] ?></p>
-			<p><?= date('l M j Y') ?></p>
+			<p><?= date('l F j Y') ?></p>
 			<p>
 			<?php
 			$next_tides = get_next_tides();

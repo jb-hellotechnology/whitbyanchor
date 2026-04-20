@@ -29,7 +29,7 @@ if ( ! empty( $_GET['date'] ) && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $_GET['dat
 		}
 	}
 }
-$date_label = $current->format( 'l jS F Y' );
+$date_label = $current->format( 'l F j Y' );
 $end_date = sanitize_text_field( $end_date );
 if ( ! empty( $end_date ) && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $end_date ) ) {
 	$end_date = new DateTime( $end_date );
