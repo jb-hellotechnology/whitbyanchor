@@ -155,10 +155,10 @@ if(!user_can( $current_user, 'administrator' )){
 				echo '<article class="flow">';
 				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '</figure>';
 				echo '<figcaption>';
 				the_post_thumbnail_caption();
 				echo '</figcaption>';
-				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -186,7 +186,7 @@ if(!user_can( $current_user, 'administrator' )){
 		
 		echo '<section class="articles">';
 		echo '<header><h2 class="section-heading">The Villages</h2></header>';
-		
+		echo '<div class="cards-grid">';
 		if ($query->have_posts()) {
 		
 			while ($query->have_posts()) {
@@ -195,10 +195,10 @@ if(!user_can( $current_user, 'administrator' )){
 				echo '<article class="flow">';
 				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '</figure>';
 				echo '<figcaption>';
 				the_post_thumbnail_caption();
 				echo '</figcaption>';
-				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -212,7 +212,7 @@ if(!user_can( $current_user, 'administrator' )){
 		
 			wp_reset_postdata();
 		}
-		
+		echo '</div>';
 		echo '</section>';
 		
 		echo '<div class="ad-wide">';
