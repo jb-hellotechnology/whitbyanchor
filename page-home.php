@@ -219,7 +219,7 @@ if(!user_can( $current_user, 'administrator' )){
 		echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="31"]');
 		echo '</div>';
 		
-		npg_render_latest_gallery();
+		npg_render_latest_gallery( [ 'post_id' => 386 ] );
 		?>
 
 	</main><!-- #main -->

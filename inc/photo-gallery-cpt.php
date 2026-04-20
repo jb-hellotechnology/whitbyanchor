@@ -505,16 +505,31 @@ function npg_render_latest_gallery( array $args = [] ) {
         'thumbnail_size' => 'full',
         'heading'        => __( 'Latest Gallery', 'newspaper' ),
         'preview_count'  => 5,
+        'post_id'        => 0,   // add this
     ] );
 
-    $query = new WP_Query( [
-        'post_type'      => 'npg_gallery',
-        'post_status'    => 'publish',
-        'posts_per_page' => 1,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-        'no_found_rows'  => true,
-    ] );
+    if ( $args['post_id'] ) {
+        $post = get_post( $args['post_id'] );
+        if ( ! $post || 'npg_gallery' !== $post->post_type || 'publish' !== $post->post_status ) {
+            return $args['echo'] ? null : '';
+        }
+        setup_postdata( $GLOBALS['post'] = $post );
+    } else {
+        $query = new WP_Query( [
+            'post_type'      => 'npg_gallery',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'no_found_rows'  => true,
+        ] );
+    
+        if ( ! $query->have_posts() ) {
+            return $args['echo'] ? null : '';
+        }
+    
+        $query->the_post();
+    }
 
     if ( ! $query->have_posts() ) {
         return $args['echo'] ? null : '';
