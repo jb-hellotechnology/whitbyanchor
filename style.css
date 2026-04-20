@@ -1482,3 +1482,10 @@ a.button.more-events{
 	display:block;
 	text-align: left;
 }
+
+#carousel img{
+	height:70vh;
+	width:auto;
+	display:block;
+	margin:0 auto;
+}
