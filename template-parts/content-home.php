@@ -36,46 +36,34 @@
 	</div><!-- .entry-content -->
 </article>
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.lazyload.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.arrows.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.thumbs.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.lazyload.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.arrows.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.thumbs.umd.js"></script>
-<script>
-  Carousel(
-	document.getElementById("carousel"),
-	{
-	  // Your custom options
-	},
-	{
-	  Lazyload,
-	  Arrows,
-	  Thumbs,
-	}
-  ).init();
+<!-- Add these in your <head> or before </body> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/carousel/carousel.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/carousel/carousel.umd.js"></script>
 
-  Fancybox.bind("[data-fancybox]", {
-	// Your custom options
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+	const container = document.getElementById("carousel");
+
+	// Fancyapps Carousel expects .f-carousel__slide wrapper elements,
+	// so we wrap each existing <figure> on the fly.
+	container.querySelectorAll("figure").forEach((fig) => {
+	  const slide = document.createElement("div");
+	  slide.className = "f-carousel__slide";
+	  fig.parentNode.insertBefore(slide, fig);
+	  slide.appendChild(fig);
+	});
+
+	new Carousel(container, {
+	  infinite: true,
+	  center: true,
+	  slidesPerPage: 1,
+	  transition: "slide",
+	  Dots: true,
+	  Navigation: {
+		prevTpl: "&#8592;",
+		nextTpl: "&#8594;",
+	  },
+	});
   });
 </script>
 <?php newspaper_render_related_posts(); ?>
