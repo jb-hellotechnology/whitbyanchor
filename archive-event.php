@@ -125,14 +125,20 @@ foreach ( $all_events as $event ) {
 			while ( $query->have_posts() ) :
 				$query->the_post();
 				echo '<article class="flow">';
-				the_post_thumbnail( 'full' );
-				the_title( '<h2>', '</h2>' );
+				echo '<figure>';
+				the_post_thumbnail('full');
+				echo '<figcaption>';
+				the_post_thumbnail_caption();
+				echo '</figcaption>';
+				echo '</figure>';
+				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
+				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
 				whitbyanchor_posted_on();
 				whitbyanchor_posted_by();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link flow" href="' . get_the_permalink() . '"></a>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
 			endwhile;
 			wp_reset_postdata();

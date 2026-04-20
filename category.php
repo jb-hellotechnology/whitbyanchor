@@ -36,7 +36,12 @@ get_header();
 					$query->the_post();
 
 					echo '<article class="flow">';
+					echo '<figure>';
 					the_post_thumbnail('full');
+					echo '<figcaption>';
+					the_post_thumbnail_caption();
+					echo '</figcaption>';
+					echo '</figure>';
 					the_title('<h2>', '</h2>');
 					echo '<div class="entry-meta">';
 					echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -77,7 +82,12 @@ get_header();
 				$pinned_post = whitbyanchor_get_pinned_category_post($category->term_id);
 				if ($pinned_post) {
 					echo '<article class="flow">';
+					echo '<figure>';
 					the_post_thumbnail('full');
+					echo '<figcaption>';
+					the_post_thumbnail_caption();
+					echo '</figcaption>';
+					echo '</figure>';
 					the_title('<h2>', '</h2>');
 					echo '<div class="entry-meta">';
 					echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';

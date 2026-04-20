@@ -109,7 +109,12 @@ if(!user_can( $current_user, 'administrator' )){
 				setup_postdata($post);
 		
 				echo '<article class="flow">';
+				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '<figcaption>';
+				the_post_thumbnail_caption();
+				echo '</figcaption>';
+				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -148,7 +153,12 @@ if(!user_can( $current_user, 'administrator' )){
 				$query->the_post();
 				
 				echo '<article class="flow">';
+				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '<figcaption>';
+				the_post_thumbnail_caption();
+				echo '</figcaption>';
+				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -183,7 +193,12 @@ if(!user_can( $current_user, 'administrator' )){
 				$query->the_post();
 				
 				echo '<article class="flow">';
+				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '<figcaption>';
+				the_post_thumbnail_caption();
+				echo '</figcaption>';
+				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
