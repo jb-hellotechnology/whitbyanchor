@@ -589,7 +589,7 @@ function get_events( $args = [] ) {
 			'terms'    => $args['tag'],
 		];
 	}
-
+print_r($query_args);
 	$posts  = get_posts( $query_args );
 	$events = [];
 	$from   = new DateTime( $args['from_date'] );

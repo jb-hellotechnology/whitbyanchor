@@ -1490,6 +1490,7 @@ a.button.more-events{
 	margin:0 auto;
 }
 
-.page-id-73 main{
+.page-id-73 main,
+.page-id-43 main{
 	max-width:768px;
 }

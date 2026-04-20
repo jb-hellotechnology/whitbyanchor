@@ -64,6 +64,12 @@ get_header();
 						'from_date' => current_time('Y-m-d'),
 						'limit'     => 10,
 					]);
+				}elseif($slug=='events' OR $slug=='wellbeing'){
+					$events = get_events([
+						'tag'  => $slug,
+						'from_date' => current_time('Y-m-d'),
+						'limit'     => 10,
+					]);
 				}else{
 					$events = get_events([
 						'location'  => $slug,
