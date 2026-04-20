@@ -66,7 +66,7 @@ get_header();
 					]);
 				}elseif($slug=='events' OR $slug=='wellbeing'){
 					$events = get_events([
-						'tag'  => $slug,
+						'tag'  		=> $slug,
 						'from_date' => current_time('Y-m-d'),
 						'limit'     => 10,
 					]);
@@ -103,7 +103,7 @@ get_header();
 					echo '</article>';
 				}
 
-				echo '<h2 class="category-heading">Events in ' . $category->cat_name . '</h2>';
+				echo '<h2 class="category-heading">Up-coming Events</h2>';
 
 				if ($events) :
 					foreach ($events as $event) :

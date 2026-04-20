@@ -589,10 +589,13 @@ function get_events( $args = [] ) {
 			'terms'    => $args['tag'],
 		];
 	}
+	
+	$from         = new DateTime( $args['from_date'] );
+	$until_filter = $args['to_date'] ? new DateTime( $args['to_date'] ) : null;
 
 	$posts  = get_posts( $query_args );
+	
 	$events = [];
-	$from   = new DateTime( $args['from_date'] );
 
 	foreach ( $posts as $post ) {
 		$start_date  = get_post_meta( $post->ID, '_event_start_date', true );
