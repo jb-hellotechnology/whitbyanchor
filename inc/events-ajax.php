@@ -62,7 +62,9 @@ function whitbyanchor_render_event_article( array $event ): string {
 			<?php endif; ?>
 	
 			<?php if ( $event['recurring'] ) : ?>
-				<p class="event-recurring">Repeats <?php echo esc_html( $event['recurring'] ); ?></p>
+				<p class="event-recurring"><span class="material-symbols-outlined">
+					repeat
+					</span>Repeats <?php echo esc_html( $event['recurring'] ); ?></p>
 			<?php endif; ?>
 
 			<p class="event-date">

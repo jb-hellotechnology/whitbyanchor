@@ -919,6 +919,7 @@ main.events #events-list{
 .event h2           { grid-area: title;   margin: 0; font-size:var(--size-step-2); margin-bottom:1rem; }
 .event .event-date  { grid-area: date;    margin: 0; font-size:80%; }
 .event .event-venue { grid-area: venue;   margin: 0; font-size:80%; }
+.event .event-recurring { grid-area: venue;   margin: 0; font-size:80%; }
 .event .event-excerpt { grid-area: excerpt; }
 .event div{grid-row: 1 / 5;display:flex;flex-direction: column;justify-content:space-between;}
 .event div div {grid-area: meta; padding-top:1rem; }
