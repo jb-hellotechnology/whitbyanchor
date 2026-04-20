@@ -107,7 +107,8 @@ get_header();
 
 				if ($events) :
 					foreach ($events as $event) :
-						$post = $event['post'];
+						$post      = $event['post'];
+						$has_image = has_post_thumbnail( $post->ID );
 						?>
 						<article class="flow event <?php if ( $has_image ) : ?>premium<?php endif; ?>">
 							<?php if ( $has_image ) : ?>
