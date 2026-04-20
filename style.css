@@ -1469,3 +1469,12 @@ a.button.more-events{
 	grid-template-rows: subgrid;
 	align-content: start;
 }
+
+.wp-block-gallery.has-nested-images figcaption{
+	display:none;
+}
+
+.wp-block-gallery.has-nested-images figure:hover figcaption{
+	display:block;
+	text-align: left;
+}
