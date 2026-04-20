@@ -1195,9 +1195,8 @@ figcaption{
 	justify-content:space-between;
 	gap: 2rem;
 	font-size:80%;
-	margin-bottom:1rem;
 	border-bottom:1px solid var(--color-primary);
-	padding-bottom:0.5rem;
+	padding-bottom:1rem;
 }
 
 figcaption a{
