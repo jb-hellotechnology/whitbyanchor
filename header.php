@@ -64,6 +64,9 @@ if(!user_can( $current_user, 'administrator' )){
 			<p><?= date('l F j Y') ?></p>
 			<p class="icons">
 				<span class="tides">Tides</span>
+				<span class="margin-left material-symbols-outlined">
+				waves
+				</span>
 			<?php
 			$next_tides = get_next_tides();
 			
