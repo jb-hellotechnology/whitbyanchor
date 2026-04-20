@@ -51,7 +51,7 @@ $use_two_column = $has_map && $has_image;
 					at <?php echo esc_html( date( 'g:i A', strtotime( $start_time ) ) ); ?>
 				<?php endif; ?>
 				<?php if ( $end_date ) : ?>
-					– <?php echo $end_date->format( 'l jS F Y' ); ?>
+					– <?php echo $end_date->format( 'l F j Y' ); ?>
 				<?php endif; ?>
 				<?php if ( $end_time ) : ?>
 					<?php if ( $end_date ) { echo 'at'; } else { echo '-'; } ?> <?php echo esc_html( date( 'g:i A', strtotime( $end_time ) ) ); ?>

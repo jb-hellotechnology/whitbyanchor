@@ -71,7 +71,7 @@ function whitbyanchor_render_event_article( array $event ): string {
 				<?php if ( $event['date_label'] ) : ?>
 					at <?php echo esc_html( date( 'g:i A', strtotime( $event['start_time'] ) ) ); ?>
 					<?php if ( $end_date ) : ?>
-						– <?php echo $end_date->format( 'D jS F Y' ); ?>
+						– <?php echo $end_date->format( 'l F j Y' ); ?>
 					<?php endif; ?>
 					<?php if ( $event['end_time']  ) : ?>
 						<?php if($end_date){ echo 'at';}else{echo '-';}?> <?php echo esc_html( date( 'g:i A', strtotime( $event['end_time'] ) ) ); ?>

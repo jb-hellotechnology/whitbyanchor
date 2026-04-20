@@ -319,7 +319,7 @@ function npg_render_gallery_single( $post = null ): void {
 
     $title       = get_the_title( $post );
     $excerpt     = $post->post_excerpt ? wpautop( $post->post_excerpt ) : '';
-    $date        = get_the_date( 'l M j Y', $post );
+    $date        = get_the_date( 'l F j Y', $post );
     $author      = get_the_author_meta( 'display_name', $post->post_author );
     $img_count   = npg_count_gallery_images( $post );
     $content     = npg_split_gallery_content( $post );
@@ -533,7 +533,7 @@ function npg_render_latest_gallery( array $args = [] ) {
         'alt'   => esc_attr( $title ),
     ] );
     $img_count   = npg_count_gallery_images( $gid );
-    $date        = get_the_date( 'l M j Y', $post );
+    $date        = get_the_date( 'l F j Y', $post );
 
     // Collect preview thumbnails from image blocks inside the post.
     $previews = [];
@@ -594,7 +594,7 @@ function npg_render_latest_gallery( array $args = [] ) {
 
                 <div class="entry-meta">
                     <img src="<?php echo get_stylesheet_directory_uri(); ?>/icons/apple-icon-180x180.png" alt="Whitby Anchor" />
-                    <time datetime="<?php echo esc_attr( get_the_date( 'l M j Y', $gid ) ); ?>">
+                    <time datetime="<?php echo esc_attr( get_the_date( 'l F j Y', $gid ) ); ?>">
                         <?php echo esc_html( $date ); ?>
                     </time>
                     <?php if ( $img_count > 0 ) : ?>
