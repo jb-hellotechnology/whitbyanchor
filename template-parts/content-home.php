@@ -16,7 +16,7 @@
 
 	<?php whitbyanchor_post_thumbnail(); ?>
 
-	<div class="entry-content flow week-in-pictures npg-gallery-init">
+	<div class="entry-content flow week-in-pictures npg-gallery-init" id="carousel">
 		<?php
 		the_content(
 			sprintf(
@@ -35,4 +35,47 @@
 		?>
 	</div><!-- .entry-content -->
 </article>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.lazyload.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.arrows.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.thumbs.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.lazyload.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.arrows.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/carousel/carousel.thumbs.umd.js"></script>
+<script>
+  Carousel(
+	document.getElementById("carousel"),
+	{
+	  // Your custom options
+	},
+	{
+	  Lazyload,
+	  Arrows,
+	  Thumbs,
+	}
+  ).init();
+
+  Fancybox.bind("[data-fancybox]", {
+	// Your custom options
+  });
+</script>
 <?php newspaper_render_related_posts(); ?>
