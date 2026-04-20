@@ -624,7 +624,7 @@ function npg_render_latest_gallery( array $args = [] ) {
                 <?php endif; ?>
 
                 <?php if ( ! empty( $previews ) ) : ?>
-                    <!-- <ul class="npg-latest-gallery__previews"
+                    <ul class="npg-latest-gallery__previews"
                         aria-label="<?php esc_attr_e( 'Preview photos', 'newspaper' ); ?>">
                         <?php foreach ( $previews as $thumb ) : ?>
                             <li class="npg-latest-gallery__preview-item">
@@ -633,7 +633,7 @@ function npg_render_latest_gallery( array $args = [] ) {
                                 </a>
                             </li>
                         <?php endforeach; ?>
-                    </ul> -->
+                    </ul>
                 <?php endif; ?>
 
                 <!-- <a class="npg-latest-gallery__cta" href="<?php echo esc_url( $permalink ); ?>">
