@@ -65,6 +65,11 @@ get_header();
 						'from_date' => current_time('Y-m-d'),
 						'limit'     => 10,
 					]);
+				}if($slug=='events'){
+					$events = get_events([
+						'from_date' => current_time('Y-m-d'),
+						'limit'     => 10,
+					]);
 				}else{
 					$events = get_events([
 						'location'  => $slug,
