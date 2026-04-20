@@ -229,8 +229,21 @@ header img{
 	font-size:80%;
 }
 
-@media screen and (max-width:900px){
-	.data p:last-child{
+.data p.icons{
+	display:flex;
+}
+
+.data .material-symbols-outlined{
+	margin-right:3px;
+	font-size:20px;
+}
+
+.data .material-symbols-outlined.margin-left{
+	margin-left:12px;
+}
+
+@media screen and (max-width:768px){
+	.data p:nth-child(2){
 		display:none;
 	}
 }
@@ -238,6 +251,9 @@ header img{
 @media screen and (max-width:640px){
 	.site-branding{
 		padding:2rem
+	}
+	.data .material-symbols-outlined.margin-left{
+		margin-left:8px;
 	}
 }
 
@@ -247,6 +263,9 @@ header img{
 	}
 	.data div{
 		padding:0.3rem 1rem;
+	}
+	.data span.tides{
+		display: none;
 	}
 }
 

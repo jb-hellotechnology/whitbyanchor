@@ -56,18 +56,32 @@ if(!user_can( $current_user, 'administrator' )){
 		<div class="data">
 			<div>
 			<?php $times = get_sunrise_sunset(); ?>
-			<p>Sunrise <?= $times['sunrise'] ?> | Sunset <?= $times['sunset'] ?></p>
+			<p class="icons"><span class="material-symbols-outlined">
+				sunny
+				</span> <?= $times['sunrise'] ?> <span class="material-symbols-outlined margin-left">
+				bedtime
+				</span> <?= $times['sunset'] ?></p>
 			<p><?= date('l F j Y') ?></p>
-			<p>
+			<p class="icons">
+				<span class="tides">Tides</span>
 			<?php
 			$next_tides = get_next_tides();
 			
 			$parts = array_map( function( $tide ) {
 				$label = ucfirst( $tide['type'] );
-				return "Next {$label} Tide: {$tide['time']}";
+				if($label=='Low'){
+					return '<span class="margin-left material-symbols-outlined">
+					trending_down
+					</span>'.$tide['time'];
+				}else{
+					return '<span class="margin-left material-symbols-outlined">
+					trending_up
+					</span>'.$tide['time'];
+				}
+			
 			}, $next_tides );
 			
-			echo implode( ' | ', $parts );
+			echo implode( ' ', $parts );
 			?>
 			</p>
 			</div>
