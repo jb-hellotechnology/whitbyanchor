@@ -58,7 +58,7 @@ get_header();
 			echo '</div>';
 
 			if ($show_events) {
-
+				echo $slug;
 				if($slug=='wellbeing'){
 					$events = get_events([
 						'tag'  => $slug,
