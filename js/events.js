@@ -24,7 +24,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// ── Core fetch function ────────────────────────────────────────────────────
 
-	async function fetchEvents( { page, tag, location, date_from, date_to, mode } ) {
+	async function fetchEvents( { page, tag, location, date_from = '', date_to = '', mode } ) {
 		console.log(tag + location);
 		if ( loading ) return;
 		loading = true;
