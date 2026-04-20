@@ -1499,8 +1499,9 @@ a.button.more-events{
 }
 
 #carousel img{
-	height:70vh;
-	width:auto;
+	height:auto;
+	width:100%;
+	aspect-ratio: 16 / 9;
 	display:block;
 	margin:0 auto;
 	object-fit:contain;
