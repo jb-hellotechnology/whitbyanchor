@@ -607,7 +607,7 @@ img{
 	height:auto;
 }
 
-section.articles{
+section.articles .card-grid{
 	display:grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: auto auto;
@@ -1182,7 +1182,6 @@ article .npg-gallery__images figcaption{
 
 figure{
 	border-bottom:1px solid var(--color-primary);
-	margin-bottom:2rem;
 }
 
 figure img{
@@ -1194,6 +1193,9 @@ figcaption{
 	justify-content:space-between;
 	gap: 2rem;
 	font-size:80%;
+	margin-bottom:1rem;
+	border-bottom:1px solid var(--color-primary);
+	padding-bottom:0.5rem;
 }
 
 figcaption a{
@@ -1429,4 +1431,17 @@ a.button.more-events{
 	outline: 2px solid #0073aa;
 	outline-offset: 1px;
 	border-color: transparent;
+}
+
+.cards-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+	grid-column-gap: 1.5rem;
+}
+
+.cards-grid article.flow {
+	display: grid;
+	grid-row: span 5;          /* figure, figcaption, h2, meta, excerpt */
+	grid-template-rows: subgrid;
+	align-content: start;
 }
