@@ -1520,3 +1520,9 @@ a.button.more-events{
 .page-id-43 main{
 	max-width:768px;
 }
+
+.page-id-73 main img,
+.page-id-43 main img{
+	max-width:50%;
+	height:auto;
+}
