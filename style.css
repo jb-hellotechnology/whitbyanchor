@@ -236,6 +236,7 @@ header img{
 .data .material-symbols-outlined{
 	margin-right:3px;
 	font-size:20px;
+	line-height:24px;
 }
 
 .data .material-symbols-outlined.margin-left{
@@ -651,6 +652,7 @@ section.articles.home header{
 section.articles.home article:first-of-type,
 section.articles.features article:first-of-type{
 	grid-column: 1 / 4;
+	margin-bottom:4rem;
 }
 
 .more.articles{
