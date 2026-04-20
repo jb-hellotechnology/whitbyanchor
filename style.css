@@ -1521,8 +1521,8 @@ a.button.more-events{
 	max-width:768px;
 }
 
-.page-id-73 main img,
-.page-id-43 main img{
+.page-id-73 main figure,
+.page-id-43 main figure{
 	max-width:50%;
 	height:auto;
 }
