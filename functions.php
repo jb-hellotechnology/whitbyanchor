@@ -359,7 +359,7 @@ function register_event_post_type() {
 		'has_archive'  => true,
 		'menu_icon'    => 'dashicons-calendar-alt',
 		'supports'     => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
-		'rewrite'      => [ 'slug' => 'events' ],
+		'rewrite' => [ 'slug' => 'whats-on' ],
 	] );
 }
 add_action( 'init', 'register_event_post_type' );

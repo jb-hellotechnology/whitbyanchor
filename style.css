@@ -1192,6 +1192,7 @@ figcaption{
 	display:flex;
 	justify-content:space-between;
 	gap: 2rem;
+	font-size:80%;
 }
 
 figcaption a{
