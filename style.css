@@ -1460,6 +1460,7 @@ a.button.more-events{
 	grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 	grid-column-gap: 1.5rem;
 	margin-bottom:4rem;
+	grid-row-gap:4rem;
 }
 
 .cards-grid article.flow {
