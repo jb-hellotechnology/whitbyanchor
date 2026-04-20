@@ -51,7 +51,7 @@ foreach ( $all_events as $event ) {
 ?>
 
 <main id="primary" class="site-main events">
-	<h1>Whitby Events</h1>
+	<h1>What&rsquo;s on in Whitby</h1>
 
 	<section class="events">
 		<header>
