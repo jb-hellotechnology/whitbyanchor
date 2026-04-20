@@ -533,12 +533,6 @@ function npg_render_latest_gallery( array $args = [] ) {
         $query->the_post();
     }
 
-    if ( ! $query->have_posts() ) {
-        return $args['echo'] ? null : '';
-    }
-
-    $query->the_post();
-
     $gid         = get_the_ID();
     $title       = get_the_title();
     $permalink   = get_permalink();
