@@ -78,7 +78,7 @@ get_header();
 					]);	
 				}
 				
-				echo '<section class="events">';
+				echo '<section class="events category-column">';
 				
 				$category_id = $category ? $category->term_id : null;
 				echo do_shortcode('[newspaper_advert placement="category_top" category_id="' . $category_id . '"]');

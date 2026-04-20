@@ -972,6 +972,10 @@ main.events #events-list{
 	object-fit:cover;
 }
 
+.events.category-column .event.premium{
+	grid-template-columns: 1fr;
+}
+
 @media screen and (max-width:700px){
 	.event.premium{
 		grid-template-columns: 1fr;
