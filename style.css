@@ -974,6 +974,16 @@ main.events #events-list{
 
 .events.category-column .event.premium{
 	grid-template-columns: 1fr;
+	grid-column: 1;
+}
+.events.category-column .event.premium div{
+	grid-column: 1;
+	grid-row:2;
+}
+.events.category-column .event.premium div.event-media__image{
+	grid-column: 1;
+	grid-row:1;
+	margin-bottom:1rem;
 }
 
 @media screen and (max-width:700px){
