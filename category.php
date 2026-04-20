@@ -103,7 +103,7 @@ get_header();
 					echo '</article>';
 				}
 
-				echo '<h2 class="category-heading">Events in ' . $category->cat_name . '</h2>';
+				echo '<h2 class="category-heading">What's on in ' . $category->cat_name . '</h2>';
 
 				if ($events) :
 					foreach ($events as $event) :
