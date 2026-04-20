@@ -947,6 +947,7 @@ function newspaper_render_related_posts(): void {
 				</a>
 			</h2>
 		</header>
+		<div class="cards-grid">
 		<?php global $post; ?>
 		<?php foreach ( $related as $post ) : setup_postdata( $post ); ?>
 			<?php
@@ -968,6 +969,7 @@ function newspaper_render_related_posts(): void {
 				echo '</article>';
 			?>
 		<?php endforeach; wp_reset_postdata(); ?>
+		</div>
 	</section>
 	<?php
 }
