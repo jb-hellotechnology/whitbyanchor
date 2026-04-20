@@ -50,7 +50,7 @@
 		<img src="<?php echo get_stylesheet_directory_uri(); ?>/the_anchor_white.png" alt="The Whitby Anchor" class="the_anchor" />
 		<button class="mailing-list-trigger">Sign up to our newsletter</button>
 		<div class="site-info">
-			<p><a href="https://hellotechnology.co.uk" title="WordPress developer in North Yorkshire">Designed &amp; Built in Whitby by Hello Technology</a><br />&copy; Ink &amp; Tide Publishing <?= date('Y') ?></p>
+			<p><a href="https://hellotechnology.co.uk" title="WordPress developer in North Yorkshire">Website by Hello Technology</a> | <a href="https://inkandpixelscreative.co.uk/">Logo by Ink &amp; Pixels</a><br />&copy; Ink &amp; Tide Publishing <?= date('Y') ?></p>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
 </div><!-- #page -->
