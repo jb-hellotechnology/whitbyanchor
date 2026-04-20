@@ -993,6 +993,6 @@ add_action( 'login_enqueue_scripts', 'whitby_anchor_login_logo' );
  * Change the excerpt more string
  */
  function whitbyanchor_theme_excerpt_more( $more ) {
-	 return '&hellip;<span>&rarr;</span>';
+	 return '&hellip; <span>&rarr;</span>';
  }
  add_filter( 'excerpt_more', 'whitbyanchor_theme_excerpt_more' );
