@@ -65,11 +65,6 @@ get_header();
 						'from_date' => current_time('Y-m-d'),
 						'limit'     => 10,
 					]);
-				}if($slug=='events'){
-					$events = get_events([
-						'from_date' => current_time('Y-m-d'),
-						'limit'     => 10,
-					]);
 				}else{
 					$events = get_events([
 						'location'  => $slug,
@@ -103,7 +98,7 @@ get_header();
 					echo '</article>';
 				}
 
-				echo '<h2 class="category-heading">What's on in ' . $category->cat_name . '</h2>';
+				echo '<h2 class="category-heading">Events in ' . $category->cat_name . '</h2>';
 
 				if ($events) :
 					foreach ($events as $event) :
