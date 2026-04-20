@@ -1438,6 +1438,7 @@ a.button.more-events{
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
 	grid-column-gap: 1.5rem;
+	margin-top:2rem;
 	margin-bottom:4rem;
 }
 
