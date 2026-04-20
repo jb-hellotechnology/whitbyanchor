@@ -944,7 +944,12 @@ function newspaper_render_related_posts(): void {
 		<?php foreach ( $related as $post ) : setup_postdata( $post ); ?>
 			<?php
 				echo '<article class="flow">';
+				echo '<figure>';
 				the_post_thumbnail('full');
+				echo '<figcaption>';
+				the_post_thumbnail_caption();
+				echo '</figcaption>';
+				echo '</figure>';
 				the_title('<h2>', '</h2>');
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
@@ -952,7 +957,7 @@ function newspaper_render_related_posts(): void {
 				whitbyanchor_posted_by();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: ' . get_the_title() . '</span></a>';
+				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
 			?>
 		<?php endforeach; wp_reset_postdata(); ?>
@@ -976,3 +981,11 @@ function whitby_anchor_login_logo() { ?>
 	</style>
 <?php }
 add_action( 'login_enqueue_scripts', 'whitby_anchor_login_logo' );
+
+/**
+ * Change the excerpt more string
+ */
+ function whitbyanchor_theme_excerpt_more( $more ) {
+	 return ' <span>&rarr;</span>';
+ }
+ add_filter( 'excerpt_more', 'whitbyanchor_theme_excerpt_more' );

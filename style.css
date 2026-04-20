@@ -563,7 +563,8 @@ article .article-link{
 }
 
 article:has(.article-link:hover) h2,
-article:has(.article-link:hover) h3{
+article:has(.article-link:hover) h3,
+article:has(.article-link:hover) span{
 	color:var(--color-secondary);
 }
 
