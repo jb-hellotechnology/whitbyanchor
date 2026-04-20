@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 /**
  * Photo Gallery Custom Post Type
  *
@@ -512,6 +508,8 @@ function npg_render_latest_gallery( array $args = [] ) {
         'post_id'        => 0,   // add this
     ] );
 
+    $query = null;
+    
     if ( $args['post_id'] ) {
         $post = get_post( $args['post_id'] );
         if ( ! $post || 'npg_gallery' !== $post->post_type || 'publish' !== $post->post_status ) {
@@ -519,14 +517,7 @@ function npg_render_latest_gallery( array $args = [] ) {
         }
         setup_postdata( $GLOBALS['post'] = $post );
     } else {
-        $query = new WP_Query( [
-            'post_type'      => 'npg_gallery',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-            'no_found_rows'  => true,
-        ] );
+        $query = new WP_Query( [ ... ] );
     
         if ( ! $query->have_posts() ) {
             return $args['echo'] ? null : '';
