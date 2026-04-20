@@ -507,7 +507,7 @@ function npg_render_latest_gallery( array $args = [] ) {
         'preview_count'  => 5,
         'post_id'        => 0,   // add this
     ] );
-
+    
     $query = null;
     
     if ( $args['post_id'] ) {
@@ -517,7 +517,14 @@ function npg_render_latest_gallery( array $args = [] ) {
         }
         setup_postdata( $GLOBALS['post'] = $post );
     } else {
-        $query = new WP_Query( [ ... ] );
+        $query = new WP_Query( [
+           'post_type'      => 'npg_gallery',
+           'post_status'    => 'publish',
+           'posts_per_page' => 1,
+           'orderby'        => 'date',
+           'order'          => 'DESC',
+           'no_found_rows'  => true,
+        ] );
     
         if ( ! $query->have_posts() ) {
             return $args['echo'] ? null : '';
