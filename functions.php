@@ -346,6 +346,14 @@ function get_next_tides( int $count = 2 ): array {
 	return array_slice( $upcoming, 0, $count );
 }
 
+add_action( 'wp_head', function() {
+	if ( ! current_user_can( 'administrator' ) ) return;
+	echo '<!-- ';
+	echo 'is_post_type_archive: ' . ( is_post_type_archive('event') ? 'YES' : 'NO' ) . ' | ';
+	echo 'is_category: ' . ( is_category() ? 'YES' : 'NO' );
+	echo ' -->';
+});
+
 // Events
 function register_event_post_type() {
 	register_post_type( 'event', [
