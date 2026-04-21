@@ -971,6 +971,9 @@ main.events #events-list{
 
 .event.premium div.event-media__image img{
 	object-fit:cover;
+	aspect-ratio: 16 / 9;
+	width:100%;
+	height:auto;
 }
 
 .events.category-column .event.premium{
