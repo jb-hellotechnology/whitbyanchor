@@ -356,7 +356,7 @@ function register_event_post_type() {
 			'edit_item'     => 'Edit Event',
 		],
 		'public'       => true,
-		'has_archive'  => true,
+		'has_archive'  => 'whats-on',
 		'menu_icon'    => 'dashicons-calendar-alt',
 		'supports'     => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
 		'rewrite' => [ 'slug' => 'whats-on' ],
