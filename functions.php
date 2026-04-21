@@ -346,12 +346,18 @@ function get_next_tides( int $count = 2 ): array {
 	return array_slice( $upcoming, 0, $count );
 }
 
-add_action( 'wp_head', function() {
-	if ( ! current_user_can( 'administrator' ) ) return;
-	echo '<!-- ';
-	echo 'is_post_type_archive: ' . ( is_post_type_archive('event') ? 'YES' : 'NO' ) . ' | ';
-	echo 'is_category: ' . ( is_category() ? 'YES' : 'NO' );
-	echo ' -->';
+add_filter( 'wpseo_canonical', function( $canonical ) {
+	if ( is_post_type_archive( 'event' ) ) {
+		return home_url( '/whats-on/' );
+	}
+	return $canonical;
+});
+
+add_filter( 'wpseo_opengraph_url', function( $url ) {
+	if ( is_post_type_archive( 'event' ) ) {
+		return home_url( '/whats-on/' );
+	}
+	return $url;
 });
 
 // Events
