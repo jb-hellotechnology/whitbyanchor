@@ -100,7 +100,7 @@
 			const wrapper = document.querySelector('.mailing-list-wrapper');
 			if (wrapper) {
 				wrapper.removeAttribute('aria-hidden');
-				wrapper.style.display = '';
+				wrapper.style.display = 'flex';
 			}
 		};
 	

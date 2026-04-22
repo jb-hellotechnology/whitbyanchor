@@ -1272,6 +1272,7 @@ figcaption span{
 	justify-content:center;
 	align-items: center;
 	box-sizing: border-box;
+	display:none;
 }
 
 .mailing-list-wrapper button{
