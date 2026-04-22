@@ -24,6 +24,7 @@ get_header();
 			</header><!-- .page-header -->
 
 			<section class="articles">
+				<div class="cards-grid">
 			<?php
 			/* Start the Loop */
 			while ( have_posts() ) :
@@ -46,6 +47,7 @@ get_header();
 
 		endif;
 		?>
+				</div>
 			</section>
 
 	</main><!-- #main -->
