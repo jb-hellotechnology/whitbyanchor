@@ -48,6 +48,9 @@ foreach ( $all_events as $event ) {
 		}
 	}
 }
+
+uasort( $tag_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) );
+uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) );
 ?>
 
 <main id="primary" class="site-main events">
