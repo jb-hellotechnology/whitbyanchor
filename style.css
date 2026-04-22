@@ -1520,7 +1520,8 @@ a.button.more-events{
 }
 
 .page-id-73 main,
-.page-id-43 main{
+.page-id-43 main,
+main.narrow{
 	max-width:768px;
 }
 
