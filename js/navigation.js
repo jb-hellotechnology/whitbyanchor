@@ -1,5 +1,3 @@
-document.querySelectorAll('.menu-toggle').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-	document.querySelector('nav.mobile').classList.toggle('show');
-  });
+$('.menu-toggle').click(function () {
+  $('nav.mobile').toggleClass('show');
 });
