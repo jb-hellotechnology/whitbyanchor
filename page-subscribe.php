@@ -30,20 +30,6 @@ get_header();
 
 		endwhile; // End of the loop.
 		?>
-		<div class="flow">
-			<script async
-			src="https://js.stripe.com/v3/buy-button.js">
-			</script>
-			
-			<stripe-buy-button
-			buy-button-id="buy_btn_1TP2aIQfYFXNIHgHeP9JB4up"
-			publishable-key="pk_live_51TOxkcQfYFXNIHgHXS7ZdrXhOs2zDIvQPqivsuZFA2HEDRUPznk3IGcJoj1coVbA0ydI5NVzbrU5CAEasK8DLwEU005YIDWfQw"
-			>
-			</stripe-buy-button>
-			
-			<h3>Manage Your Subscription</h3>
-			<p>Already have an active subscription? <a href="https://billing.stripe.com/p/login/5kQ6oJfpCduw0PA88P4Ja00">Click here</a> to manage it.</p>
-		</div>
 	</main><!-- #main -->
 
 <?php
