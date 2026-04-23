@@ -300,8 +300,13 @@ nav.secondary-navigation{
 	width:100%;
 }
 
+.menu-menu-2-container{
+	width:100%;
+}
+
 nav.secondary-navigation ul{
 	width:100%;
+	max-width:100%;
 }
 
 nav.secondary-navigation ul li:last-child{
