@@ -883,6 +883,22 @@ button.mailing-list-trigger:hover{
 	border:1px solid var(--color-primary);
 	padding:1rem;
 	border-radius:9px;
+	max-width:288px;
+}
+
+.subscribe .wp-block-column p{
+	font-size:80%;
+	font-weight:700;
+}
+
+.subscribe .wp-block-column ul {
+  list-style: none;
+  margin-bottom:1rem;
+  font-size:80%;
+}
+
+.subscribe .wp-block-column ul li:before {
+  content: '✓';
 }
 
 .subscribe button{
