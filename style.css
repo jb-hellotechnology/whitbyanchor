@@ -243,6 +243,10 @@ header img{
 	margin-left:12px;
 }
 
+.data .material-symbols-outlined.waves{
+	margin-right:-3px;
+}
+
 @media screen and (max-width:768px){
 	.data p:nth-child(2){
 		display:none;

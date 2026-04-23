@@ -60,7 +60,7 @@
 			<p><?= date('l F j Y') ?></p>
 			<p class="icons">
 				<span class="tides">Tides</span>
-				<span class="margin-left material-symbols-outlined">
+				<span class="margin-left material-symbols-outlined waves">
 				waves
 				</span>
 			<?php
