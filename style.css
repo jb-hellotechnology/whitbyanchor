@@ -895,10 +895,11 @@ button.mailing-list-trigger:hover{
   list-style: none;
   margin-bottom:1rem;
   font-size:80%;
+  padding:0;
 }
 
 .subscribe .wp-block-column ul li:before {
-  content: '✓';
+  content: '✓ ';
 }
 
 .subscribe button{
