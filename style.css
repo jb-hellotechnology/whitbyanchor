@@ -923,7 +923,7 @@ footer a.button:hover{
 }
 
 @media screen and (max-width:680px){
-	button.mailing-list-trigger{
+	footer .button{
 		position: relative;
 		bottom:auto;
 		right:auto;
