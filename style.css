@@ -879,6 +879,19 @@ button.mailing-list-trigger:hover{
 	color:var(--color-light);
 }
 
+.subscribe .wp-block-column{
+	border:1px solid var(--color-primary);
+}
+
+.subscribe button{
+	width:288px;
+	height:44px;
+	line-height:44px;
+	padding:0;
+	border-radius:6px;
+	font-size:16px;
+}
+
 @media screen and (max-width:680px){
 	button.mailing-list-trigger{
 		position: relative;
