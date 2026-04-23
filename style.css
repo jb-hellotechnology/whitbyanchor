@@ -924,10 +924,9 @@ footer a.button:hover{
 
 @media screen and (max-width:680px){
 	footer a.button{
-		position: relative;
-		bottom:auto;
-		right:auto;
 		display: block;
+		width:200px;
+		text-align: center;
 		margin: 0 auto 2rem auto;	
 	}
 }
