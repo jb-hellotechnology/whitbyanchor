@@ -503,10 +503,24 @@ input[type=submit]{
 	cursor: pointer;
 }
 
+button.secondary,
+a.button.secondary,
+input[type=submit].secondary{
+	background:var(--color-secondary);
+	color:#fff;
+}
+
 button:hover,
 a.button:hover,
 input[type=submit]:hover{
 	background:var(--color-secondary);
+}
+
+button.secondary:hover,
+a.button.secondary:hover,
+input[type=submit].secondary:hover{
+	background:var(--color-light);
+	color:var(--color-primary);
 }
 
 .search-form{
@@ -1289,6 +1303,11 @@ figcaption span{
 	width:100% !important;
 	height:auto !important;
 }
+.mailing-list-wrapper a.button{
+	text-align: center;
+	margin:0 auto;
+	max-width:220px;
+}
 
 /* Inputs, textareas and selects */
 .wpcf7 input[type="text"],
@@ -1522,6 +1541,7 @@ a.button.more-events{
 
 .page-id-73 main,
 .page-id-43 main,
+.page-id-542 main,
 main.narrow{
 	max-width:768px;
 }
