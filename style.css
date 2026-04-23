@@ -866,7 +866,7 @@ button:hover{
 	color:var(--color-primary);
 }
 
-footer button.mailing-list-trigger{
+footer a.button{
 	background:var(--color-secondary);
 	position:fixed;
 	bottom:2rem;
@@ -874,7 +874,7 @@ footer button.mailing-list-trigger{
 	z-index:1000;
 }
 
-button.mailing-list-trigger:hover{
+footer a.button:hover{
 	background:var(--color-primary);
 	color:var(--color-light);
 }
