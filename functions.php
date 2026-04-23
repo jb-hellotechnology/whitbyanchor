@@ -234,7 +234,7 @@ function get_sunrise_sunset(): array {
 		try {
 			$dt          = new DateTime( $body['results'][ $key ], new DateTimeZone( 'UTC' ) );
 			$dt->setTimezone( $tz );
-			$data[ $key ] = $dt->format( 'g:i A' );
+			$data[ $key ] = $dt->format( 'G:i' );
 		} catch ( Exception $e ) {
 			$data[ $key ] = null;
 		}
@@ -307,7 +307,7 @@ function get_upcoming_tides_cache(): array {
 			$dt->setTimezone( $tz );
 			$data[] = [
 				'type'      => strtolower( $extreme['type'] ),
-				'time'      => $dt->format( 'g:i A' ),
+				'time'      => $dt->format( 'G:i' ),
 				'timestamp' => $dt->getTimestamp(),
 				'height'    => round( $extreme['height'], 2 ),
 			];
