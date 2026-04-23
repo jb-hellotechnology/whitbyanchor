@@ -879,11 +879,21 @@ button.mailing-list-trigger:hover{
 	color:var(--color-light);
 }
 
+.subscribe{
+	margin-bottom:4rem;
+}
+
+.wp-block-column {
+  
+}
+
 .subscribe .wp-block-column{
 	border:1px solid var(--color-primary);
 	padding:1rem;
 	border-radius:9px;
 	max-width:288px;
+	display: flex;
+	flex-direction: column;
 }
 
 .subscribe .wp-block-column p{
@@ -909,6 +919,7 @@ button.mailing-list-trigger:hover{
 	padding:0;
 	border-radius:6px;
 	font-size:16px;
+	margin-top: auto;
 }
 
 @media screen and (max-width:680px){
