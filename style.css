@@ -923,7 +923,7 @@ footer a.button:hover{
 }
 
 @media screen and (max-width:680px){
-	footer .button{
+	footer a.button{
 		position: relative;
 		bottom:auto;
 		right:auto;
