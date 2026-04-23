@@ -297,6 +297,15 @@ nav.secondary-navigation{
 	font-size:80%;
 	z-index:100;
 	position: relative;
+	width:100%;
+}
+
+nav.secondary-navigation ul{
+	width:100%;
+}
+
+nav.secondary-navigation ul li:last-child{
+	float:right;
 }
 
 nav.desktop{
