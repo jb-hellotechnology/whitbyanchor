@@ -926,6 +926,9 @@ footer a.button:hover{
 	footer a.button{
 		display: block;
 		width:200px;
+		right:auto;
+		bottom:auto;
+		position: relative;
 		text-align: center;
 		margin: 0 auto 2rem auto;	
 	}
