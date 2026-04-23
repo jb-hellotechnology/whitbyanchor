@@ -881,6 +881,8 @@ button.mailing-list-trigger:hover{
 
 .subscribe .wp-block-column{
 	border:1px solid var(--color-primary);
+	padding:1rem;
+	border-radius:9px;
 }
 
 .subscribe button{
