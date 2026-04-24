@@ -636,8 +636,9 @@ function get_events( $args = [] ) {
 
 		// For one-off events, just check the single date
 		if ( ! $recurring ) {
-			// One-off
-			if ( $current >= $from
+			$effective_end = $end_date ? new DateTime( $end_date ) : $current;
+		
+			if ( $effective_end >= $from
 				&& ( ! $until_filter || $current <= $until_filter )
 				&& ! in_array( $current->format( 'Y-m-d' ), $excluded_dates, true ) ) {
 				$events[] = [
@@ -648,7 +649,7 @@ function get_events( $args = [] ) {
 					'end_time'   => $end_time,
 					'end_date'   => $end_date,
 					'venue'      => $venue,
-					'recurring'  => $recurring, // ← missing from both branches
+					'recurring'  => $recurring,
 				];
 			}
 			continue;

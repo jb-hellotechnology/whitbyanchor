@@ -94,21 +94,30 @@ function whitbyanchor_render_event_article( array $event ): string {
 function whitbyanchor_ajax_get_events(): void {
 	check_ajax_referer( 'whitbyanchor_events', 'nonce' );
 
-	$page     = max( 1, absint( $_POST['page']     ?? 1 ) );
-	$per_page = max( 1, absint( $_POST['per_page'] ?? WHITBYANCHOR_EVENTS_PER_PAGE ) );
+	$page      = max( 1, absint( $_POST['page']     ?? 1 ) );
+	$per_page  = max( 1, absint( $_POST['per_page'] ?? WHITBYANCHOR_EVENTS_PER_PAGE ) );
 	$tag       = sanitize_key( $_POST['tag']        ?? '' );
 	$location  = sanitize_key( $_POST['location']   ?? '' );
 	$date_from = sanitize_text_field( $_POST['date_from'] ?? '' );
 	$date_to   = sanitize_text_field( $_POST['date_to']   ?? '' );
 
-	// Fetch all future events. If get_events() grows tag/offset support later,
-	// pass those args here instead of filtering in PHP below.
-	$all_events = get_events( [
-		'from_date' => current_time( 'Y-m-d' ),
-		'limit'     => 1000,
-	] );
+	$today = current_time( 'Y-m-d' );
 
-	// ── Tag filter ───────────────────────────────────────────────────────────
+	// Fetch without a from_date constraint so multi-day events that started
+	// before today but haven't ended yet are included.
+	$all_events = get_events( [ 'limit' => 1000 ] );
+
+	// ── "Future or current" filter ────────────────────────────────────────────
+	// Keep events whose effective end date (end_date for multi-day, start date
+	// for single-day) is today or later.
+	$all_events = array_values(
+		array_filter( $all_events, function ( $event ) use ( $today ) {
+			$effective_end = ! empty( $event['end_date'] ) ? $event['end_date'] : $event['date'];
+			return $effective_end >= $today;
+		} )
+	);
+
+	// ── Tag filter ────────────────────────────────────────────────────────────
 	if ( $tag ) {
 		$all_events = array_values(
 			array_filter( $all_events, function ( $event ) use ( $tag ) {
@@ -121,8 +130,8 @@ function whitbyanchor_ajax_get_events(): void {
 			} )
 		);
 	}
-	
-	// ── Location filter ───────────────────────────────────────────────────────────
+
+	// ── Location filter ───────────────────────────────────────────────────────
 	if ( $location ) {
 		$all_events = array_values(
 			array_filter( $all_events, function ( $event ) use ( $location ) {
@@ -135,22 +144,29 @@ function whitbyanchor_ajax_get_events(): void {
 			} )
 		);
 	}
-	
-	// ── Date from filter ─────────────────────────────────────────────────────
+
+	// ── Date from filter ──────────────────────────────────────────────────────
+	// Keep events that are still running on or after date_from.
+	// A multi-day event qualifies even if it started before date_from,
+	// as long as its end date falls on or after it.
 	if ( $date_from ) {
 		$all_events = array_values(
-			array_filter( $all_events, fn( $event ) => $event['date'] >= $date_from )
+			array_filter( $all_events, function ( $event ) use ( $date_from ) {
+				$effective_end = ! empty( $event['end_date'] ) ? $event['end_date'] : $event['date'];
+				return $effective_end >= $date_from;
+			} )
 		);
 	}
-	
-	// ── Date to filter ───────────────────────────────────────────────────────
+
+	// ── Date to filter ────────────────────────────────────────────────────────
+	// Keep events that have started by date_to (start date is on or before it).
 	if ( $date_to ) {
 		$all_events = array_values(
 			array_filter( $all_events, fn( $event ) => $event['date'] <= $date_to )
 		);
 	}
 
-	// ── Paginate ─────────────────────────────────────────────────────────────
+	// ── Paginate ──────────────────────────────────────────────────────────────
 	$total       = count( $all_events );
 	$offset      = ( $page - 1 ) * $per_page;
 	$page_events = array_slice( $all_events, $offset, $per_page );

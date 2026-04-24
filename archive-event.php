@@ -3,15 +3,23 @@ get_header();
 
 // ── Fetch all future events for tag counts, render only the first page ───────
 
+$today      = current_time( 'Y-m-d' );
 $per_page   = WHITBYANCHOR_EVENTS_PER_PAGE;
-$all_events = get_events( [
-	'from_date' => current_time( 'Y-m-d' ),
-	'limit'     => 1000,
-] );
- 
-$total       = count( $all_events );
-$first_page  = array_slice( $all_events, 0, $per_page );
-$has_more    = $total > $per_page;
+
+$all_events = get_events( [ 'limit' => 1000 ] );
+
+// Keep events whose effective end date is today or later.
+// For single-day events, that's the start date; for multi-day, the end date.
+$all_events = array_values(
+	array_filter( $all_events, function ( $event ) use ( $today ) {
+		$effective_end = ! empty( $event['end_date'] ) ? $event['end_date'] : $event['date'];
+		return $effective_end >= $today;
+	} )
+);
+
+$total      = count( $all_events );
+$first_page = array_slice( $all_events, 0, $per_page );
+$has_more   = $total > $per_page;
 
 // ── Build tag counts from the full set ───────────────────────────────────────
 
