@@ -1622,3 +1622,22 @@ main.narrow{
 	max-width:50%;
 	height:auto;
 }
+
+.split {
+  display: flex;
+  gap: 1rem;
+}
+
+.split > div {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .split {
+	flex-direction: column;
+  }
+}
+
+#buzzsprout-small-player-limit-1-artist-ceri-emma{
+	margin-top:1rem;
+}

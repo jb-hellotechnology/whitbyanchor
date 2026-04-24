@@ -80,17 +80,29 @@ get_header();
 		echo '<div class="cards-grid">';
 		if (!empty($all_posts)) {
 		
+			$i = 0;
 			foreach ($all_posts as $post) {
 				setup_postdata($post);
 		
 				echo '<article class="flow">';
-				echo '<figure>';
-				the_post_thumbnail('full');
-				echo '</figure>';
-				echo '<figcaption>';
-				the_post_thumbnail_caption();
-				echo '</figcaption>';
-				the_title('<h2>', '</h2>');
+				
+				if($i==0){
+					the_title('<h2>', '</h2>');
+					echo '<figure>';
+					the_post_thumbnail('full');
+					echo '</figure>';
+					echo '<figcaption>';
+					the_post_thumbnail_caption();
+					echo '</figcaption>';
+				}else{
+					echo '<figure>';
+					the_post_thumbnail('full');
+					echo '</figure>';
+					echo '<figcaption>';
+					the_post_thumbnail_caption();
+					echo '</figcaption>';
+					the_title('<h2>', '</h2>');
+				}
 				echo '<div class="entry-meta">';
 				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
 				whitbyanchor_posted_on();
@@ -99,6 +111,7 @@ get_header();
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
 				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 				echo '</article>';
+				$i++;
 			}
 		
 			wp_reset_postdata();
@@ -106,8 +119,17 @@ get_header();
 		echo '</div>';
 		echo '</section>';
 		
+		echo '<div class="split">';
+		
 		echo '<div class="ad-wide">';
 		echo do_shortcode('[newspaper_advert placement="category_top" category_id="31"]');
+		echo '</div>';
+		
+		echo '<div>';
+		echo '<h2>The Whitby Cast</h2>';
+		echo "<div id='buzzsprout-small-player-limit-1-artist-ceri-emma'></div><script type='text/javascript' charset='utf-8' src='https://www.buzzsprout.com/2609710.js?artist=Ceri+%26+Emma&container_id=buzzsprout-small-player-limit-1-artist-ceri-emma&limit=1&player=small'></script>";
+		echo '</div>';
+		
 		echo '</div>';
 		
 		$args = array(
