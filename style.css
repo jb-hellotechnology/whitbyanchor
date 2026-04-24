@@ -692,6 +692,11 @@ section.articles.features article:first-of-type{
 	margin-bottom:4rem;
 }
 
+section.articles.home article:first-of-type h2,
+section.articles.features article:first-of-type h2{
+	font-size:var(--size-step-4);	
+}
+
 .more.articles{
 	margin-top:4rem;
 	padding-top:2rem;
