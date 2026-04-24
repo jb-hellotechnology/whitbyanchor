@@ -562,7 +562,7 @@ input[type=submit].secondary:hover{
 	border-radius: 0;	
 }
 
-@media screen and (max-width:1200px){
+@media screen and (max-width:1220px){
 	.search-form{
 		grid-column: 3;
 	}
