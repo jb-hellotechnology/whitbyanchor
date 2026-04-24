@@ -331,6 +331,7 @@ nav button{
 
 nav ul{
 	width:100%;
+	max-width:100%;
 }
 
 nav ul li{
@@ -378,7 +379,7 @@ img.nav_icon{
 	display:none;
 }
 
-@media screen and (max-width:1200px){
+@media screen and (max-width:1220px){
 	nav.desktop ul,
 	.menu-menu-1-container{
 		display:none;
