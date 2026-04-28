@@ -1113,3 +1113,18 @@ add_action( 'login_enqueue_scripts', 'whitby_anchor_login_logo' );
 	 return '&hellip; <span>&rarr;</span>';
  }
  add_filter( 'excerpt_more', 'whitbyanchor_theme_excerpt_more' );
+ 
+ add_filter( 'pre_get_posts', function ( WP_Query $query ) {
+	 if ( $query->is_search() && $query->is_main_query() ) {
+		 $types = (array) $query->get( 'post_type' );
+ 
+		 // If post_type is empty WordPress searches all types, so we need
+		 // to explicitly build the list before removing events from it.
+		 if ( empty( $types ) || in_array( 'any', $types, true ) ) {
+			 $types = get_post_types( [ 'public' => true, 'exclude_from_search' => false ] );
+		 }
+ 
+		 $types = array_diff( $types, [ 'event' ] ); // adjust slug if needed
+		 $query->set( 'post_type', array_values( $types ) );
+	 }
+ } );

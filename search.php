@@ -6,49 +6,39 @@
  *
  * @package whitbyanchor
  */
-
 get_header();
 ?>
+<main id="primary" class="site-main flow">
+	<?php if ( have_posts() ) : ?>
 
-	<main id="primary" class="site-main flow">
+		<header class="page-header">
+			<h1 class="page-title">
+				<?php
+				/* translators: %s: search query. */
+				printf( esc_html__( 'Search Results for: %s', 'whitbyanchor' ), '<span>' . get_search_query() . '</span>' );
+				?>
+			</h1>
+		</header>
 
-		<?php if ( have_posts() ) : ?>
+		<p class="search-events-notice">
+			Looking for events? Use the <a href="<?php echo esc_url( home_url( '/whats-on/' ) ); ?>">What's On</a> page to search and filter events.
+		</p>
 
-			<header class="page-header">
-				<h1 class="page-title">
-					<?php
-					/* translators: %s: search query. */
-					printf( esc_html__( 'Search Results for: %s', 'whitbyanchor' ), '<span>' . get_search_query() . '</span>' );
-					?>
-				</h1>
-			</header><!-- .page-header -->
+		<section class="articles cards-grid">
+			<?php while ( have_posts() ) : the_post(); ?>
+				<?php get_template_part( 'template-parts/content', 'search' ); ?>
+			<?php endwhile; ?>
+		</section>
 
-			<section class="articles">
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+		<?php the_posts_navigation(); ?>
 
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', 'search' );
-
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
-		?>
-			</section>
-
-	</main><!-- #main -->
+	<?php else : ?>
+		<?php get_template_part( 'template-parts/content', 'none' ); ?>
+		<p class="search-events-notice">
+			Looking for events? Use the <a href="<?php echo esc_url( home_url( '/whats-on/' ) ); ?>">What's On</a> page to search and filter events.
+		</p>
+	<?php endif; ?>
+</main>
 
 <?php
 get_sidebar();
