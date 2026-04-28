@@ -1,5 +1,5 @@
 /**
- * Events page — tag filter + load-more.
+ * Events page — tag filter + load-more + free-text search.
  *
  * Depends on EventsConfig being defined inline before this script runs:
  * { ajaxUrl, nonce, perPage, hasMore, total }
@@ -11,34 +11,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	const dateStart = document.getElementById( 'event-date-start' );
 	const dateEnd   = document.getElementById( 'event-date-end' );
 	const loadMore  = document.getElementById( 'events-load-more' );
+	const search    = document.getElementById( 'event-search' );
 
 	if ( ! list ) return;
 
 	// ── State ──────────────────────────────────────────────────────────────────
-	let currentPage = 1;
+	let currentPage     = 1;
 	let currentTag      = '';
 	let currentLocation = '';
 	let currentDateFrom = '';
 	let currentDateTo   = '';
-	let loading     = false;
+	let currentSearch   = '';
+	let loading         = false;
+	let searchTimer     = null;
 
 	// ── Core fetch function ────────────────────────────────────────────────────
 
-	async function fetchEvents( { page, tag, location, date_from = '', date_to = '', mode } ) {
-		console.log(tag + location);
+	async function fetchEvents( { page, tag, location, date_from = '', date_to = '', search = '', mode, scroll = true } ) {
 		if ( loading ) return;
 		loading = true;
 		setLoadingState( true );
 
 		const body = new URLSearchParams( {
-			action:   'whitbyanchor_get_events',
-			nonce:    EventsConfig.nonce,
-			page:     page,
-			per_page: EventsConfig.perPage,
-			tag:      tag,
-			location: location,
-			date_from:  date_from,
-			date_to:    date_to,
+			action:    'whitbyanchor_get_events',
+			nonce:     EventsConfig.nonce,
+			page:      page,
+			per_page:  EventsConfig.perPage,
+			tag:       tag,
+			location:  location,
+			date_from: date_from,
+			date_to:   date_to,
+			search:    search,
 		} );
 
 		try {
@@ -57,7 +60,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			if ( mode === 'replace' ) {
 				list.innerHTML = data.html || '<p>No events found - try changing your filters.</p>';
-				list.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+				if ( scroll ) {
+					list.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+				}
 			} else {
 				// append
 				list.insertAdjacentHTML( 'beforeend', data.html );
@@ -75,39 +80,65 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 	}
 
+	// ── Shared helper to trigger a filtered replace from page 1 ───────────────
+
+	function resetAndFetch( scroll = true ) {
+		currentPage = 1;
+		fetchEvents( {
+			page:      1,
+			tag:       currentTag,
+			location:  currentLocation,
+			date_from: currentDateFrom,
+			date_to:   currentDateTo,
+			search:    currentSearch,
+			mode:      'replace',
+			scroll,
+		} );
+	}
+
 	// ── Tag filter ─────────────────────────────────────────────────────────────
 
 	if ( select ) {
 		select.addEventListener( 'change', function () {
-			currentTag  = this.value.trim();
-			currentPage = 1;
-			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, mode: 'replace' } );
+			currentTag = this.value.trim();
+			resetAndFetch();
 		} );
 	}
-	
-	// ── Location filter ─────────────────────────────────────────────────────────────
-	
+
+	// ── Location filter ────────────────────────────────────────────────────────
+
 	if ( location ) {
 		location.addEventListener( 'change', function () {
-			currentLocation  = this.value.trim();
-			currentPage = 1;
-			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, mode: 'replace' } );
+			currentLocation = this.value.trim();
+			resetAndFetch();
 		} );
 	}
-	
+
+	// ── Date filters ───────────────────────────────────────────────────────────
+
 	if ( dateStart ) {
 		dateStart.addEventListener( 'change', function () {
 			currentDateFrom = this.value;
-			currentPage = 1;
-			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, date_from: currentDateFrom, date_to: currentDateTo, mode: 'replace' } );
+			resetAndFetch();
 		} );
 	}
-	
+
 	if ( dateEnd ) {
 		dateEnd.addEventListener( 'change', function () {
 			currentDateTo = this.value;
-			currentPage = 1;
-			fetchEvents( { page: 1, tag: currentTag, location: currentLocation, date_from: currentDateFrom, date_to: currentDateTo, mode: 'replace' } );
+			resetAndFetch();
+		} );
+	}
+
+	// ── Free-text search (debounced 350 ms) ────────────────────────────────────
+
+	if ( search ) {
+		search.addEventListener( 'input', function () {
+			clearTimeout( searchTimer );
+			searchTimer = setTimeout( () => {
+				currentSearch = this.value.trim();
+				resetAndFetch( false );
+			}, 500 );
 		} );
 	}
 
@@ -120,7 +151,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 
 		loadMore.addEventListener( 'click', () => {
-			fetchEvents( { page: currentPage + 1, tag: currentTag, location: currentLocation, mode: 'append' } );
+			fetchEvents( {
+				page:      currentPage + 1,
+				tag:       currentTag,
+				location:  currentLocation,
+				date_from: currentDateFrom,
+				date_to:   currentDateTo,
+				search:    currentSearch,
+				mode:      'append',
+			} );
 		} );
 	}
 
@@ -134,11 +173,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		if ( select ) {
 			select.disabled = isLoading;
 		}
+		if ( search ) {
+			search.disabled = isLoading;
+		}
 		list.setAttribute( 'aria-busy', isLoading ? 'true' : 'false' );
 	}
 
 	function updateLoadMore( hasMore ) {
-		console.log(hasMore);
 		if ( ! loadMore ) return;
 		loadMore.hidden = ! hasMore;
 	}

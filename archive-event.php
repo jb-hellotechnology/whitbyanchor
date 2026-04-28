@@ -111,6 +111,11 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 				<input type="date" name="end" id="event-date-end" />
 			</div>
 		</header>
+		
+		<div class="search">
+			<h2>Search Events</h2>
+			<input type="text" id="event-search" />
+		</div>
 
 		<?php if ( $all_events ) : ?>
 

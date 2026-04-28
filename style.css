@@ -1527,7 +1527,8 @@ a.button.more-events{
 	display: none !important;
 }
 
-.events header {
+.events header,
+.events .search {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 8px 16px;
@@ -1539,18 +1540,32 @@ a.button.more-events{
 	box-sizing: border-box;
 }
 
-.events header h2 {
+.events .search{
+	display:block;
+}
+
+.events header h2,
+.events .search h2 {
 	grid-column: 1 / -1;
 	margin: 0 0 0.5rem;
 	font-size: 1.1rem;
 }
 
-.events header label {
+.events header label,
+.events .search label {
 	display: block;
 	font-size: 0.85rem;
 	font-weight: 500;
 	margin-bottom: 4px;
 	color: #555;
+}
+
+.events .search input[type=text]{
+	width:100%;
+	box-sizing: border-box;
+	padding:0.7rem;
+	font-size:var(--size-step-0);
+	font-family:'Inter', sans-serif;
 }
 
 .events header select,

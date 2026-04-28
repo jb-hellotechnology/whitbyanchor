@@ -100,6 +100,7 @@ function whitbyanchor_ajax_get_events(): void {
 	$location  = sanitize_key( $_POST['location']   ?? '' );
 	$date_from = sanitize_text_field( $_POST['date_from'] ?? '' );
 	$date_to   = sanitize_text_field( $_POST['date_to']   ?? '' );
+	$search    = sanitize_text_field( $_POST['search']    ?? '' );
 
 	$today = current_time( 'Y-m-d' );
 
@@ -163,6 +164,26 @@ function whitbyanchor_ajax_get_events(): void {
 	if ( $date_to ) {
 		$all_events = array_values(
 			array_filter( $all_events, fn( $event ) => $event['date'] <= $date_to )
+		);
+	}
+
+	// ── Free-text search filter ───────────────────────────────────────────────
+	// Matches against post title, excerpt, and content (case-insensitive).
+	if ( $search ) {
+		$search_lower = mb_strtolower( $search );
+
+		$all_events = array_values(
+			array_filter( $all_events, function ( $event ) use ( $search_lower ) {
+				$post = $event['post'];
+
+				$haystack = mb_strtolower(
+					$post->post_title . ' ' .
+					$post->post_excerpt . ' ' .
+					wp_strip_all_tags( $post->post_content )
+				);
+
+				return str_contains( $haystack, $search_lower );
+			} )
 		);
 	}
 
