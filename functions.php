@@ -757,6 +757,101 @@ function event_map_picker_js() {
 	JS;
 }
 
+// Add the "Duplicate" link to the row actions
+function event_duplicate_row_action( $actions, $post ) {
+	if ( $post->post_type !== 'event' ) {
+		return $actions;
+	}
+
+	if ( current_user_can( 'edit_posts' ) ) {
+		$duplicate_url = wp_nonce_url(
+			admin_url( 'admin.php?action=duplicate_event&post=' . $post->ID ),
+			'duplicate_event_' . $post->ID
+		);
+		$actions['duplicate'] = '<a href="' . esc_url( $duplicate_url ) . '">Duplicate</a>';
+	}
+
+	return $actions;
+}
+add_filter( 'post_row_actions', 'event_duplicate_row_action', 10, 2 );
+
+
+// Handle the duplication
+function handle_duplicate_event() {
+	if (
+		! isset( $_GET['action'], $_GET['post'] ) ||
+		$_GET['action'] !== 'duplicate_event'
+	) {
+		return;
+	}
+
+	$post_id = absint( $_GET['post'] );
+
+	check_admin_referer( 'duplicate_event_' . $post_id );
+
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		wp_die( 'You do not have permission to duplicate events.' );
+	}
+
+	$original = get_post( $post_id );
+
+	if ( ! $original || $original->post_type !== 'event' ) {
+		wp_die( 'Invalid event.' );
+	}
+
+	// Create the duplicate post
+	$new_post_id = wp_insert_post( [
+		'post_title'   => $original->post_title . ' (Copy)',
+		'post_content' => $original->post_content,
+		'post_excerpt' => $original->post_excerpt,
+		'post_status'  => 'draft',
+		'post_type'    => 'event',
+		'post_author'  => get_current_user_id(),
+	] );
+
+	if ( is_wp_error( $new_post_id ) ) {
+		wp_die( 'Failed to duplicate event.' );
+	}
+
+	// Copy standard meta fields
+	$plain_meta_keys = [
+		'_event_start_date',
+		'_event_start_time',
+		'_event_end_date',
+		'_event_end_time',
+		'_event_venue',
+		'_event_recurring',
+		'_event_recur_rule',
+		'_event_recur_until',
+		'_event_lat',
+		'_event_lng',
+	];
+
+	foreach ( $plain_meta_keys as $key ) {
+		$value = get_post_meta( $post_id, $key, true );
+		if ( $value !== '' ) {
+			update_post_meta( $new_post_id, $key, $value );
+		}
+	}
+
+	// Copy excluded dates (stored as JSON)
+	$excluded = get_post_meta( $post_id, '_event_excluded_dates', true );
+	update_post_meta( $new_post_id, '_event_excluded_dates', $excluded ?: wp_json_encode( [] ) );
+
+	// Copy taxonomies (event_location and event_tag)
+	foreach ( [ 'event_location', 'event_tag' ] as $taxonomy ) {
+		$terms = wp_get_object_terms( $post_id, $taxonomy, [ 'fields' => 'ids' ] );
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			wp_set_object_terms( $new_post_id, $terms, $taxonomy );
+		}
+	}
+
+	// Redirect to the new draft for editing
+	wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_post_id ) );
+	exit;
+}
+add_action( 'admin_action_duplicate_event', 'handle_duplicate_event' );
+
 // Register the meta field
 function whitbyanchor_register_pinned_meta() {
 	register_post_meta('post', '_is_pinned', array(
