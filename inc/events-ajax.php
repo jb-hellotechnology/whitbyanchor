@@ -194,9 +194,12 @@ function whitbyanchor_ajax_get_events(): void {
 
 	// ── Render ────────────────────────────────────────────────────────────────
 	$html = '';
-	foreach ( $page_events as $event ) {
-		$html .= whitbyanchor_render_event_article( $event );
-	}
+	foreach ( $page_events as $index => $event ) :
+			$html .= whitbyanchor_render_event_article( $event );
+			if ( $index === 3 ) :
+				$html .= '<div class="ad-wide">'.do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ).'</div>';
+			endif;
+	endforeach;
 
 	wp_send_json_success( [
 		'html'     => $html,
