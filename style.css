@@ -1300,12 +1300,23 @@ article .npg-gallery__images figcaption{
 	aspect-ratio: 16 / 9;
 }
 
+#events-list .ad-wide{
+	grid-column: 1 / 3;
+	margin-bottom:0;
+}
+
 @media screen and (max-width:768px){
 	.ad-wide .npa-advert__image img {
 		width:100%;	
 	}
 	.ad-wide .npa-advert__link{
 		display:block;
+	}
+}
+
+@media screen and (max-width:700px){
+	#events-list .ad-wide{
+		grid-column: 1;
 	}
 }
 

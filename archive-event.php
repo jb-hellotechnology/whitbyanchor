@@ -120,8 +120,13 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 		<?php if ( $all_events ) : ?>
 
 			<div id="events-list">
-				<?php foreach ( $first_page as $event ) : ?>
+				<?php foreach ( $first_page as $index => $event ) : ?>
 					<?php echo whitbyanchor_render_event_article( $event ); ?>
+					<?php if ( $index === 3 ) : ?>
+						<div class="ad-wide">
+						<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ); ?>
+						</div>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</div>
 
