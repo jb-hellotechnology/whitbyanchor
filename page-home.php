@@ -124,7 +124,7 @@ get_header();
 		echo '</div>';
 
 		echo '<h2>The Whitby Cast</h2>';
-		echo "<div id='buzzsprout-small-player-limit-1-artist-ceri-emma'></div><script type='text/javascript' charset='utf-8' src='https://www.buzzsprout.com/2609710.js?artist=Ceri+%26+Emma&container_id=buzzsprout-small-player-limit-1-artist-ceri-emma&limit=1&player=small'></script>";
+		echo "<div id='buzzsprout-player-small'></div><script type='text/javascript' charset='utf-8' src='https://www.buzzsprout.com/2609710.js?container_id=buzzsprout-player-small&player=small&limit=1'></script>";
 		
 		$args = array(
 			'category_name' => 'features',
