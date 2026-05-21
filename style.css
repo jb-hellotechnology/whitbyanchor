@@ -728,6 +728,10 @@ section.events header{
 	grid-column: 1 / 3;
 }
 
+section.events{
+	margin-top:1rem;
+}
+
 @media screen and (max-width:1000px){
 	section.articles{
 		grid-template-columns: 1fr 1fr;
