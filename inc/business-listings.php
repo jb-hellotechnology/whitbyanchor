@@ -23,7 +23,7 @@ function register_business_post_type() {
 		'menu_icon'    => 'dashicons-store',
 		'supports'     => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
 		'rewrite'      => [ 'slug' => 'business-directory' ],
-		'show_in_rest' => true,
+		'show_in_rest' => false,
 	] );
 }
 add_action( 'init', 'register_business_post_type' );
