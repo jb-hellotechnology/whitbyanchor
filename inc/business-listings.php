@@ -603,6 +603,8 @@ function whitbyanchor_render_business_article( $business ) {
 	$phone   = $business['phone'];
 	$email   = $business['email'];
 	$website = $business['website'];
+	
+	$has_image = has_post_thumbnail($post->ID);
 
 	$cats = get_the_terms( $post->ID, 'business_category' );
 	$locs = get_the_terms( $post->ID, 'business_location' );
@@ -613,7 +615,7 @@ function whitbyanchor_render_business_article( $business ) {
 
 	ob_start();
 	?>
-	<article class="business flow <?php if($website){ echo 'premium';}?>"
+	<article class="business flow <?php if($has_image){ echo 'premium';}?>"
 		data-categories="<?php echo esc_attr( $cat_slugs ); ?>"
 		data-locations="<?php echo esc_attr( $loc_slugs ); ?>"
 		data-name="<?php echo esc_attr( strtolower( $post->post_title ) ); ?>">
