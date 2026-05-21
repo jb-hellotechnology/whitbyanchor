@@ -1592,7 +1592,7 @@ a.button.more-events{
 .businesses header,
 .businesses .search{
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 	gap: 8px 16px;
 	align-items: end;
 	padding: 1rem;
@@ -1605,6 +1605,10 @@ a.button.more-events{
 .events .search,
 .businesses .search{
 	display:block;
+}
+
+.business .search{
+	grid-column: 3 / 4;
 }
 
 .events header h2,
@@ -1628,11 +1632,11 @@ a.button.more-events{
 }
 
 .events .search input[type=text],
-.businesses .search input[type=text]{
+.businesses input[type=text]{
 	width:100%;
 	box-sizing: border-box;
-	padding:0.7rem;
-	font-size:var(--size-step-0);
+	padding:7px;
+	font-size:1rem;
 	font-family:'Inter', sans-serif;
 }
 

@@ -16,9 +16,12 @@ $use_two_column = $has_map && $has_image;
 	<article class="flow">
 		<h1><?php the_title(); ?></h1>
 		<?php echo '<p><strong>' . get_the_excerpt() . '</strong></p>'; ?>
+		
+		<div class="event-content flow">
+			<?php the_content(); ?>
+		</div>
 
-		
-		
+		<p><strong>Contact Details:</strong></p>
 		<ul class="business-card__contacts">
 			<?php if ( $address ) : ?>
 				<li>
@@ -47,10 +50,6 @@ $use_two_column = $has_map && $has_image;
 				</li>
 			<?php endif; ?>
 		</ul>
-		
-		<div class="event-content flow">
-			<?php the_content(); ?>
-		</div>
 
 		<?php if ( $has_map || $has_image ) : ?>
 			<div class="event-media<?php echo $use_two_column ? ' event-media--two-col' : ''; ?>">
@@ -82,7 +81,7 @@ $use_two_column = $has_map && $has_image;
 		<?php endif; ?>
 		
 		<div class="flow">
-			<p>We strive to keep business details up to date. However, changes are beyond our control. Please <a href="/contact-the-whitby-anchor">contact us</a> if your event details need amending.</p>
+			<p>We strive to keep business details up to date. However, changes are beyond our control. Please <a href="/contact-the-whitby-anchor">contact us</a> if your business details need amending.</p>
 		</div>
 	</article>
 </main>

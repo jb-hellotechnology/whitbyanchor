@@ -48,7 +48,7 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 <main id="primary" class="site-main business-directory">
 	<div>
 		<h1>Whitby Business Directory</h1>
-		<p>Some blurb here.</p>
+		<p>Find local businesses, trades people and organisations across a wide variety of business sectors. <a href="/advertising-rates/">Submit your business</a>.</p>
 
 		<section class="businesses">
 			<header>
@@ -85,12 +85,14 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 						</select>
 					</div>
 				<?php endif; ?>
+				
+				<div class="business-search">
+					<label for="business-search">Search businesses</label>
+					<input type="text" id="business-search" />
+				</div>
 			</header>
 
-			<div class="search">
-				<h2>Search businesses</h2>
-				<input type="text" id="business-search" />
-			</div>
+			
 
 			<?php if ( $all_businesses ) : ?>
 
@@ -160,10 +162,6 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 		<?php echo do_shortcode( '[newspaper_advert placement="category_bottom" category_id="221"]' ); ?>
 	</section>
 </main>
-
-<script>
-const businessesConfig = <?php echo wp_json_encode( $businesses_config ); ?>;
-</script>
 
 <?php
 get_sidebar();

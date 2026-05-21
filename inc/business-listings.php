@@ -686,14 +686,14 @@ function whitbyanchor_render_business_article( $business ) {
 // ---------------------------------------------------------------------------
 
 function business_archive_scripts() {
-	if ( ! is_post_type_archive( 'business' ) ) return;
+	// temporarily removed: if ( ! is_post_type_archive( 'business' ) ) return;
 
 	wp_enqueue_script(
 		'whitbyanchor-businesses',
 		get_template_directory_uri() . '/js/businesses.js',
 		[],
 		'1.0.0',
-		true // load in footer, after the page HTML is printed
+		true
 	);
 
 	wp_localize_script( 'whitbyanchor-businesses', 'businessesConfig', [
