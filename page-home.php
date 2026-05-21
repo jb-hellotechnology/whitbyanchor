@@ -19,7 +19,7 @@ get_header();
 
 		<?php
 		
-		$max_posts  = 4;
+		$max_posts  = 7;
 		$post_ids_displayed = array();
 		
 		// --- Query 1: Pinned posts in this category ---
@@ -166,45 +166,45 @@ get_header();
 		
 		echo '</section>';
 		
-		$args = array(
-			'category_name' => 'villages',
-			'posts_per_page' => 3,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		);
-		
-		$query = new WP_Query($args);
-		
-		echo '<section class="articles">';
-		echo '<header><h2 class="section-heading">The Villages</h2></header>';
-		echo '<div class="cards-grid">';
-		if ($query->have_posts()) {
-		
-			while ($query->have_posts()) {
-				$query->the_post();
-				
-				echo '<article class="flow">';
-				echo '<figure>';
-				the_post_thumbnail('full');
-				echo '</figure>';
-				echo '<figcaption>';
-				the_post_thumbnail_caption();
-				echo '</figcaption>';
-				the_title('<h2>', '</h2>');
-				echo '<div class="entry-meta">';
-				echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
-				whitbyanchor_posted_on();
-				whitbyanchor_posted_by();
-				echo '</div>';
-				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
-				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
-				echo '</article>';
-			}
-		
-			wp_reset_postdata();
-		}
-		echo '</div>';
-		echo '</section>';
+		// $args = array(
+		// 	'category_name' => 'villages',
+		// 	'posts_per_page' => 3,
+		// 	'orderby'        => 'date',
+		// 	'order'          => 'DESC',
+		// );
+		// 
+		// $query = new WP_Query($args);
+		// 
+		// echo '<section class="articles">';
+		// echo '<header><h2 class="section-heading">The Villages</h2></header>';
+		// echo '<div class="cards-grid">';
+		// if ($query->have_posts()) {
+		// 
+		// 	while ($query->have_posts()) {
+		// 		$query->the_post();
+		// 		
+		// 		echo '<article class="flow">';
+		// 		echo '<figure>';
+		// 		the_post_thumbnail('full');
+		// 		echo '</figure>';
+		// 		echo '<figcaption>';
+		// 		the_post_thumbnail_caption();
+		// 		echo '</figcaption>';
+		// 		the_title('<h2>', '</h2>');
+		// 		echo '<div class="entry-meta">';
+		// 		echo '<img src="'; echo get_stylesheet_directory_uri(); echo '/icons/apple-icon-180x180.png" alt="Whitby Anchor" />';
+		// 		whitbyanchor_posted_on();
+		// 		whitbyanchor_posted_by();
+		// 		echo '</div>';
+		// 		echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
+		// 		echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
+		// 		echo '</article>';
+		// 	}
+		// 
+		// 	wp_reset_postdata();
+		// }
+		// echo '</div>';
+		// echo '</section>';
 		
 		echo '<div class="ad-wide">';
 		echo do_shortcode('[newspaper_advert placement="category_bottom" category_id="31"]');
