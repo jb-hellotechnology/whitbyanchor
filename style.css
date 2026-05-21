@@ -728,8 +728,8 @@ section.events header{
 	grid-column: 1 / 3;
 }
 
-section.events,
-section.businesses{
+p + section.events,
+p + section.businesses{
 	margin-top:1rem;
 }
 
