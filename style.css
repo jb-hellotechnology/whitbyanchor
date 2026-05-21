@@ -1342,6 +1342,10 @@ figure img{
 	margin-top:1rem;
 }
 
+.flow.week-in-pictures figcaption{
+	display:block;
+}
+
 .flow figcaption a{
 	border-left:1px solid var(--color-primary);
 	padding: 0.5rem 0 0.5rem 1rem;
