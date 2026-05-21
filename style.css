@@ -728,7 +728,8 @@ section.events header{
 	grid-column: 1 / 3;
 }
 
-section.events{
+section.events,
+section.businesses{
 	margin-top:1rem;
 }
 
@@ -960,13 +961,15 @@ footer a.button:hover{
 	}
 }
 
-/* EVENTS */
-main.events h1{
+/* EVENTS & BUSINESSES */
+main.events h1,
+main.business-directory h1{
 	grid-column: 1 / 3;
 	margin-bottom:2rem;
 }
 
-main.events{
+main.events,
+main.business-directory{
 	display:grid;
 	grid-template-columns: 2fr 1fr;
 	grid-column-gap:2rem;
@@ -976,7 +979,8 @@ main.events .events{
 
 }
 
-main.events #events-list{
+main.events #events-list,
+main.business-directory #businesses-list{
 	display:grid;
 	grid-template-columns: 1fr 1fr;
 	grid-column-gap:2rem;
@@ -985,27 +989,33 @@ main.events #events-list{
 }
 
 @media screen and (max-width:1000px){
-	main.events h1{
+	main.events h1,
+	main.business-directory h1{
 		grid-column: 1;
 	}
-	main.events{
+	main.events,
+	main.business-directory{
 		grid-template-columns: 1fr;	
 	}
-	main.events .events{
+	main.events .events,
+	main.business-directory .businesses{
 		margin-bottom:2rem;
 	}
 }
 
 @media screen and (max-width:700px){
-	main.events .events{
+	main.events .events,
+	main.business-directory .businesses{
 		grid-template-columns: 1fr;	
 	}
-	main.events #events-list{
+	main.events #events-list,
+	main.business-directory #business-list{
 		grid-template-columns: 1fr;	
 	}
 }
 
-.event {
+.event,
+.business{
 	display: grid;
 	grid-template-rows: auto auto auto auto;
 	grid-template-areas:
@@ -1013,97 +1023,110 @@ main.events #events-list{
 		"excerpt"
 		"tags"
 		"meta";
-
 	padding: 1.25rem;
 	border: 1px solid;
 	border-radius: 3px;
 	margin-bottom:1.25rem;
 }
 
-.event h2           { grid-area: title;   margin: 0; font-size:var(--size-step-2); margin-bottom:1rem; }
+.event h2,.business h2 { grid-area: title;   margin: 0; font-size:var(--size-step-2); margin-bottom:1rem; }
 .event .event-date  { grid-area: date;    margin: 0; font-size:80%; }
-.event .event-venue { grid-area: venue;   margin: 0; font-size:80%; }
+.event .event-venue, .business .business-card__address{ grid-area: venue;   margin: 0; font-size:80%; }
 .event .event-recurring { grid-area: venue;   margin: 0; font-size:80%; }
 .event .event-excerpt { grid-area: excerpt; }
-.event div{grid-row: 1 / 5;display:flex;flex-direction: column;justify-content:space-between;}
-.event div div {grid-area: meta; padding-top:1rem; }
+.event div,.business div{grid-row: 1 / 5;display:flex;flex-direction: column;justify-content:space-between;}
+.event div div,.business div div {grid-area: meta; padding-top:1rem; }
 
 /* Outer div and inner ul share the same area */
 .event .event-tags  { grid-area: tags; }
 
-.event .meta{border-top:1px solid var(--color-primary);margin-top:1rem;}
+.event .meta, .business .meta{border-top:1px solid var(--color-primary);margin-top:1rem;}
 
-.event p{
+.event p,
+.business p{
 	display:flex;
 	align-items: center;
 }
 
-.event p span{
+.event p span,
+.business p span{
 	margin-right:0.3rem;
 }
 
 .event > p.event-date { grid-area: date; margin: 0; border-top:1px solid var(--color-primary); margin-top:1rem; padding-top:1rem; }
 
-.event .event-link{
+.event .event-link,
+.business .business-card__more{
 	position: absolute;
 	inset: 0;
 }
 
-.event .event-link span{
+.event .event-link span,
+.business .business-card__more span{
 	display:block;
 	width:0px;
 	height:0px;
 	overflow:hidden;
 }
 
-.event:hover h2{
+.event:hover h2,
+.business:hover h2{
 	color:var(--color-secondary);
 }
 
-.event.premium{
+.event.premium,
+.business.premium{
 	grid-column: 1 / 3;
 	display:grid;
 	grid-template-columns: 1fr 1fr;
 	grid-column-gap:2rem;
 }
 
-.event.premium div.event-media__image{
+.event.premium div.event-media__image,
+.business.premium div.business-card__image{
 	grid-column: 2;
 	grid-row: 1 / 5;
 	padding:0;
 }
 
-.event.premium div.event-media__image img{
+.event.premium div.event-media__image img,
+.business.premium div.business-card__image img{
 	object-fit:cover;
 	aspect-ratio: 16 / 9;
 	width:100%;
 	height:auto;
 }
 
-.events.category-column .event.premium{
+.events.category-column .event.premium,
+.businesses.category-column .business.premium{
 	grid-template-columns: 1fr;
 	grid-column: 1;
 }
-.events.category-column .event.premium div{
+.events.category-column .event.premium div,
+.businesses.category-column .business.premium div{
 	grid-column: 1;
 	grid-row:2;
 }
-.events.category-column .event.premium div.event-media__image{
+.events.category-column .event.premium div.event-media__image,
+.businesses.category-column .business.premium div.business-card__image{
 	grid-column: 1;
 	grid-row:1;
 	margin-bottom:1rem;
 }
 
 @media screen and (max-width:700px){
-	.event.premium{
+	.event.premium,
+	.business.premium{
 		grid-template-columns: 1fr;
 		grid-column: 1;
 	}
-	.event.premium div{
+	.event.premium div,
+	.business.premium div{
 		grid-column: 1;
 		grid-row:2;
 	}
-	.event.premium div.event-media__image{
+	.event.premium div.event-media__image,
+	.business.premium div.business-card__image{
 		grid-column: 1;
 		grid-row:1;
 		margin-bottom:1rem;
@@ -1112,7 +1135,8 @@ main.events #events-list{
 }
 
 @media screen and (max-width:640px){
-	.event h2 {
+	.event h2,
+	.business h2{
 	  font-size: var(--size-step-1);
 	}
 }
@@ -1564,7 +1588,9 @@ a.button.more-events{
 }
 
 .events header,
-.events .search {
+.events .search,
+.businesses header,
+.businesses .search{
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 8px 16px;
@@ -1576,19 +1602,24 @@ a.button.more-events{
 	box-sizing: border-box;
 }
 
-.events .search{
+.events .search,
+.businesses .search{
 	display:block;
 }
 
 .events header h2,
-.events .search h2 {
+.events .search h2,
+.businesses header h2,
+.businesses .search h2 {
 	grid-column: 1 / -1;
 	margin: 0 0 0.5rem;
 	font-size: 1.1rem;
 }
 
 .events header label,
-.events .search label {
+.events .search label,
+.businesses header label,
+.businesses .search label {
 	display: block;
 	font-size: 0.85rem;
 	font-weight: 500;
@@ -1596,7 +1627,8 @@ a.button.more-events{
 	color: #555;
 }
 
-.events .search input[type=text]{
+.events .search input[type=text],
+.businesses .search input[type=text]{
 	width:100%;
 	box-sizing: border-box;
 	padding:0.7rem;
@@ -1605,6 +1637,7 @@ a.button.more-events{
 }
 
 .events header select,
+.businesses header select,
 .events header input[type="date"] {
 	width: 100%;
 	padding: 8px 10px;
@@ -1616,6 +1649,7 @@ a.button.more-events{
 }
 
 .events header select:focus,
+.businesses header select:focus,
 .events header input[type="date"]:focus {
 	outline: 2px solid #0073aa;
 	outline-offset: 1px;

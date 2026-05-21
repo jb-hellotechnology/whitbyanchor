@@ -16,6 +16,7 @@ require_once get_template_directory() . '/inc/photo-gallery-cpt.php';
 require_once get_template_directory() . '/inc/events-ajax.php';
 require_once get_template_directory() . '/inc/events-widget.php';
 require_once get_template_directory() . '/inc/events-csv-importer.php';
+require_once get_template_directory() . '/inc/business-listings.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
