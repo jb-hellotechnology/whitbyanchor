@@ -1126,7 +1126,7 @@ main.business-directory #businesses-list{
 		grid-row:2;
 	}
 	.event.premium div.event-media__image,
-	.business.premium div.business-card__image{
+	.business.premium .business-card__image{
 		grid-column: 1;
 		grid-row:1;
 		margin-bottom:1rem;
