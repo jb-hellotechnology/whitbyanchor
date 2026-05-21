@@ -1009,7 +1009,7 @@ main.business-directory #businesses-list{
 		grid-template-columns: 1fr;	
 	}
 	main.events #events-list,
-	main.business-directory #business-list{
+	main.business-directory #businesses-list{
 		grid-template-columns: 1fr;	
 	}
 }
