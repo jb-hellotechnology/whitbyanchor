@@ -34,6 +34,7 @@
 				)
 			);
 			?>
+			<p class="social"><a href="https://www.instagram.com/the_whitby_anchor/" target="_blank"><i class="fab fa-instagram fa-2xl"></i></a> <a href="https://www.facebook.com/thewhitbyanchor" target="_blank"><i class="fab fa-facebook fa-2xl"></i></a> <a href="https://www.linkedin.com/company/the-whitby-anchor/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin fa-2xl"></i></a></p>
 			</div>
 			<div>
 			<h2>Policies &amp; Privacy</h2>

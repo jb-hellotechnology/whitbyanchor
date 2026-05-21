@@ -855,6 +855,18 @@ footer a:hover{
 	text-decoration-color: var(--color-secondary); 
 }
 
+footer p.social{
+	margin-bottom:2rem;
+}
+
+footer p.social a{
+	margin-right:1rem;
+}
+
+footer p.social a:hover{
+	color:var(--color-secondary);
+}
+
 @media screen and (max-width:1000px){
 	footer .menus{
 		display:block;

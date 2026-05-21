@@ -38,6 +38,8 @@
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="<?php echo get_stylesheet_directory_uri(); ?>/icons/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
+	
+	<script src="https://kit.fontawesome.com/232935a772.js" crossorigin="anonymous"></script>
 
 	<?php wp_head(); ?>
 </head>
