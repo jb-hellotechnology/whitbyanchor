@@ -1668,6 +1668,7 @@ a.button.more-events{
 	grid-row: span 5;          /* figure, figcaption, h2, meta, excerpt */
 	grid-template-rows: subgrid;
 	align-content: start;
+	margin-bottom:4rem;
 }
 
 @media screen and (max-width: 768px){
