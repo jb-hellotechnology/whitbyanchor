@@ -121,7 +121,7 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 	</div>
 
 	<section>
-		<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ); ?>
+		<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="221"]' ); ?>
 
 		<?php
 		echo '<h2 class="category-heading">Business News</h2>';
