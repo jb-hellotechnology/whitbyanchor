@@ -127,7 +127,7 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 		echo '<h2 class="category-heading">Business News</h2>';
 
 		$news_query = new WP_Query( [
-			'category_name'  => 'businesses',
+			'category_name'  => 'business',
 			'posts_per_page' => 4,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
