@@ -62,88 +62,88 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 ?>
 
 <main id="primary" class="site-main events">
-	<header>
+	<div>
 		<h1>What&rsquo;s on in Whitby</h1>
 		<p>A comprehensive guide to groups, classes, exhibitions and more in Whitby and the villages. <a href="/contact-the-whitby-anchor/">Submit your event details</a>. <a href="/advertising-rates/">Premium listings</a> available from just &pound;10/week.</p>
-	</header>
-	<section class="events">
-		<header>
-			<h2>Filter Events</h2>
-	
-			<?php if ( $tag_counts ) : ?>
-				<div>
-					<label for="event-tag-select">
-						<?php esc_html_e( 'Event type', 'whitbyanchor' ); ?>
-					</label>
-					<select id="event-tag-select" name="event_tag">
-						<option value=""><?php esc_html_e( 'Everything', 'whitbyanchor' ); ?></option>
-						<?php foreach ( $tag_counts as $tag ) : ?>
-							<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
-								<?php echo esc_html( $tag['name'] ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-				</div>
-			<?php endif; ?>
-			<?php if ( $location_counts ) : ?>
-				<div>
-					<label for="event-location-select">
-						<?php esc_html_e( 'Event location', 'whitbyanchor' ); ?>
-					</label>
-					<select id="event-location-select" name="event_location">
-						<option value=""><?php esc_html_e( 'Anywhere', 'whitbyanchor' ); ?></option>
-						<?php foreach ( $location_counts as $venue ) : ?>
-							<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
-								<?php echo esc_html( $venue['name'] ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-				</div>
-			<?php endif; ?>
-			<div>
-				<label for="event-date-start">
-					<?php esc_html_e( 'Event start', 'whitbyanchor' ); ?>
-				</label>
-				<input type="date" name="start" id="event-date-start" />
-			</div>
-			<div>
-				<label for="event-date-end">
-					<?php esc_html_e( 'Event end', 'whitbyanchor' ); ?>
-				</label>
-				<input type="date" name="end" id="event-date-end" />
-			</div>
-		</header>
+		<section class="events">
+			<header>
+				<h2>Filter Events</h2>
 		
-		<div class="search">
-			<h2>Search Events</h2>
-			<input type="text" id="event-search" />
-		</div>
-
-		<?php if ( $all_events ) : ?>
-
-			<div id="events-list">
-				<?php foreach ( $first_page as $index => $event ) : ?>
-					<?php echo whitbyanchor_render_event_article( $event ); ?>
-					<?php if ( $index === 3 ) : ?>
-						<div class="ad-wide">
-						<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ); ?>
-						</div>
-					<?php endif; ?>
-				<?php endforeach; ?>
+				<?php if ( $tag_counts ) : ?>
+					<div>
+						<label for="event-tag-select">
+							<?php esc_html_e( 'Event type', 'whitbyanchor' ); ?>
+						</label>
+						<select id="event-tag-select" name="event_tag">
+							<option value=""><?php esc_html_e( 'Everything', 'whitbyanchor' ); ?></option>
+							<?php foreach ( $tag_counts as $tag ) : ?>
+								<option value="<?php echo esc_attr( $tag['slug'] ); ?>">
+									<?php echo esc_html( $tag['name'] ); ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				<?php endif; ?>
+				<?php if ( $location_counts ) : ?>
+					<div>
+						<label for="event-location-select">
+							<?php esc_html_e( 'Event location', 'whitbyanchor' ); ?>
+						</label>
+						<select id="event-location-select" name="event_location">
+							<option value=""><?php esc_html_e( 'Anywhere', 'whitbyanchor' ); ?></option>
+							<?php foreach ( $location_counts as $venue ) : ?>
+								<option value="<?php echo esc_attr( $venue['slug'] ); ?>">
+									<?php echo esc_html( $venue['name'] ); ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				<?php endif; ?>
+				<div>
+					<label for="event-date-start">
+						<?php esc_html_e( 'Event start', 'whitbyanchor' ); ?>
+					</label>
+					<input type="date" name="start" id="event-date-start" />
+				</div>
+				<div>
+					<label for="event-date-end">
+						<?php esc_html_e( 'Event end', 'whitbyanchor' ); ?>
+					</label>
+					<input type="date" name="end" id="event-date-end" />
+				</div>
+			</header>
+			
+			<div class="search">
+				<h2>Search Events</h2>
+				<input type="text" id="event-search" />
 			</div>
-
-			<?php if ( $has_more ) : ?>
-				<button id="events-load-more" type="button"
-						data-page="1"
-						data-per-page="<?php echo esc_attr( $per_page ); ?>">
-					<?php esc_html_e( 'Load more events', 'whitbyanchor' ); ?>
-				</button>
+	
+			<?php if ( $all_events ) : ?>
+	
+				<div id="events-list">
+					<?php foreach ( $first_page as $index => $event ) : ?>
+						<?php echo whitbyanchor_render_event_article( $event ); ?>
+						<?php if ( $index === 3 ) : ?>
+							<div class="ad-wide">
+							<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ); ?>
+							</div>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+	
+				<?php if ( $has_more ) : ?>
+					<button id="events-load-more" type="button"
+							data-page="1"
+							data-per-page="<?php echo esc_attr( $per_page ); ?>">
+						<?php esc_html_e( 'Load more events', 'whitbyanchor' ); ?>
+					</button>
+				<?php endif; ?>
+	
+			<?php else : ?>
+				<p><?php esc_html_e( 'No events found - try changing your filters.', 'whitbyanchor' ); ?></p>
 			<?php endif; ?>
-
-		<?php else : ?>
-			<p><?php esc_html_e( 'No events found - try changing your filters.', 'whitbyanchor' ); ?></p>
-		<?php endif; ?>
-	</section>
+		</section>
+	</div>
 
 	<section>
 		<?php echo do_shortcode( '[newspaper_advert placement="category_top" category_id="5"]' ); ?>
