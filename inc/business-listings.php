@@ -613,7 +613,7 @@ function whitbyanchor_render_business_article( $business ) {
 
 	ob_start();
 	?>
-	<article class="business <?php if($website){ echo 'premium';}?>"
+	<article class="business flow <?php if($website){ echo 'premium';}?>"
 		data-categories="<?php echo esc_attr( $cat_slugs ); ?>"
 		data-locations="<?php echo esc_attr( $loc_slugs ); ?>"
 		data-name="<?php echo esc_attr( strtolower( $post->post_title ) ); ?>">
