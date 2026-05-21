@@ -63,7 +63,7 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 
 <main id="primary" class="site-main events">
 	<h1>What&rsquo;s on in Whitby</h1>
-
+	<p>A comprehensive guide to groups, classes, exhibitions and more in Whitby and the villages. Submit your event details for inclusion <a href="/contact-the-whitby-anchor/">here</a>. <a href="/advertising-rates/">Premium listings</a> available from just &pound;10/week.</p>
 	<section class="events">
 		<header>
 			<h2>Filter Events</h2>
