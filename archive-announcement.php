@@ -129,7 +129,7 @@ uasort( $tag_counts,      fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 		endif;
 		?>
 
-		<?php echo do_shortcode( '[newspaper_advert placement="category_bottom" category_id="222"]' ); ?>
+		<?php echo do_shortcode( '[newspaper_advert placement="category_bottom" category_id="241"]' ); ?>
 	</section>
 </main>
 
