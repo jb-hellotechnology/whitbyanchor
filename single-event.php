@@ -46,18 +46,31 @@ $use_two_column = $has_map && $has_image;
 		<h1><?php the_title(); ?></h1>
 		<?php if ( $date_label ) : ?>
 			<p class="event-date">
+				<?php
+				$start_date_obj = $start_date ? date_create( $start_date ) : null;
+				$is_multi_day   = $end_date && $start_date_obj && $end_date->format('Y-m-d') > $start_date_obj->format('Y-m-d');
+		
+				$t1             = strtotime( $start_time );
+				$start_time_fmt = $start_time ? date( date( 'i', $t1 ) === '00' ? 'ga' : 'g:ia', $t1 ) : '';
+		
+				$end_time_fmt = '';
+				if ( $end_time ) {
+					$t2           = strtotime( $end_time );
+					$end_time_fmt = date( date( 'i', $t2 ) === '00' ? 'ga' : 'g:ia', $t2 );
+				}
+				?>
 				<?php echo esc_html( $date_label ); ?>
-				<?php if ( $start_time ) : ?>
-					at <?php echo esc_html( date( 'g:i A', strtotime( $start_time ) ) ); ?>
-				<?php endif; ?>
-				<?php if ( $end_date ) : ?>
-					– <?php echo $end_date->format( 'l F j Y' ); ?>
-				<?php endif; ?>
-				<?php if ( $end_time ) : ?>
-					<?php if ( $end_date ) { echo 'at'; } else { echo '-'; } ?> <?php echo esc_html( date( 'g:i A', strtotime( $end_time ) ) ); ?>
+				<?php if ( $is_multi_day ) : ?>
+					- <?php echo $end_date->format( 'l F j Y' ); ?>
+				<?php endif; ?><br />
+				<?php if ( $start_time_fmt ) : ?>
+					<?php echo esc_html( $start_time_fmt ); ?>
+					<?php if ( $end_time_fmt ) : ?>
+						- <?php echo esc_html( $end_time_fmt ); ?>
+					<?php endif; ?>
 				<?php endif; ?>
 				<?php if ( $recurring ) : ?>
-				  | Repeats <?php echo esc_html( $recurring ); ?>
+					| Repeats <?php echo esc_html( $recurring ); ?>
 				<?php endif; ?>
 			</p>
 		<?php endif; ?>

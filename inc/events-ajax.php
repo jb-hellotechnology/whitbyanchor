@@ -16,7 +16,6 @@ const WHITBYANCHOR_EVENTS_PER_PAGE = 12;
 
 function whitbyanchor_render_event_article( array $event ): string {
 	$post = $event['post'];
-
 	$tags        = get_the_terms( $post->ID, 'event_tag' );
 	$tags_string = '';
 	if ( $tags && ! is_wp_error( $tags ) ) {
@@ -33,56 +32,73 @@ function whitbyanchor_render_event_article( array $event ): string {
 		}
 	}
 
-	ob_start();
-	
+	$end_date = null;
 	if ( ! empty( $event['end_date'] ) && preg_match( '/^\d{4}-\d{2}-\d{2}$/', $event['end_date'] ) ) {
 		$end_date = new DateTime( $event['end_date'] );
 	}
-	
-	$has_image = false;
+
+	$start_date_obj = ! empty( $event['date'] ) ? date_create( $event['date'] ) : null;
+	$is_multi_day   = $end_date && $start_date_obj && $end_date->format('Y-m-d') > $start_date_obj->format('Y-m-d');
+
+	$start_time_fmt = '';
+	if ( ! empty( $event['start_time'] ) ) {
+		$t1             = strtotime( $event['start_time'] );
+		$start_time_fmt = date( date( 'i', $t1 ) === '00' ? 'ga' : 'g:ia', $t1 );
+	}
+
+	$end_time_fmt = '';
+	if ( ! empty( $event['end_time'] ) ) {
+		$t2           = strtotime( $event['end_time'] );
+		$end_time_fmt = date( date( 'i', $t2 ) === '00' ? 'ga' : 'g:ia', $t2 );
+	}
+
 	$has_image = has_post_thumbnail( $post->ID );
+
+	ob_start();
 	?>
-	<article class="flow event <?php if ( $has_image ) : ?>premium<?php endif; ?>" data-tags="<?php echo $tags_string; ?>"  data-venues="<?php echo $locations_string; ?>">
-	<?php if ( $has_image ) : ?>
-		<div class="event-media__image">
-			<?php echo get_the_post_thumbnail( $post->ID, 'large' ); ?>
-		</div>
-	<?php endif; ?>
+	<article class="flow event <?php if ( $has_image ) : ?>premium<?php endif; ?>" data-tags="<?php echo $tags_string; ?>" data-venues="<?php echo $locations_string; ?>">
+		<?php if ( $has_image ) : ?>
+			<div class="event-media__image">
+				<?php echo get_the_post_thumbnail( $post->ID, 'large' ); ?>
+			</div>
+		<?php endif; ?>
 		<div>
-		<h2><?php echo esc_html( $post->post_title ); ?></h2>
-
-		<p class="event-excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>
-
-		<div class="meta">
-			<?php if ( $event['venue'] ) : ?>
-				<p class="event-venue">
-					<span class="material-symbols-outlined">location_on</span>
-					<?php echo esc_html( $event['venue'] ); ?>
-				</p>
-			<?php endif; ?>
-	
-			<?php if ( $event['recurring'] ) : ?>
-				<p class="event-recurring"><span class="material-symbols-outlined">
-					repeat
-					</span>Repeats <?php echo esc_html( $event['recurring'] ); ?></p>
-			<?php endif; ?>
-
-			<p class="event-date">
-				<span class="material-symbols-outlined">calendar_clock</span>
-				<?php echo esc_html( $event['date_label'] ); ?>
-				<?php if ( $event['date_label'] ) : ?>
-					at <?php echo esc_html( date( 'g:i A', strtotime( $event['start_time'] ) ) ); ?>
-					<?php if ( $end_date ) : ?>
-						– <?php echo $end_date->format( 'l F j Y' ); ?>
-					<?php endif; ?>
-					<?php if ( $event['end_time']  ) : ?>
-						<?php if($end_date){ echo 'at';}else{echo '-';}?> <?php echo esc_html( date( 'g:i A', strtotime( $event['end_time'] ) ) ); ?>
-					<?php endif; ?>
+			<h2><?php echo esc_html( $post->post_title ); ?></h2>
+			<p class="event-excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>
+			<div class="meta">
+				<?php if ( $event['venue'] ) : ?>
+					<p class="event-venue">
+						<span class="material-symbols-outlined">location_on</span>
+						<?php echo esc_html( $event['venue'] ); ?>
+					</p>
 				<?php endif; ?>
-			</p>
-		</div>
 
-		<a class="event-link" href="<?php echo esc_url( get_permalink( $post->ID ) . '?date=' . $event['date'] ); ?>"><span>More details about<?php echo esc_html( $post->post_title ); ?></span></a>
+				<?php if ( $event['recurring'] ) : ?>
+					<p class="event-recurring">
+						<span class="material-symbols-outlined">repeat</span>
+						Repeats <?php echo esc_html( $event['recurring'] ); ?>
+					</p>
+				<?php endif; ?>
+
+				<p class="event-date">
+					<span class="material-symbols-outlined">calendar_clock</span>
+					<?php if ( $event['date_label'] ) : ?>
+						<?php echo esc_html( $event['date_label'] ); ?>
+						<?php if ( $is_multi_day ) : ?>
+							- <?php echo $end_date->format( 'l F j Y' ); ?>
+						<?php endif; ?><br />
+						<?php if ( $start_time_fmt ) : ?>
+							<?php echo esc_html( $start_time_fmt ); ?>
+							<?php if ( $end_time_fmt ) : ?>
+								- <?php echo esc_html( $end_time_fmt ); ?>
+							<?php endif; ?>
+						<?php endif; ?>
+					<?php endif; ?>
+				</p>
+			</div>
+			<a class="event-link" href="<?php echo esc_url( get_permalink( $post->ID ) . '?date=' . $event['date'] ); ?>">
+				<span>More details about <?php echo esc_html( $post->post_title ); ?></span>
+			</a>
 		</div>
 	</article>
 	<?php
