@@ -1596,6 +1596,10 @@ a.button.more-events{
 	box-sizing: border-box;
 }
 
+.businesses.announcements header{
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
 .events .search,
 .businesses .search{
 	display:block;
