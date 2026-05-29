@@ -1337,7 +1337,7 @@ article .npg-gallery__images figcaption{
 	width: 320px;
 	height: auto;
 	object-fit:cover;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: auto;
 }
 
 #events-list .ad-wide{
