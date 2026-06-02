@@ -52,12 +52,12 @@ get_header();
 					echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
 					echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
 					echo '</article>';
-				}
-				
-				if ($i % 6 === 0) {
-					echo '<div class="ad-wide grid">';
-					echo do_shortcode('[newspaper_advert placement="category_top" category_id="4"]');
-					echo '</div>';
+					
+					if ($i % 6 === 0) {
+						echo '<div class="ad-wide grid">';
+						echo do_shortcode('[newspaper_advert placement="category_top" category_id="4"]');
+						echo '</div>';
+					}
 				}
 
 				wp_reset_postdata();
