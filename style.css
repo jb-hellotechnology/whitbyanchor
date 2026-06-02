@@ -285,7 +285,7 @@ nav.primary-navigation{
 	border-top:1px solid var(--color-primary);
 	border-bottom:1px solid var(--color-primary);
 	display:grid;
-	grid-template-columns: 2fr 1fr;
+	grid-template-columns: auto auto;
 	grid-column-gap:3rem;
 	z-index:200;
 	position: relative;
@@ -548,6 +548,7 @@ input[type=submit].secondary:hover{
 	grid-row: 1;
 	display:grid;
 	grid-template-columns: auto auto;
+	width:300px;
 }
 
 .search-form input[type=search]{
