@@ -556,6 +556,7 @@ input[type=submit].secondary:hover{
 	border-left:1px solid var(--color-primary);
 	font-family:'Inter';
 	padding:0 1rem;
+	width:100%;
 }
 
 .search-form input[type=submit]{
@@ -687,14 +688,12 @@ section.articles.home header{
 	display:none;
 }
 
-section.articles.home article:first-of-type,
-section.articles.features article:first-of-type{
+section.articles.home article:first-of-type{
 	grid-column: 1 / 4;
 	margin-bottom:4rem;
 }
 
-section.articles.home article:first-of-type h2,
-section.articles.features article:first-of-type h2{
+section.articles.home article:first-of-type h2{
 	font-size:var(--size-step-4);	
 }
 
@@ -986,6 +985,18 @@ main.business-directory #businesses-list{
 	grid-column-gap:2rem;
 	grid-row-gap:1rem;
 	margin-top:2rem;
+}
+
+.post-type-archive-announcement main.business-directory img.wp-post-image{
+	aspect-ratio: auto;
+}
+
+.post-type-archive-announcement main.business-directory .business-card__body{
+	margin-top:0;
+}
+
+.post-type-archive-announcement main.business-directory .business-card__body h2{
+	margin-top:0;
 }
 
 @media screen and (max-width:1000px){
@@ -1330,6 +1341,10 @@ article .npg-gallery__images figcaption{
 	display:flex;
 	align-items: center;
 	
+}
+
+.ad-wide.grid{
+	grid-column: 1 / 4;
 }
 
 .ad-wide .npa-advert__image img {
@@ -1679,6 +1694,9 @@ a.button.more-events{
 	}
 	.cards-grid article{
 		margin-bottom:4rem;
+	}
+	.ad-wide.grid{
+		grid-column: 1;
 	}
 }
 

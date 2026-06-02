@@ -128,7 +128,7 @@ get_header();
 		
 		$args = array(
 			'category_name' => 'features',
-			'posts_per_page' => 1,
+			'posts_per_page' => 3,
 			'orderby'        => 'date',
 			'order'          => 'DESC',
 		);
@@ -137,7 +137,7 @@ get_header();
 		
 		echo '<section class="articles features">';
 		echo '<header><h2 class="section-heading">Features</h2></header>';
-		
+		echo '<div class="cards-grid features">';
 		if ($query->have_posts()) {
 		
 			while ($query->have_posts()) {
@@ -163,7 +163,7 @@ get_header();
 		
 			wp_reset_postdata();
 		}
-		
+		echo '</div>';
 		echo '</section>';
 		
 		// $args = array(
