@@ -294,6 +294,10 @@ nav.primary-navigation ul li a{
 	text-decoration: none;
 }
 
+.menu-menu-1-container{
+	width:100%;
+}
+
 nav.secondary-navigation{
 	margin-bottom:2rem;
 	font-family:"Inter";
@@ -367,7 +371,7 @@ nav ul li:hover ul li:last-child{
 
 nav.primary-navigation ul li:last-child{
 	float:right;
-	margin-right:0;
+	margin-right:3rem;
 }
 
 nav.desktop button{
