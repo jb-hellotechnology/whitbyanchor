@@ -118,9 +118,7 @@ function whitbyanchor_render_announcement_article( $announcement ) {
 
 		<?php if ( has_post_thumbnail( $post->ID ) ) : ?>
 			<figure class="business-card__image">
-				<a href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>">
-					<?php echo get_the_post_thumbnail( $post->ID, 'medium', [ 'loading' => 'lazy', 'alt' => esc_attr( $post->post_title ) ] ); ?>
-				</a>
+				<?php echo get_the_post_thumbnail( $post->ID, 'medium', [ 'loading' => 'lazy', 'alt' => esc_attr( $post->post_title ) ] ); ?>
 			</figure>
 		<?php endif; ?>
 
