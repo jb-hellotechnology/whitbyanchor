@@ -999,6 +999,10 @@ main.business-directory #businesses-list{
 	margin-top:0;
 }
 
+.post-type-archive-announcement .business:hover h2{
+	color:var(--color-primary);
+}
+
 @media screen and (max-width:1000px){
 	main.events h1,
 	main.business-directory h1{
