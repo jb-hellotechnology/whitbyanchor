@@ -1274,7 +1274,6 @@ main.events .tags .sticky{
 }
 
 article .npg-gallery__images img{
-	aspect-ratio: auto;
 	height: 70vh;
 	object-fit: contain;
 	margin:0 auto;
