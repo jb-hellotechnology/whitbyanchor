@@ -574,6 +574,9 @@ input[type=submit].secondary:hover{
 }
 
 @media screen and (max-width:540px){
+	.search-form{
+		width:auto;
+	}
 	.search-form input[type="search"]{
 		width:140px;
 	}
