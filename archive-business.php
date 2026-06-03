@@ -48,7 +48,7 @@ uasort( $location_counts, fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 <main id="primary" class="site-main business-directory">
 	<div>
 		<h1>Whitby Business Directory</h1>
-		<p>Find local businesses, trades people and organisations across a wide variety of business sectors. <a href="/advertising-rates/">Submit your business</a>.</p>
+		<p>Find local businesses, trades people and organisations across a wide variety of business sectors. <a href="/submit-your-business/">Submit your business</a>.</p>
 
 		<section class="businesses">
 			<header>
