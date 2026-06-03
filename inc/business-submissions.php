@@ -293,7 +293,6 @@ function bsub_shortcode() {
 
 		<!-- Step 1: Business details -->
 		<div class="bsub-step" id="bsub-step-1">
-			<h2 class="bsub-step__title">Your business details</h2>
 			<form id="bsub-details-form" enctype="multipart/form-data" novalidate>
 				<?php wp_nonce_field( 'bsub_nonce', 'bsub_nonce' ); ?>
 
@@ -533,7 +532,7 @@ function bsub_inline_styles() {
 	}
 	?>
 	<style>
-	.bsub-form-wrap { max-width: 600px; margin: 0 auto; }
+	.bsub-form-wrap { margin: 0 auto; }
 	.bsub-step__title { margin-bottom: 1rem; }
 	.bsub-intro { margin-bottom: 1.5rem; color: #555; }
 	.bsub-field { margin-bottom: 1.25rem; }

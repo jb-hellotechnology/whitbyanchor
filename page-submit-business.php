@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Submit a Business
+ * Template Name: Submit Business
  */
 
 get_header();
