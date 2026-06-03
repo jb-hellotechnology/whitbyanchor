@@ -995,11 +995,13 @@ main.business-directory #businesses-list{
 
 }
 
-.post-type-archive-announcement main.business-directory .business-card__body{
+.post-type-archive-announcement main.business-directory .business-card__body,
+.post-type-archive-business main.business-directory .business-card__body{
 	margin-top:0;
 }
 
-.post-type-archive-announcement main.business-directory .business-card__body h2{
+.post-type-archive-announcement main.business-directory .business-card__body h2,
+.post-type-archive-business main.business-directory .business-card__body h2{
 	margin-top:0;
 }
 
