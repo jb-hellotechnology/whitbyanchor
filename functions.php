@@ -17,6 +17,7 @@ require_once get_template_directory() . '/inc/events-ajax.php';
 require_once get_template_directory() . '/inc/events-widget.php';
 require_once get_template_directory() . '/inc/events-csv-importer.php';
 require_once get_template_directory() . '/inc/business-listings.php';
+require_once get_template_directory() . '/inc/business-submissions.php';
 require_once get_template_directory() . '/inc/announcements.php';
 
 /**
