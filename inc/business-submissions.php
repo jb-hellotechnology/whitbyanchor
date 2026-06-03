@@ -569,7 +569,140 @@ function bsub_inline_styles() {
 
 
 // ---------------------------------------------------------------------------
-// 6. ADMIN — subscription status column on business list
+// 6. SHORTCODE  [business_manage_subscription]
+// ---------------------------------------------------------------------------
+// Renders an email lookup form. On submission it finds the matching business
+// post, creates a Stripe Customer Portal session, and redirects the user.
+// The portal lets them update their card, change plan, or cancel.
+
+add_shortcode( 'business_manage_subscription', 'bsub_manage_shortcode' );
+
+function bsub_manage_shortcode() {
+	ob_start();
+	?>
+	<div class="bsub-manage-wrap" id="bsub-manage-wrap">
+		<p class="bsub-intro">Enter the email address you used when submitting your listing and we'll take you to your subscription dashboard.</p>
+		<form id="bsub-manage-form" novalidate>
+			<div class="bsub-field bsub-field--required">
+				<label for="bsub_manage_email">Email address</label>
+				<input type="email" id="bsub_manage_email" name="email" required placeholder="hello@example.com">
+			</div>
+			<div class="bsub-error" id="bsub-manage-error" hidden></div>
+			<button type="submit" class="bsub-btn">Go to subscription dashboard →</button>
+		</form>
+		<div class="bsub-loading" id="bsub-manage-loading" hidden>
+			<span class="bsub-spinner"></span> Looking up your account…
+		</div>
+	</div>
+	<script>
+	(function () {
+		var ajaxUrl = <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>;
+		var nonce   = <?php echo wp_json_encode( wp_create_nonce( 'bsub_nonce' ) ); ?>;
+		var form    = document.getElementById('bsub-manage-form');
+		var errEl   = document.getElementById('bsub-manage-error');
+		var loading = document.getElementById('bsub-manage-loading');
+
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			errEl.hidden = true;
+
+			var email = form.querySelector('[name="email"]').value.trim();
+			if (!email) { errEl.textContent = 'Please enter your email address.'; errEl.hidden = false; return; }
+
+			form.hidden = true;
+			loading.hidden = false;
+
+			var fd = new FormData();
+			fd.set('action', 'bsub_customer_portal');
+			fd.set('nonce',  nonce);
+			fd.set('email',  email);
+
+			fetch(ajaxUrl, { method: 'POST', body: fd })
+				.then(function (r) { return r.json(); })
+				.then(function (data) {
+					if (data.success && data.data.url) {
+						window.location.href = data.data.url;
+					} else {
+						loading.hidden = true;
+						form.hidden = false;
+						errEl.textContent = data.data || 'No subscription found for that email address.';
+						errEl.hidden = false;
+					}
+				})
+				.catch(function () {
+					loading.hidden = true;
+					form.hidden = false;
+					errEl.textContent = 'Network error. Please try again.';
+					errEl.hidden = false;
+				});
+		});
+	})();
+	</script>
+	<?php
+	return ob_get_clean();
+}
+
+
+// ---------------------------------------------------------------------------
+// 7. AJAX — create Stripe Customer Portal session
+// ---------------------------------------------------------------------------
+
+add_action( 'wp_ajax_bsub_customer_portal',        'bsub_customer_portal' );
+add_action( 'wp_ajax_nopriv_bsub_customer_portal', 'bsub_customer_portal' );
+
+function bsub_customer_portal() {
+	check_ajax_referer( 'bsub_nonce', 'nonce' );
+
+	$email = sanitize_email( $_POST['email'] ?? '' );
+	if ( ! is_email( $email ) ) {
+		wp_send_json_error( 'Please enter a valid email address.' );
+	}
+
+	// Find a business post with a matching submission email and a Stripe customer ID.
+	$posts = get_posts( [
+		'post_type'      => 'business',
+		'post_status'    => [ 'publish', 'pending', 'draft' ],
+		'posts_per_page' => 1,
+		'meta_query'     => [
+			'relation' => 'AND',
+			[
+				'key'   => '_business_email',
+				'value' => $email,
+			],
+			[
+				'key'     => '_stripe_customer_id',
+				'compare' => 'EXISTS',
+			],
+		],
+	] );
+
+	if ( empty( $posts ) ) {
+		wp_send_json_error( 'No subscription found for that email address.' );
+	}
+
+	$customer_id = get_post_meta( $posts[0]->ID, '_stripe_customer_id', true );
+	if ( ! $customer_id ) {
+		wp_send_json_error( 'No subscription found for that email address.' );
+	}
+
+	$sk = defined( 'STRIPE_SECRET_KEY' ) ? STRIPE_SECRET_KEY : get_option( 'stripe_secret_key' );
+	\Stripe\Stripe::setApiKey( $sk );
+
+	try {
+		$session = \Stripe\BillingPortal\Session::create( [
+			'customer'   => $customer_id,
+			'return_url' => get_permalink( $posts[0]->ID ) ?: home_url( '/business-directory/' ),
+		] );
+
+		wp_send_json_success( [ 'url' => $session->url ] );
+	} catch ( \Exception $e ) {
+		wp_send_json_error( 'Could not open the subscription dashboard. Please try again.' );
+	}
+}
+
+
+// ---------------------------------------------------------------------------
+// 8. ADMIN — subscription status column on business list
 // ---------------------------------------------------------------------------
 
 add_filter( 'manage_business_posts_columns', function ( $cols ) {
