@@ -351,7 +351,7 @@ function bsub_shortcode() {
 				<?php endif; ?>
 
 				<div class="bsub-field">
-					<label for="bsub_logo">Logo / photo <span class="bsub-hint">(JPEG, PNG, WebP — max 2 MB)</span></label>
+					<label for="bsub_logo">Logo / photo <span class="bsub-hint">Please upload a JPG or PNG image. Ideally in 16:9 format, otherwise your image may be cropped.</span></label>
 					<input type="file" id="bsub_logo" name="logo" accept="image/jpeg,image/png,image/gif,image/webp">
 				</div>
 
