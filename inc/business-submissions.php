@@ -544,7 +544,7 @@ function bsub_inline_styles() {
 	.bsub-field input[type="tel"],
 	.bsub-field input[type="url"],
 	.bsub-field textarea,
-	.bsub-field select { width: 100%; padding: .6rem .75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+	.bsub-field select { width: 100%; padding: .6rem .75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
 	.bsub-field textarea { resize: vertical; }
 	.bsub-plans { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 	.bsub-plan { flex: 1; min-width: 180px; cursor: pointer; }
@@ -554,7 +554,8 @@ function bsub_inline_styles() {
 	.bsub-plan__name { display: block; font-size: 1.1rem; margin-bottom: .25rem; }
 	.bsub-plan__price { display: block; font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
 	.bsub-plan__note { display: block; font-size: .8rem; color: #777; }
-	.bsub-btn { display: inline-block; padding: .7rem 1.5rem; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+	.bsub-btn { display: inline-block; padding: .7rem 1.5rem; background: var(--color-primary); color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+	.bsub-btn:hover{background: var(--color-secondary);color:#fff;}
 	.bsub-btn--secondary { background: #888; margin-right: .5rem; }
 	.bsub-btn:disabled { opacity: .6; cursor: not-allowed; }
 	.bsub-plan-actions { display: flex; align-items: center; }
