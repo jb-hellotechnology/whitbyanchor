@@ -554,7 +554,7 @@ function bsub_inline_styles() {
 	.bsub-plan__name { display: block; font-size: 1.1rem; margin-bottom: .25rem; }
 	.bsub-plan__price { display: block; font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
 	.bsub-plan__note { display: block; font-size: .8rem; color: #777; }
-	.bsub-btn { display: inline-block; padding: .7rem 1.5rem; background: currentColor; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+	.bsub-btn { display: inline-block; padding: .7rem 1.5rem; background: #1a1a1a; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
 	.bsub-btn--secondary { background: #888; margin-right: .5rem; }
 	.bsub-btn:disabled { opacity: .6; cursor: not-allowed; }
 	.bsub-plan-actions { display: flex; align-items: center; }
