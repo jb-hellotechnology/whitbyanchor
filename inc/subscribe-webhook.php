@@ -37,6 +37,7 @@ function sub_wh_maybe_handle() {
 	$sk             = defined( 'STRIPE_SECRET_KEY' )               ? STRIPE_SECRET_KEY               : '';
 
 	if ( ! $webhook_secret || ! $sk ) {
+		error_log( '[subscribe-webhook] ABORT: Stripe constants not configured.' );
 		status_header( 500 );
 		exit( 'Stripe not configured.' );
 	}
@@ -49,9 +50,12 @@ function sub_wh_maybe_handle() {
 	try {
 		$event = \Stripe\Webhook::constructEvent( $payload, $sig, $webhook_secret );
 	} catch ( \Exception $e ) {
+		error_log( '[subscribe-webhook] Signature verification failed: ' . $e->getMessage() );
 		status_header( 400 );
 		exit( 'Webhook error: ' . $e->getMessage() );
 	}
+
+	error_log( '[subscribe-webhook] Received event: ' . $event->type . ' (' . $event->id . ')' );
 
 	switch ( $event->type ) {
 		case 'checkout.session.completed':
@@ -87,10 +91,12 @@ function sub_wh_handle_checkout_completed( $session ) {
 	}
 
 	if ( ! sub_wh_session_has_product( $session ) ) {
+		error_log( '[subscribe-webhook] checkout.session.completed ignored — product not matched.' );
 		return;
 	}
 
 	$email = sub_wh_email_from_session( $session );
+	error_log( '[subscribe-webhook] checkout.session.completed — adding email: ' . $email );
 	if ( $email ) {
 		sub_wh_brevo_add( $email );
 	}
@@ -194,6 +200,7 @@ function sub_wh_brevo_add( string $email ): void {
 	$api_key = defined( 'BREVO_API_KEY' )           ? BREVO_API_KEY                 : '';
 
 	if ( ! $list_id || ! $api_key || ! is_email( $email ) ) {
+		error_log( '[subscribe-webhook] brevo_add ABORT — list_id=' . $list_id . ' api_key_set=' . ( $api_key ? 'yes' : 'no' ) . ' email=' . $email );
 		return;
 	}
 
@@ -204,7 +211,7 @@ function sub_wh_brevo_add( string $email ): void {
 		'Accept'       => 'application/json',
 	];
 
-	wp_remote_post(
+	$response = wp_remote_post(
 		'https://api.brevo.com/v3/contacts',
 		[
 			'headers' => $headers,
@@ -216,6 +223,9 @@ function sub_wh_brevo_add( string $email ): void {
 			'timeout' => 10,
 		]
 	);
+
+	$code = is_wp_error( $response ) ? $response->get_error_message() : wp_remote_retrieve_response_code( $response );
+	error_log( '[subscribe-webhook] brevo_add response for ' . $email . ': ' . $code . ' — ' . ( is_wp_error( $response ) ? '' : wp_remote_retrieve_body( $response ) ) );
 }
 
 function sub_wh_brevo_remove( string $email ): void {
