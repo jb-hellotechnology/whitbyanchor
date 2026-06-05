@@ -19,6 +19,7 @@ require_once get_template_directory() . '/inc/events-csv-importer.php';
 require_once get_template_directory() . '/inc/business-listings.php';
 require_once get_template_directory() . '/inc/business-submissions.php';
 require_once get_template_directory() . '/inc/announcements.php';
+require_once get_template_directory() . '/inc/subscribe-webhook.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
