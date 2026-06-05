@@ -20,6 +20,8 @@
  *   invoice.payment_failed
  */
 
+define( 'STRIPE_SUBSCRIBE_PRODUCT_ID', 'prod_UNnn0UbaAwTtiy' );
+
 defined( 'ABSPATH' ) || exit;
 
 require_once get_template_directory() . '/vendor/autoload.php';
@@ -74,6 +76,20 @@ function sub_wh_maybe_handle() {
 // ---------------------------------------------------------------------------
 
 function sub_wh_handle_checkout_completed( $session ) {
+	// Retrieve the session with line items expanded so we can check the product.
+	try {
+		$session = \Stripe\Checkout\Session::retrieve( [
+			'id'     => $session->id,
+			'expand' => [ 'line_items.data.price.product' ],
+		] );
+	} catch ( \Exception $e ) {
+		return;
+	}
+
+	if ( ! sub_wh_session_has_product( $session ) ) {
+		return;
+	}
+
 	$email = sub_wh_email_from_session( $session );
 	if ( $email ) {
 		sub_wh_brevo_add( $email );
@@ -81,6 +97,10 @@ function sub_wh_handle_checkout_completed( $session ) {
 }
 
 function sub_wh_handle_subscription_deleted( $subscription ) {
+	if ( ! sub_wh_subscription_has_product( $subscription ) ) {
+		return;
+	}
+
 	$email = sub_wh_email_from_customer_id( $subscription->customer ?? '' );
 	if ( $email ) {
 		sub_wh_brevo_remove( $email );
@@ -88,7 +108,10 @@ function sub_wh_handle_subscription_deleted( $subscription ) {
 }
 
 function sub_wh_handle_payment_failed( $invoice ) {
-	// Use the email on the invoice if present, otherwise look up the customer.
+	if ( ! sub_wh_invoice_has_product( $invoice ) ) {
+		return;
+	}
+
 	$email = ! empty( $invoice->customer_email )
 		? $invoice->customer_email
 		: sub_wh_email_from_customer_id( $invoice->customer ?? '' );
@@ -96,6 +119,43 @@ function sub_wh_handle_payment_failed( $invoice ) {
 	if ( $email ) {
 		sub_wh_brevo_remove( $email );
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Product ID guards
+// ---------------------------------------------------------------------------
+
+function sub_wh_session_has_product( $session ): bool {
+	foreach ( $session->line_items->data ?? [] as $item ) {
+		$product = $item->price->product ?? null;
+		$id      = is_object( $product ) ? ( $product->id ?? '' ) : (string) $product;
+		if ( $id === STRIPE_SUBSCRIBE_PRODUCT_ID ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function sub_wh_subscription_has_product( $subscription ): bool {
+	foreach ( $subscription->items->data ?? [] as $item ) {
+		$product = $item->price->product ?? null;
+		$id      = is_object( $product ) ? ( $product->id ?? '' ) : (string) $product;
+		if ( $id === STRIPE_SUBSCRIBE_PRODUCT_ID ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function sub_wh_invoice_has_product( $invoice ): bool {
+	foreach ( $invoice->lines->data ?? [] as $line ) {
+		$product = $line->price->product ?? null;
+		$id      = is_object( $product ) ? ( $product->id ?? '' ) : (string) $product;
+		if ( $id === STRIPE_SUBSCRIBE_PRODUCT_ID ) {
+			return true;
+		}
+	}
+	return false;
 }
 
 // ---------------------------------------------------------------------------
