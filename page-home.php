@@ -110,6 +110,9 @@ get_header();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
 				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
+				if( in_category( 'advertorials' ) ):
+				   echo '<span class="advertorial">Advertorial</span>';
+				endif;
 				echo '</article>';
 				$i++;
 			}
@@ -158,6 +161,9 @@ get_header();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
 				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
+				if( in_category( 'advertorials' ) ):
+				   echo '<span class="advertorial">Advertorial</span>';
+				endif;
 				echo '</article>';
 			}
 		
