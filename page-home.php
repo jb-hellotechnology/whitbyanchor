@@ -89,6 +89,9 @@ get_header();
 				if($i==0){
 					the_title('<h2>', '</h2>');
 					echo '<figure>';
+					if( in_category( 'advertorials' ) ):
+					   echo '<span class="advertorial">Advertorial</span>';
+					endif;
 					the_post_thumbnail('full');
 					echo '</figure>';
 					echo '<figcaption>';
@@ -96,6 +99,9 @@ get_header();
 					echo '</figcaption>';
 				}else{
 					echo '<figure>';
+					if( in_category( 'advertorials' ) ):
+					   echo '<span class="advertorial">Advertorial</span>';
+					endif;
 					the_post_thumbnail('full');
 					echo '</figure>';
 					echo '<figcaption>';
@@ -110,9 +116,6 @@ get_header();
 				echo '</div>';
 				echo '<p class="excerpt">' . get_the_excerpt() . '</p>';
 				echo '<a class="article-link" href="' . get_the_permalink() . '"><span>Read: '.get_the_title().'</a>';
-				if( in_category( 'advertorials' ) ):
-				   echo '<span class="advertorial">Advertorial</span>';
-				endif;
 				echo '</article>';
 				$i++;
 			}
