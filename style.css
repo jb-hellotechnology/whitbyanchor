@@ -650,6 +650,10 @@ article .entry-meta{
 	margin-bottom:1rem;
 }
 
+article figure{
+	position: relative;
+}
+
 .category-heading{
 	margin-bottom:2rem;
 }
