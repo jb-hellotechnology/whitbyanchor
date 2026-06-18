@@ -1370,11 +1370,7 @@ article .npg-gallery__images figcaption{
 }
 
 .ad-wide .npa-advert__image img {
-	display: block;
-	width: 320px;
-	height: auto;
-	object-fit:cover;
-	aspect-ratio: auto;
+	
 }
 
 #events-list .ad-wide,
