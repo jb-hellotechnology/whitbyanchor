@@ -20,6 +20,8 @@ require_once get_template_directory() . '/inc/business-listings.php';
 require_once get_template_directory() . '/inc/business-submissions.php';
 require_once get_template_directory() . '/inc/announcements.php';
 require_once get_template_directory() . '/inc/subscribe-webhook.php';
+require_once get_template_directory() . '/inc/fact-file-pattern.php';
+require_once get_template_directory() . '/inc/gallery-slideshow.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.

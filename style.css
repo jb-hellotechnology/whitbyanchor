@@ -1733,6 +1733,38 @@ a.button.more-events{
 	text-align: left;
 }
 
+/* Core Gallery block enhanced into a slideshow (js/wp-gallery-slideshow.js).
+   Override the default grid/flex so slides sit one-per-view in the carousel. */
+.wp-block-gallery.f-carousel{
+	display:block;
+	gap:0;
+}
+
+/* Specificity must beat core's `.wp-block-gallery.has-nested-images
+   figure.wp-block-image` (which sets ~33% width) so each slide fills the
+   viewport one at a time. */
+.wp-block-gallery.has-nested-images.f-carousel figure.wp-block-image{
+	flex:0 0 100%;
+	width:100%;
+	max-width:100%;
+	margin:0;
+	padding:0;
+}
+
+.wp-block-gallery.has-nested-images.f-carousel figure.wp-block-image img{
+	width:100%;
+	height:auto;
+	aspect-ratio:16 / 9;
+	object-fit:cover;
+	display:block;
+}
+
+/* Always show the caption in the slideshow (overrides the hover-only rule). */
+.wp-block-gallery.has-nested-images.f-carousel figure.wp-block-image figcaption{
+	display:block;
+	text-align:left;
+}
+
 #carousel img{
 	height:auto;
 	width:100%;
@@ -1770,4 +1802,43 @@ main.narrow{
 	padding:0.5rem;
 	text-transform: uppercase;
 	font-size:80%;
+}
+
+.fact-file{
+	background:var(--color-primary);
+	color:var(--color-light);
+	padding:1.5rem;
+	float:right;
+	width:50%;
+	margin:2rem -30% 2rem 2rem;
+}
+
+.fact-file h3{
+	color:var(--color-light);
+	margin-top:0;
+}
+
+.fact-file p,
+.fact-file ul{
+	color:var(--color-light);
+	max-width:none;
+}
+
+@media screen and (max-width:1280px){
+	.fact-file{
+		margin-right:0;
+	}
+}
+
+@media screen and (max-width:640px){
+	.fact-file{
+		float:none;
+		width:auto;
+		margin:2rem 0;
+	}
+}
+
+.fact-file p{
+	color:var(--color-light);
+	margin:1rem 0;
 }
