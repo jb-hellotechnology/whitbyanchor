@@ -14,7 +14,7 @@ get_header();
 		$slug        = $category->slug;
 		$show_events = get_term_meta($category->term_id, 'show_events', true) === '1';
 		$paged       = get_query_var('paged') ? get_query_var('paged') : (get_query_var('page') ? get_query_var('page') : 1); 
-		echo $paged;
+			
 		echo '<h1 class="category-heading">' . $category->cat_name . '</h1>';
 
 		echo '<section class="articles news'; if ($show_events) { echo ' has-events';} echo '">';
