@@ -122,7 +122,7 @@ function whitbyanchor_ajax_get_events(): void {
 
 	// Fetch without a from_date constraint so multi-day events that started
 	// before today but haven't ended yet are included.
-	$all_events = get_events( [ 'limit' => 1000 ] );
+	$all_events = get_events( [ 'limit' => 10000 ] );
 
 	// ── "Future or current" filter ────────────────────────────────────────────
 	// Keep events whose effective end date (end_date for multi-day, start date
