@@ -1795,8 +1795,8 @@ main.narrow{
 
 .advertorial{
 	position: absolute;
-	top:0.5rem;
-	left:0.5rem;
+	bottom:0.5rem;
+	right:0.5rem;
 	background:var(--color-secondary);
 	color:#fff;
 	padding:0.5rem;
