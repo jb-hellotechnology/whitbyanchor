@@ -13,6 +13,7 @@ get_header();
 		$category    = get_queried_object();
 		$slug        = $category->slug;
 		$show_events = get_term_meta($category->term_id, 'show_events', true) === '1';
+		$paged       = get_query_var('paged') ? get_query_var('paged') : (get_query_var('page') ? get_query_var('page') : 1);
 
 		echo '<h1 class="category-heading">' . $category->cat_name . '</h1>';
 
@@ -25,6 +26,7 @@ get_header();
 				'posts_per_page' => 21,
 				'orderby'        => 'date',
 				'order'          => 'DESC',
+				'paged'          => $paged,
 			);
 
 			$query = new WP_Query($args);
@@ -56,6 +58,20 @@ get_header();
 			
 			echo '</div>';
 			echo '</div>';
+
+			$pagination = paginate_links( [
+				'base'      => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
+				'format'    => '?paged=%#%',
+				'current'   => $paged,
+				'total'     => $query->max_num_pages,
+				'prev_text' => '&laquo; Previous',
+				'next_text' => 'Next &raquo;',
+			] );
+			if ( $pagination ) {
+				echo '<nav class="category-pagination" aria-label="Category pages">';
+				echo $pagination;
+				echo '</nav>';
+			}
 
 			if ($show_events) {
 				if($slug=='wellbeing'){
@@ -160,10 +176,6 @@ get_header();
 				<?php echo '</section>'; // .events 
 
 			} // end if ($show_events)
-			
-		// next_posts_link() usage with max_num_pages
-		next_posts_link( 'Older Articles', $query->max_num_pages );
-		previous_posts_link( 'Newer Articles' );
 
 		if ($show_events) {
 			echo '</section>'; // .articles.villages
