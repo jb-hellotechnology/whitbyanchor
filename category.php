@@ -22,7 +22,7 @@ get_header();
 
 			$args = array(
 				'category_name'  => $slug,
-				'posts_per_page' => 20,
+				'posts_per_page' => 21,
 				'orderby'        => 'date',
 				'order'          => 'DESC',
 			);
@@ -160,6 +160,10 @@ get_header();
 				<?php echo '</section>'; // .events 
 
 			} // end if ($show_events)
+			
+		// next_posts_link() usage with max_num_pages
+		next_posts_link( 'Older Articles', $query->max_num_pages );
+		previous_posts_link( 'Newer Articles' );
 
 		if ($show_events) {
 			echo '</section>'; // .articles.villages

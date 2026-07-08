@@ -1795,13 +1795,13 @@ main.narrow{
 
 .advertorial{
 	position: absolute;
-	top:1rem;
-	right:1rem;
+	top:0.5rem;
+	left:0.5rem;
 	background:var(--color-secondary);
 	color:#fff;
 	padding:0.5rem;
 	text-transform: uppercase;
-	font-size:80%;
+	font-size:70%;
 }
 
 .fact-file{
