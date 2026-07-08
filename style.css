@@ -1842,3 +1842,7 @@ main.narrow{
 	color:var(--color-light);
 	margin:1rem 0;
 }
+
+nav.category-pagination{
+	max-width:380px;
+}
