@@ -184,7 +184,9 @@ function whitbyanchor_ajax_get_events(): void {
 	}
 
 	// ── Free-text search filter ───────────────────────────────────────────────
-	// Matches against post title, excerpt, and content (case-insensitive).
+	// Matches against post title, excerpt, content, and the AI-generated search
+	// keywords (synonyms, abbreviations, misspellings) — all case-insensitive.
+	// See inc/event-search-keywords.php for how the keywords meta is populated.
 	if ( $search ) {
 		$search_lower = mb_strtolower( $search );
 
@@ -192,10 +194,13 @@ function whitbyanchor_ajax_get_events(): void {
 			array_filter( $all_events, function ( $event ) use ( $search_lower ) {
 				$post = $event['post'];
 
+				$keywords = get_post_meta( $post->ID, '_event_search_keywords', true );
+
 				$haystack = mb_strtolower(
 					$post->post_title . ' ' .
 					$post->post_excerpt . ' ' .
-					wp_strip_all_tags( $post->post_content )
+					wp_strip_all_tags( $post->post_content ) . ' ' .
+					(string) $keywords
 				);
 
 				return str_contains( $haystack, $search_lower );
