@@ -459,8 +459,29 @@ function event_meta_box_html( $post ) {
 			<td><input type="time" id="event_end_time" name="event_end_time" value="<?php echo esc_attr( $end_time ); ?>"></td>
 		</tr>
 		<?php
+		$additional = get_post_meta( $post->ID, '_event_additional_dates', true );
+		$additional = $additional ? json_decode( $additional, true ) : [];
+		$additional = is_array( $additional ) ? $additional : [];
+		?>
+		<tr id="event-additional-dates-row">
+			<th><label>Additional Dates</label></th>
+			<td>
+				<div id="event-additional-dates">
+					<?php foreach ( $additional as $date ) : ?>
+						<div class="additional-date-entry">
+							<input type="date" name="event_additional_dates[]" value="<?php echo esc_attr( $date ); ?>">
+							<button type="button" class="button remove-additional-date">Remove</button>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<button type="button" class="button" id="add-additional-date">Add Date</button>
+				<p class="description">Extra one-off dates on which this event also takes place. Each uses the Start&nbsp;Time / End&nbsp;Time above. Leave empty for a single-date event.</p>
+			</td>
+		</tr>
+		<?php
 		$excluded = get_post_meta( $post->ID, '_event_excluded_dates', true );
 		$excluded = $excluded ? json_decode( $excluded, true ) : [];
+		$excluded = is_array( $excluded ) ? $excluded : [];
 		?>
 		<tr id="event-excluded-dates-row">
 			<th><label>Excluded Dates</label></th>
@@ -526,6 +547,20 @@ function event_meta_box_html( $post ) {
 			e.target.closest('.excluded-date-entry').remove();
 		}
 	});
+
+	document.getElementById('add-additional-date').addEventListener('click', function () {
+		var div = document.createElement('div');
+		div.className = 'additional-date-entry';
+		div.innerHTML = '<input type="date" name="event_additional_dates[]"> '
+					  + '<button type="button" class="button remove-additional-date">Remove</button>';
+		document.getElementById('event-additional-dates').appendChild(div);
+	});
+
+	document.getElementById('event-additional-dates').addEventListener('click', function (e) {
+		if ( e.target.classList.contains('remove-additional-date') ) {
+			e.target.closest('.additional-date-entry').remove();
+		}
+	});
 	</script>
 	<?php
 }
@@ -574,6 +609,20 @@ function event_meta_save( $post_id ) {
 		}
 	}
 	update_post_meta( $post_id, '_event_excluded_dates', wp_json_encode( $excluded_dates ) );
+
+	// Additional (irregular) dates the event also occurs on — same validation as
+	// excluded dates. Stored as a JSON array; absent on all pre-existing events.
+	$additional_dates = [];
+	if ( ! empty( $_POST['event_additional_dates'] ) && is_array( $_POST['event_additional_dates'] ) ) {
+		foreach ( $_POST['event_additional_dates'] as $date ) {
+			$date = sanitize_text_field( $date );
+			if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) {
+				$additional_dates[] = $date;
+			}
+		}
+	}
+	$additional_dates = array_values( array_unique( $additional_dates ) );
+	update_post_meta( $post_id, '_event_additional_dates', wp_json_encode( $additional_dates ) );
 }
 add_action( 'save_post_event', 'event_meta_save' );
 
@@ -630,8 +679,36 @@ function get_events( $args = [] ) {
 		
 		$excluded_raw    = get_post_meta( $post->ID, '_event_excluded_dates', true );
 		$excluded_dates  = $excluded_raw ? json_decode( $excluded_raw, true ) : [];
+		$excluded_dates  = is_array( $excluded_dates ) ? $excluded_dates : [];
 
 		if ( ! $start_date ) continue;
+
+		// Additional (irregular) dates: extra one-off occurrences that share the
+		// event's start/end time and render as single-day. Absent on all
+		// pre-existing events, so this is a no-op for legacy data.
+		$additional_raw   = get_post_meta( $post->ID, '_event_additional_dates', true );
+		$additional_dates = $additional_raw ? json_decode( $additional_raw, true ) : [];
+		if ( is_array( $additional_dates ) ) {
+			foreach ( array_unique( $additional_dates ) as $add_date ) {
+				if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', (string) $add_date ) ) continue;
+				if ( $add_date === $start_date ) continue; // never double the primary date
+				if ( in_array( $add_date, $excluded_dates, true ) ) continue;
+
+				$add_dt = new DateTime( $add_date );
+				if ( $add_dt >= $from && ( ! $until_filter || $add_dt <= $until_filter ) ) {
+					$events[] = [
+						'post'       => $post,
+						'date'       => $add_date,
+						'date_label' => $add_dt->format( 'l F j Y' ),
+						'start_time' => $start_time,
+						'end_time'   => $end_time,
+						'end_date'   => '',        // single-day occurrence
+						'venue'      => $venue,
+						'recurring'  => $recurring,
+					];
+				}
+			}
+		}
 
 		$intervals = [
 			'weekly'    => '+1 week',
@@ -845,6 +922,10 @@ function handle_duplicate_event() {
 	// Copy excluded dates (stored as JSON)
 	$excluded = get_post_meta( $post_id, '_event_excluded_dates', true );
 	update_post_meta( $new_post_id, '_event_excluded_dates', $excluded ?: wp_json_encode( [] ) );
+
+	// Copy additional (irregular) dates (stored as JSON)
+	$additional = get_post_meta( $post_id, '_event_additional_dates', true );
+	update_post_meta( $new_post_id, '_event_additional_dates', $additional ?: wp_json_encode( [] ) );
 
 	// Copy taxonomies (event_location and event_tag)
 	foreach ( [ 'event_location', 'event_tag' ] as $taxonomy ) {
