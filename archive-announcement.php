@@ -36,7 +36,7 @@ uasort( $tag_counts,      fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 <main id="primary" class="site-main business-directory">
 	<div>
 		<h1>Announcements</h1>
-		<p>Announcements of births, deaths and marriages. Announcements are free to place, please <a href="/submit-your-announcement">submit details here</a>.</p>
+		<p>Announcements of births, deaths and marriages. Announcements are free to place, please <a href="/submit-your-announcement">submit your announcement details here</a>.</p>
 
 		<section class="businesses announcements">
 			<header>
