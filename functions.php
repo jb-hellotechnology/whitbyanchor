@@ -1122,7 +1122,7 @@ add_action( 'login_enqueue_scripts', 'whitby_anchor_login_logo' );
  add_filter( 'excerpt_more', 'whitbyanchor_theme_excerpt_more' );
  
  add_filter( 'pre_get_posts', function ( WP_Query $query ) {
-	 if ( $query->is_search() && $query->is_main_query() ) {
+	 if ( ! is_admin() && $query->is_search() && $query->is_main_query() ) {
 		 $types = (array) $query->get( 'post_type' );
  
 		 // If post_type is empty WordPress searches all types, so we need
