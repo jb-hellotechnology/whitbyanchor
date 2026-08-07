@@ -2,6 +2,19 @@
 
 define( 'WHITBYANCHOR_BUSINESSES_PER_PAGE', 12 );
 
+/**
+ * Integer seed for the directory shuffle that changes once every 7 days.
+ *
+ * Fed to MySQL's RAND(seed) (see get_businesses()), it produces an order that
+ * is random but stable: the same for a whole week, a fresh order the next.
+ * The window is aligned to the Unix epoch, so it rolls over at 00:00 UTC every
+ * Thursday. To pivot on a different weekday, subtract an offset in seconds
+ * before dividing, e.g. ( time() - ( 4 * DAY_IN_SECONDS ) ) for a Monday flip.
+ */
+function whitbyanchor_weekly_random_seed() {
+	return (int) floor( time() / WEEK_IN_SECONDS );
+}
+
 // ---------------------------------------------------------------------------
 // 1. POST TYPE
 // ---------------------------------------------------------------------------
@@ -285,6 +298,7 @@ function get_businesses( $args = [] ) {
 		'location' => '',
 		'tag'      => '',
 		'search'   => '',
+		'orderby'  => 'weekly_random', // 'weekly_random' | 'title'
 		'limit'    => WHITBYANCHOR_BUSINESSES_PER_PAGE,
 	];
 	$args = wp_parse_args( $args, $defaults );
@@ -293,10 +307,20 @@ function get_businesses( $args = [] ) {
 		'post_type'      => 'business',
 		'posts_per_page' => intval( $args['limit'] ),
 		'post_status'    => 'publish',
-		'orderby'        => 'title',
-		'order'          => 'ASC',
 		'tax_query'      => [],
 	];
+
+	if ( 'weekly_random' === $args['orderby'] ) {
+		// Seeding RAND() with a value that only changes every 7 days gives a
+		// shuffle that looks random but stays fixed for the whole week, then
+		// reshuffles. Because the seed is identical for every request in that
+		// window, the initial page load and each "load more" AJAX request see
+		// the same order — so pagination never duplicates or skips a listing.
+		$query_args['orderby'] = 'RAND(' . whitbyanchor_weekly_random_seed() . ')';
+	} else {
+		$query_args['orderby'] = 'title';
+		$query_args['order']   = 'ASC';
+	}
 
 	if ( ! empty( $args['category'] ) ) {
 		$query_args['tax_query'][] = [
