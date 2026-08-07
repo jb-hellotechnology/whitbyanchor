@@ -1499,6 +1499,7 @@ figcaption span{
 /* Inputs, textareas and selects */
 .wpcf7 input[type="text"],
 .wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
 .wpcf7 textarea {
 	display: block;
 	width: 100%;
@@ -1515,6 +1516,7 @@ figcaption span{
 
 .wpcf7 input[type="text"]:focus,
 .wpcf7 input[type="email"]:focus,
+.wpcf7 input[type="tel"]:focus,
 .wpcf7 textarea:focus {
 	outline: none;
 	border-color: #313131;
@@ -1800,6 +1802,7 @@ a.button.more-events{
 .page-id-542 main,
 .page-id-1747 main,
 .page-id-1867 main,
+.page-id-3385 main,
 main.narrow{
 	max-width:768px;
 }
