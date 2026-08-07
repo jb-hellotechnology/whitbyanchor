@@ -101,44 +101,38 @@ function whitbyanchor_generate_event_keywords( int $post_id ): bool {
 add_action( WHITBYANCHOR_EVENT_KEYWORDS_HOOK, 'whitbyanchor_generate_event_keywords' );
 
 /**
- * Call the Claude API to expand event source text into search keywords.
- *
- * @return array|null Array of sanitised lowercase terms, or null on error.
+ * Build the user prompt sent to Claude for one event's source text.
  */
-function whitbyanchor_request_event_keywords( string $source ): ?array {
-	if ( ! defined( 'ANTHROPIC_API_KEY' ) || ! ANTHROPIC_API_KEY ) {
-		return null;
-	}
-
-	$prompt =
+function whitbyanchor_build_keywords_prompt( string $source ): string {
+	return
 		"You expand a local event listing into extra search keywords so visitors find it " .
 		"even when they search with synonyms, part-words, abbreviations, or common misspellings.\n\n" .
 		"Event:\n\"\"\"\n" . $source . "\n\"\"\"\n\n" .
 		"Return ONLY a JSON array of 10-30 lowercase terms (each one or two words): synonyms, " .
 		"related activities or themes, abbreviations, alternative phrasings, and likely misspellings. " .
 		"Do not include explanations or any text outside the JSON array.";
+}
 
-	$response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
-		'timeout' => 30,
-		'headers' => [
-			'x-api-key'         => ANTHROPIC_API_KEY,
-			'anthropic-version' => '2023-06-01',
-			'content-type'      => 'application/json',
+/**
+ * JSON request body (as a string) for one keyword-generation call.
+ */
+function whitbyanchor_keywords_request_body( string $source ): string {
+	return wp_json_encode( [
+		'model'      => WHITBYANCHOR_EVENT_KEYWORDS_MODEL,
+		'max_tokens' => 400,
+		'messages'   => [
+			[ 'role' => 'user', 'content' => whitbyanchor_build_keywords_prompt( $source ) ],
 		],
-		'body' => wp_json_encode( [
-			'model'      => WHITBYANCHOR_EVENT_KEYWORDS_MODEL,
-			'max_tokens' => 400,
-			'messages'   => [
-				[ 'role' => 'user', 'content' => $prompt ],
-			],
-		] ),
 	] );
+}
 
-	if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
-		return null;
-	}
-
-	$body = json_decode( wp_remote_retrieve_body( $response ), true );
+/**
+ * Parse a Claude Messages API response body into a clean term array.
+ *
+ * @return array|null Sanitised lowercase terms, or null if the body isn't usable.
+ */
+function whitbyanchor_parse_keywords_response( string $raw_body ): ?array {
+	$body = json_decode( $raw_body, true );
 	$text = $body['content'][0]['text'] ?? '';
 
 	$terms = json_decode( $text, true );
@@ -165,6 +159,138 @@ function whitbyanchor_request_event_keywords( string $source ): ?array {
 	}
 
 	return array_slice( array_keys( $clean ), 0, WHITBYANCHOR_EVENT_KEYWORDS_MAX );
+}
+
+/**
+ * Call the Claude API to expand a single event's source text into keywords.
+ *
+ * @return array|null Array of sanitised lowercase terms, or null on error.
+ */
+function whitbyanchor_request_event_keywords( string $source ): ?array {
+	if ( ! defined( 'ANTHROPIC_API_KEY' ) || ! ANTHROPIC_API_KEY ) {
+		return null;
+	}
+
+	$response = wp_remote_post( 'https://api.anthropic.com/v1/messages', [
+		'timeout' => 30,
+		'headers' => whitbyanchor_keywords_request_headers(),
+		'body'    => whitbyanchor_keywords_request_body( $source ),
+	] );
+
+	if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+		return null;
+	}
+
+	return whitbyanchor_parse_keywords_response( wp_remote_retrieve_body( $response ) );
+}
+
+/**
+ * Shared request headers for the Messages API.
+ */
+function whitbyanchor_keywords_request_headers(): array {
+	return [
+		'x-api-key'         => ANTHROPIC_API_KEY,
+		'anthropic-version' => '2023-06-01',
+		'content-type'      => 'application/json',
+	];
+}
+
+/**
+ * Generate keywords for several events at once using concurrent HTTP requests.
+ *
+ * All requests in the batch are fired in parallel (via the Requests library that
+ * WordPress bundles), so a batch of N events costs roughly one API round-trip
+ * instead of N sequential ones. Each element is stored as it comes back.
+ *
+ * @param int[] $post_ids Event IDs to (re)generate.
+ * @return array{done:int,failed:int} Counts of stored vs failed events.
+ */
+function whitbyanchor_generate_event_keywords_bulk( array $post_ids ): array {
+	$done   = 0;
+	$failed = 0;
+
+	if ( ! defined( 'ANTHROPIC_API_KEY' ) || ! ANTHROPIC_API_KEY || empty( $post_ids ) ) {
+		return [ 'done' => 0, 'failed' => count( $post_ids ) ];
+	}
+
+	$requests = [];
+	$hashes   = [];
+
+	foreach ( $post_ids as $post_id ) {
+		$post_id = (int) $post_id;
+		if ( get_post_type( $post_id ) !== 'event' || get_post_status( $post_id ) !== 'publish' ) {
+			continue;
+		}
+
+		$source = whitbyanchor_event_keyword_source( $post_id );
+		if ( $source === '' ) {
+			continue;
+		}
+
+		$hashes[ $post_id ]   = md5( $source );
+		$requests[ $post_id ] = [
+			'url'     => 'https://api.anthropic.com/v1/messages',
+			'type'    => 'POST',
+			'headers' => whitbyanchor_keywords_request_headers(),
+			'data'    => whitbyanchor_keywords_request_body( $source ),
+			'options' => [ 'timeout' => 30 ],
+		];
+	}
+
+	if ( empty( $requests ) ) {
+		return [ 'done' => 0, 'failed' => 0 ];
+	}
+
+	$responses = whitbyanchor_request_multiple( $requests );
+
+	foreach ( $requests as $post_id => $_ ) {
+		$response = $responses[ $post_id ] ?? null;
+		$terms    = null;
+
+		if ( is_object( $response ) && (int) ( $response->status_code ?? 0 ) === 200 ) {
+			$terms = whitbyanchor_parse_keywords_response( (string) ( $response->body ?? '' ) );
+		}
+
+		if ( $terms === null ) {
+			$failed++;
+			continue;
+		}
+
+		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_META, implode( ' ', $terms ) );
+		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_HASH_META, $hashes[ $post_id ] );
+		$done++;
+	}
+
+	return [ 'done' => $done, 'failed' => $failed ];
+}
+
+/**
+ * Fire multiple HTTP requests concurrently using WordPress's bundled Requests
+ * library, tolerating both the modern namespaced class (WP 6.2+) and the old
+ * global one. Returns responses keyed by the same keys as $requests.
+ */
+function whitbyanchor_request_multiple( array $requests ): array {
+	if ( class_exists( '\WpOrg\Requests\Requests' ) ) {
+		return (array) \WpOrg\Requests\Requests::request_multiple( $requests );
+	}
+	if ( class_exists( '\Requests' ) ) {
+		return (array) \Requests::request_multiple( $requests );
+	}
+
+	// Last-resort fallback: sequential blocking requests.
+	$out = [];
+	foreach ( $requests as $key => $req ) {
+		$res = wp_remote_post( $req['url'], [
+			'timeout' => 30,
+			'headers' => $req['headers'],
+			'body'    => $req['data'],
+		] );
+		$out[ $key ] = is_wp_error( $res ) ? null : (object) [
+			'status_code' => wp_remote_retrieve_response_code( $res ),
+			'body'        => wp_remote_retrieve_body( $res ),
+		];
+	}
+	return $out;
 }
 
 // ---------------------------------------------------------------------------
@@ -221,14 +347,19 @@ function whitbyanchor_run_event_keywords_backfill(): void {
 add_action( WHITBYANCHOR_EVENT_BACKFILL_HOOK, 'whitbyanchor_run_event_keywords_backfill' );
 
 /**
- * Count events still awaiting a first keyword generation.
+ * Get the next batch of event IDs still awaiting a first keyword generation.
+ *
+ * @param int $limit 0 (default) counts all; a positive value caps the result.
+ * @return int[]
  */
-function whitbyanchor_event_keywords_pending_count(): int {
-	$ids = get_posts( [
+function whitbyanchor_event_keywords_pending_ids( int $limit = 0 ): array {
+	return get_posts( [
 		'post_type'   => 'event',
 		'post_status' => 'publish',
 		'fields'      => 'ids',
-		'numberposts' => -1,
+		'numberposts' => $limit > 0 ? $limit : -1,
+		'orderby'     => 'ID',
+		'order'       => 'ASC',
 		'meta_query'  => [
 			[
 				'key'     => WHITBYANCHOR_EVENT_KEYWORDS_HASH_META,
@@ -236,9 +367,57 @@ function whitbyanchor_event_keywords_pending_count(): int {
 			],
 		],
 	] );
-
-	return count( $ids );
 }
+
+/**
+ * Count events still awaiting a first keyword generation.
+ */
+function whitbyanchor_event_keywords_pending_count(): int {
+	return count( whitbyanchor_event_keywords_pending_ids() );
+}
+
+// ---------------------------------------------------------------------------
+// 3b. FAST BACKFILL — browser-driven, concurrent, no cron/no 60s waits
+// ---------------------------------------------------------------------------
+
+// How many events to process (concurrently) per browser step. This also caps
+// how many API requests fire at once, so keep it within your API rate limits.
+const WHITBYANCHOR_EVENT_BACKFILL_STEP = 10;
+
+/**
+ * AJAX: process one step of the backfill and report remaining work.
+ *
+ * The admin page's JavaScript calls this repeatedly, back-to-back, until the
+ * queue is empty — so throughput is bounded by the API, not by WP-Cron.
+ */
+function whitbyanchor_ajax_backfill_step(): void {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( [ 'message' => 'Not allowed.' ], 403 );
+	}
+	check_ajax_referer( 'whitbyanchor_backfill_step', 'nonce' );
+
+	if ( ! defined( 'ANTHROPIC_API_KEY' ) || ! ANTHROPIC_API_KEY ) {
+		wp_send_json_error( [ 'message' => 'ANTHROPIC_API_KEY is not configured.' ], 400 );
+	}
+
+	// Give the concurrent batch room to finish on slow hosts.
+	if ( function_exists( 'set_time_limit' ) ) {
+		@set_time_limit( 120 );
+	}
+
+	$ids    = whitbyanchor_event_keywords_pending_ids( WHITBYANCHOR_EVENT_BACKFILL_STEP );
+	$result = empty( $ids )
+		? [ 'done' => 0, 'failed' => 0 ]
+		: whitbyanchor_generate_event_keywords_bulk( $ids );
+
+	wp_send_json_success( [
+		'processed' => count( $ids ),
+		'done'      => $result['done'],
+		'failed'    => $result['failed'],
+		'remaining' => whitbyanchor_event_keywords_pending_count(),
+	] );
+}
+add_action( 'wp_ajax_whitbyanchor_backfill_keywords_step', 'whitbyanchor_ajax_backfill_step' );
 
 // ---------------------------------------------------------------------------
 // 4. ADMIN — "Generate search keywords" tool under the Events menu
@@ -304,22 +483,129 @@ function whitbyanchor_event_keywords_admin_page(): void {
 			</tbody>
 		</table>
 
+		<h2>Fast backfill (recommended)</h2>
+		<p>Processes events in parallel, back-to-back, with no waiting on WP-Cron.
+		<strong>Keep this tab open</strong> until it finishes — 800 events takes a
+		few minutes.</p>
+
+		<p>
+			<button type="button" id="wa-kw-run" class="button button-primary"
+				<?php disabled( ! $has_key || $pending === 0 ); ?>>
+				Run backfill now
+			</button>
+			<button type="button" id="wa-kw-stop" class="button" style="display:none;">Stop</button>
+		</p>
+
+		<div id="wa-kw-progress" style="display:none;max-width:480px;">
+			<div style="background:#e0e0e0;border-radius:4px;overflow:hidden;height:22px;">
+				<div id="wa-kw-bar" style="background:#2271b1;height:100%;width:0;transition:width .2s;"></div>
+			</div>
+			<p id="wa-kw-status" style="margin-top:.5em;"></p>
+		</div>
+
+		<hr style="margin:2em 0;max-width:480px;">
+
+		<h2>Background backfill</h2>
+		<p class="description">Alternative that runs via WP-Cron without keeping a
+		tab open. Slower, and only progresses as the site receives traffic.</p>
 		<form method="post">
 			<?php wp_nonce_field( 'whitbyanchor_backfill_keywords' ); ?>
 			<p>
 				<button type="submit" name="whitbyanchor_backfill_keywords" value="1"
-					class="button button-primary"
+					class="button"
 					<?php disabled( ! $has_key || $pending === 0 || $running ); ?>>
-					Generate keywords for <?php echo (int) $pending; ?> event(s)
+					Start background backfill
 				</button>
 			</p>
 		</form>
 
-		<p class="description">Keywords are regenerated automatically whenever an
-		event is saved and its title, description, location, or tags have changed.
-		You can also regenerate a single event from the <strong>Events</strong> list
-		using the &ldquo;Regenerate keywords&rdquo; row action.</p>
+		<p class="description" style="margin-top:2em;">Keywords are regenerated
+		automatically whenever an event is saved and its title, description, location,
+		or tags have changed. You can also regenerate a single event from the
+		<strong>Events</strong> list using the &ldquo;Regenerate keywords&rdquo; row
+		action.</p>
 	</div>
+
+	<script>
+	( function () {
+		const runBtn  = document.getElementById( 'wa-kw-run' );
+		const stopBtn = document.getElementById( 'wa-kw-stop' );
+		if ( ! runBtn ) return;
+
+		const wrap   = document.getElementById( 'wa-kw-progress' );
+		const bar    = document.getElementById( 'wa-kw-bar' );
+		const status = document.getElementById( 'wa-kw-status' );
+
+		const ajaxUrl = <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>;
+		const nonce   = <?php echo wp_json_encode( wp_create_nonce( 'whitbyanchor_backfill_step' ) ); ?>;
+
+		let total = <?php echo (int) $pending; ?>;
+		let processedOk = 0;
+		let failed = 0;
+		let running = false;
+
+		function render( remaining ) {
+			const completed = Math.max( 0, total - remaining );
+			const pct = total ? Math.round( ( completed / total ) * 100 ) : 100;
+			bar.style.width = pct + '%';
+			status.textContent = completed + ' / ' + total + ' processed'
+				+ ( failed ? ' (' + failed + ' failed — click Run again to retry)' : '' );
+		}
+
+		async function step() {
+			const body = new URLSearchParams();
+			body.append( 'action', 'whitbyanchor_backfill_keywords_step' );
+			body.append( 'nonce', nonce );
+
+			const res  = await fetch( ajaxUrl, { method: 'POST', body, credentials: 'same-origin' } );
+			const json = await res.json();
+
+			if ( ! json.success ) {
+				throw new Error( ( json.data && json.data.message ) || 'Request failed' );
+			}
+			return json.data;
+		}
+
+		async function run() {
+			running = true;
+			runBtn.style.display  = 'none';
+			stopBtn.style.display = '';
+			wrap.style.display    = '';
+
+			while ( running ) {
+				let data;
+				try {
+					data = await step();
+				} catch ( e ) {
+					status.textContent = 'Error: ' + e.message;
+					break;
+				}
+
+				processedOk += data.done;
+				failed      += data.failed;
+				render( data.remaining );
+
+				if ( data.remaining === 0 ) {
+					status.textContent = 'Done — ' + processedOk + ' events processed'
+						+ ( failed ? ', ' + failed + ' failed.' : '.' );
+					break;
+				}
+				// A step that stored nothing means the API is failing/rate-limited.
+				if ( data.done === 0 && data.processed > 0 ) {
+					status.textContent += ' — stopped (API errors or rate limit). Wait a moment and Run again.';
+					break;
+				}
+			}
+
+			running = false;
+			runBtn.style.display  = '';
+			stopBtn.style.display = 'none';
+		}
+
+		runBtn.addEventListener( 'click', run );
+		stopBtn.addEventListener( 'click', function () { running = false; } );
+	} )();
+	</script>
 	<?php
 }
 
