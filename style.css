@@ -444,10 +444,10 @@ img.nav_icon{
 		left:0;
 		width:100%;
 	}
-	nav.mobile li.has-children ul{
+	nav.mobile li.menu-item-has-children ul{
 		display:none;
 	}
-	nav.mobile li.has-children.current-menu-item ul{
+	nav.mobile li.menu-item-has-children.current-menu-item ul{
 		display:block;
 	}
 	nav.mobile ul li ul li a{
