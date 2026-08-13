@@ -444,6 +444,12 @@ img.nav_icon{
 		left:0;
 		width:100%;
 	}
+	nav.mobile li.has-children ul{
+		display:none;
+	}
+	nav.mobile li.has-children.current-menu-item ul{
+		display:block;
+	}
 	nav.mobile ul li ul li a{
 		padding-left:2rem;
 		font-family:'Inter', sans-serif;
