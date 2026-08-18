@@ -74,6 +74,54 @@ function wa_print_is_configured(): bool {
 	return ! wa_print_missing_config();
 }
 
+/**
+ * True when this photo was submitted by a reader rather than taken by the
+ * site's photographers — submitted photos are not for sale.
+ */
+function wa_print_is_submitted( int $attachment_id ): bool {
+	return (bool) get_post_meta( $attachment_id, '_wa_print_submitted', true );
+}
+
+/**
+ * "Submitted photo" tick box on every image in the media library.
+ */
+function wa_print_attachment_field( array $form_fields, $post ): array {
+	if ( 0 !== strpos( (string) $post->post_mime_type, 'image' ) ) {
+		return $form_fields;
+	}
+
+	$form_fields['wa_print_submitted'] = [
+		'label' => __( 'Submitted photo', 'whitbyanchor' ),
+		'input' => 'html',
+		'html'  => sprintf(
+			'<input type="checkbox" id="attachments-%1$d-wa_print_submitted" name="attachments[%1$d][wa_print_submitted]" value="1"%2$s />',
+			(int) $post->ID,
+			checked( wa_print_is_submitted( $post->ID ), true, false )
+		),
+		'helps' => __( 'Tick for reader-submitted photos — hides the print/download purchase options.', 'whitbyanchor' ),
+	];
+	return $form_fields;
+}
+add_filter( 'attachment_fields_to_edit', 'wa_print_attachment_field', 10, 2 );
+
+function wa_print_save_attachment_field( array $post, array $attachment ): array {
+	if ( ! empty( $attachment['wa_print_submitted'] ) ) {
+		update_post_meta( $post['ID'], '_wa_print_submitted', '1' );
+	} else {
+		delete_post_meta( $post['ID'], '_wa_print_submitted' );
+	}
+	return $post;
+}
+add_filter( 'attachment_fields_to_save', 'wa_print_save_attachment_field', 10, 2 );
+
+/**
+ * Where photos are for sale: individual articles, and the home page (its
+ * "Week in Pictures" gallery). Never archives or other pages.
+ */
+function wa_print_sales_context(): bool {
+	return ( is_singular( 'post' ) || is_front_page() || is_page( 'home' ) ) && in_the_loop();
+}
+
 // ---------------------------------------------------------------------------
 // Front end: order links on inline images
 // ---------------------------------------------------------------------------
@@ -87,7 +135,7 @@ function wa_print_is_configured(): bool {
  * submits straight to Stripe. The noscript button covers JS-off visitors.
  */
 function wa_print_order_form_html( int $attachment_id ): string {
-	if ( ! wa_print_is_configured() || ! $attachment_id || ! wp_attachment_is_image( $attachment_id ) ) {
+	if ( ! wa_print_is_configured() || ! $attachment_id || ! wp_attachment_is_image( $attachment_id ) || wa_print_is_submitted( $attachment_id ) ) {
 		return '';
 	}
 
@@ -127,7 +175,7 @@ function wa_print_order_form_html( int $attachment_id ): string {
  * Append order links to core Image blocks on single articles only.
  */
 function wa_print_render_image_block( string $block_content, array $block ): string {
-	if ( ! is_singular( 'post' ) || ! in_the_loop() ) {
+	if ( ! wa_print_sales_context() ) {
 		return $block_content;
 	}
 
@@ -196,6 +244,10 @@ function wa_print_maybe_create_checkout() {
 
 	if ( ! $attachment_id || ! wp_attachment_is_image( $attachment_id ) ) {
 		wp_die( esc_html__( 'Photo not found.', 'whitbyanchor' ), '', 404 );
+	}
+
+	if ( wa_print_is_submitted( $attachment_id ) ) {
+		wp_die( esc_html__( 'This photo is not available to order.', 'whitbyanchor' ), '', 404 );
 	}
 
 	$filename    = basename( (string) get_attached_file( $attachment_id ) );
