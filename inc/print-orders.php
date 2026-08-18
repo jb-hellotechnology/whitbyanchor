@@ -150,22 +150,6 @@ function wa_print_render_image_block( string $block_content, array $block ): str
 }
 add_filter( 'render_block_core/image', 'wa_print_render_image_block', 10, 2 );
 
-/**
- * Show a thank-you notice at the top of the article after a completed checkout.
- */
-function wa_print_thanks_notice( string $content ): string {
-	if ( ! is_singular( 'post' ) || ! in_the_loop() || ! isset( $_GET['wa_print_thanks'] ) ) {
-		return $content;
-	}
-
-	$message = 'digital' === $_GET['wa_print_thanks']
-		? __( 'Thank you for your order! Your download link is on its way to your email inbox.', 'whitbyanchor' )
-		: __( 'Thank you for your order! You will receive a confirmation email from Stripe shortly.', 'whitbyanchor' );
-
-	return '<div class="wa-print-order__thanks">' . esc_html( $message ) . '</div>' . $content;
-}
-add_filter( 'the_content', 'wa_print_thanks_notice' );
-
 // ---------------------------------------------------------------------------
 // Checkout endpoint: ?wa_print_order=<option>&attachment=<id>&article=<id>
 // ---------------------------------------------------------------------------
@@ -238,7 +222,7 @@ function wa_print_maybe_create_checkout() {
 			'option'         => $option['label'],
 			'article'        => $article_url,
 		],
-		'success_url'          => add_query_arg( 'wa_print_thanks', 'digital' === $option_key ? 'digital' : '1', $article_url ),
+		'success_url'          => home_url( '/photo-order/' ),
 		'cancel_url'           => $article_url,
 	];
 

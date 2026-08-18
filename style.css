@@ -1907,14 +1907,6 @@ nav.category-pagination{
 	}
 }
 
-.wa-print-order__thanks{
-	background:var(--color-primary);
-	color:var(--color-light);
-	padding:1rem 2rem;
-	border-radius:3px;
-	margin-bottom:2rem;
-}
-
 .post-thumbnail .wa-print-order{
 	margin-top:0;
 	text-align:right;
