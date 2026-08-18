@@ -1448,7 +1448,8 @@ figcaption select{
 }
 
 figcaption form{
-	max-width:320px;
+	min-width:260px;
+	margin-left:40px;
 }
 
 .post-thumbnail figcaption{
