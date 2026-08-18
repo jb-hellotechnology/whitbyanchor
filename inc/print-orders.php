@@ -345,7 +345,12 @@ function wa_print_send_download_email( $session ): void {
 function wa_print_email_admin( $session ): void {
 	$meta     = $session->metadata;
 	$customer = $session->customer_details;
-	$shipping = $session->shipping_details ?? null;
+
+	// Older Stripe API versions expose the collected address as
+	// shipping_details; newer ones nest it under collected_information.
+	$shipping = $session->shipping_details
+		?? $session->collected_information->shipping_details
+		?? null;
 
 	$lines = [
 		__( 'New photo order', 'whitbyanchor' ),
@@ -380,6 +385,9 @@ function wa_print_email_admin( $session ): void {
 				$lines[] = $address->$field;
 			}
 		}
+	} elseif ( 'digital' !== ( $meta->option_key ?? '' ) ) {
+		$lines[] = '';
+		$lines[] = __( 'WARNING: no delivery address was found on this payment — check it in the Stripe dashboard.', 'whitbyanchor' );
 	}
 
 	$lines[] = '';
