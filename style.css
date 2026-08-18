@@ -1905,9 +1905,11 @@ nav.category-pagination{
 @media screen and (max-width:680px){
 	.wa-print-order{
 		display: block;
+		min-width:140px;
 	}
 	.wa-print-order select{
 		font-size:90%;
+		margin-left:0px;
 	}
 }
 
