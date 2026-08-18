@@ -31,6 +31,9 @@ require_once get_template_directory() . '/vendor/autoload.php';
 /** How long a digital download link stays valid. */
 define( 'WA_PRINT_DOWNLOAD_LIFETIME', 7 * DAY_IN_SECONDS );
 
+/** Where new-order notification emails are sent. */
+define( 'WA_PRINT_ORDER_NOTIFY_EMAIL', 'ceri@thewhitbyanchor.co.uk' );
+
 /**
  * The purchase options offered on each photo. Prices live in Stripe; each
  * option maps to a Price ID constant so amounts can change without a deploy.
@@ -387,7 +390,7 @@ function wa_print_email_admin( $session ): void {
 	);
 
 	wp_mail(
-		get_option( 'admin_email' ),
+		WA_PRINT_ORDER_NOTIFY_EMAIL,
 		sprintf( __( 'Photo order: %s', 'whitbyanchor' ), $meta->filename ?? '' ),
 		implode( "\n", $lines )
 	);
