@@ -93,7 +93,7 @@ function whitbyanchor_generate_event_keywords( int $post_id ): bool {
 		return false; // API/network error — leave existing keywords in place, retry next save
 	}
 
-	update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_META, implode( ' ', $terms ) );
+	update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_META, implode( ', ', $terms ) );
 	update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_HASH_META, $hash );
 
 	return true;
@@ -256,7 +256,7 @@ function whitbyanchor_generate_event_keywords_bulk( array $post_ids ): array {
 			continue;
 		}
 
-		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_META, implode( ' ', $terms ) );
+		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_META, implode( ', ', $terms ) );
 		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_HASH_META, $hashes[ $post_id ] );
 		$done++;
 	}
@@ -645,12 +645,12 @@ function whitbyanchor_handle_regenerate_keywords(): void {
 	delete_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_HASH_META );
 	$done = whitbyanchor_generate_event_keywords( $post_id );
 
-	$redirect = add_query_arg(
-		'keywords_regenerated',
-		$done ? '1' : '0',
-		admin_url( 'edit.php?post_type=event' )
-	);
-	wp_safe_redirect( $redirect );
+	// Return to wherever the action was triggered from (the event editor or the
+	// events list), falling back to the list.
+	$referer = wp_get_referer();
+	$base    = $referer ? remove_query_arg( 'keywords_regenerated', $referer ) : admin_url( 'edit.php?post_type=event' );
+
+	wp_safe_redirect( add_query_arg( 'keywords_regenerated', $done ? '1' : '0', $base ) );
 	exit;
 }
 add_action( 'admin_post_whitbyanchor_regenerate_keywords', 'whitbyanchor_handle_regenerate_keywords' );
@@ -668,6 +668,125 @@ function whitbyanchor_event_keywords_admin_notice(): void {
 add_action( 'admin_notices', 'whitbyanchor_event_keywords_admin_notice' );
 
 // ---------------------------------------------------------------------------
-// 6. CLEANUP — clear stored keywords when an event is deleted
+// 6. EDITOR META BOX — view & edit an event's keywords
+// ---------------------------------------------------------------------------
+
+function whitbyanchor_event_keywords_meta_box(): void {
+	add_meta_box(
+		'event_search_keywords',
+		'Search Keywords (AI-generated)',
+		'whitbyanchor_event_keywords_meta_box_html',
+		'event',
+		'normal',
+		'low'
+	);
+}
+add_action( 'add_meta_boxes', 'whitbyanchor_event_keywords_meta_box' );
+
+function whitbyanchor_event_keywords_meta_box_html( WP_Post $post ): void {
+	wp_nonce_field( 'whitbyanchor_event_keywords_save', 'whitbyanchor_event_keywords_nonce' );
+
+	$keywords  = (string) get_post_meta( $post->ID, WHITBYANCHOR_EVENT_KEYWORDS_META, true );
+	$has_key   = defined( 'ANTHROPIC_API_KEY' ) && ANTHROPIC_API_KEY;
+	$regen_url = wp_nonce_url(
+		admin_url( 'admin-post.php?action=whitbyanchor_regenerate_keywords&post=' . $post->ID ),
+		'whitbyanchor_regenerate_keywords_' . $post->ID
+	);
+	?>
+	<p class="description" style="margin-top:0;">
+		These words are added to the <code>/whats-on/</code> search so visitors find this
+		event via synonyms, abbreviations and common misspellings. They are generated
+		automatically (Claude Haiku&nbsp;4.5) and refreshed when the event content changes.
+		Edit the list below if you like — separate terms with commas. Manual edits are kept
+		until the event content changes or you regenerate.
+	</p>
+
+	<textarea name="event_search_keywords" id="event_search_keywords" rows="4" class="large-text"
+		placeholder="e.g. live music, gig, band, concert, folk"><?php echo esc_textarea( $keywords ); ?></textarea>
+	<input type="hidden" name="event_search_keywords_original" value="<?php echo esc_attr( $keywords ); ?>">
+
+	<p>
+		<?php if ( 'publish' === $post->post_status && $has_key ) : ?>
+			<a href="<?php echo esc_url( $regen_url ); ?>" class="button">Regenerate from event content</a>
+			<span class="description">Replaces the list above with a fresh AI-generated one.</span>
+		<?php elseif ( ! $has_key ) : ?>
+			<em>Set <code>ANTHROPIC_API_KEY</code> in <code>wp-config.php</code> to enable automatic generation.</em>
+		<?php else : ?>
+			<em>Publish this event to generate keywords automatically.</em>
+		<?php endif; ?>
+	</p>
+
+	<?php if ( '' === $keywords && $has_key && 'publish' === $post->post_status ) : ?>
+		<p class="description">No keywords stored yet — they’ll appear shortly after this event is saved, or click Regenerate.</p>
+	<?php endif; ?>
+	<?php
+}
+
+/**
+ * Normalise free-typed keyword input into the stored comma-separated form:
+ * split on commas/newlines (so multi-word terms survive), lowercase, trim,
+ * drop blanks, dedupe, and cap the count.
+ */
+function whitbyanchor_normalize_keyword_input( string $input ): string {
+	$parts = preg_split( '/[,\r\n]+/', $input ) ?: [];
+	$clean = [];
+
+	foreach ( $parts as $part ) {
+		$part = mb_strtolower( trim( sanitize_text_field( $part ) ) );
+		if ( $part !== '' ) {
+			$clean[ $part ] = true; // key dedupe preserves order
+		}
+	}
+
+	$terms = array_slice( array_keys( $clean ), 0, WHITBYANCHOR_EVENT_KEYWORDS_MAX );
+	return implode( ', ', $terms );
+}
+
+/**
+ * Persist manual keyword edits. Only acts when the field was actually changed,
+ * so a normal save never interferes with automatic generation. When it does act,
+ * it stamps the current content hash so the async regeneration scheduled on save
+ * skips this event and leaves the manual list intact.
+ */
+function whitbyanchor_event_keywords_meta_save( int $post_id ): void {
+	if (
+		! isset( $_POST['whitbyanchor_event_keywords_nonce'] ) ||
+		! wp_verify_nonce( sanitize_key( $_POST['whitbyanchor_event_keywords_nonce'] ), 'whitbyanchor_event_keywords_save' )
+	) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	if ( wp_is_post_revision( $post_id ) ) return;
+	if ( get_post_type( $post_id ) !== 'event' ) return;
+	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+	if ( ! isset( $_POST['event_search_keywords'] ) ) return;
+
+	$submitted = wp_unslash( $_POST['event_search_keywords'] );
+	$original  = isset( $_POST['event_search_keywords_original'] )
+		? wp_unslash( $_POST['event_search_keywords_original'] )
+		: '';
+
+	// Unchanged → leave the automatic pipeline untouched.
+	if ( trim( (string) $submitted ) === trim( (string) $original ) ) {
+		return;
+	}
+
+	update_post_meta(
+		$post_id,
+		WHITBYANCHOR_EVENT_KEYWORDS_META,
+		whitbyanchor_normalize_keyword_input( (string) $submitted )
+	);
+
+	// Mark current content as already processed so the scheduled regeneration
+	// (save_post_event, priority 20) doesn't overwrite this manual edit.
+	$source = whitbyanchor_event_keyword_source( $post_id );
+	if ( $source !== '' ) {
+		update_post_meta( $post_id, WHITBYANCHOR_EVENT_KEYWORDS_HASH_META, md5( $source ) );
+	}
+}
+add_action( 'save_post_event', 'whitbyanchor_event_keywords_meta_save', 15 );
+
+// ---------------------------------------------------------------------------
+// 7. CLEANUP — clear stored keywords when an event is deleted
 // ---------------------------------------------------------------------------
 // (Post meta is removed automatically with the post; nothing extra needed.)
