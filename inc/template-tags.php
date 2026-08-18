@@ -136,11 +136,16 @@ if ( ! function_exists( 'whitbyanchor_post_thumbnail' ) ) :
 				$thumbnail_id      = get_post_thumbnail_id();
 				$thumbnail_post    = get_post( $thumbnail_id );
 				$thumbnail_caption = $thumbnail_post ? $thumbnail_post->post_excerpt : '';
-				
-				if ( $thumbnail_caption ) : ?>
+				$order_links       = is_singular( 'post' ) && function_exists( 'wa_print_order_form_html' )
+					? wa_print_order_form_html( (int) $thumbnail_id )
+					: '';
+
+				if ( $thumbnail_caption || $order_links ) : ?>
 					<figcaption class="post-thumbnail__caption">
-						<span><?php echo esc_html( $thumbnail_caption ); ?></span>
-						<?php npl_the_print_link(); ?>
+						<?php if ( $thumbnail_caption ) : ?>
+							<span><?php echo esc_html( $thumbnail_caption ); ?></span>
+						<?php endif; ?>
+						<?php echo $order_links; // Escaped during build. ?>
 					</figcaption>
 				<?php endif; ?>
 				</figure>

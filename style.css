@@ -1437,6 +1437,20 @@ figure img{
 	margin-top:1rem;
 }
 
+figcaption{
+	display:flex;
+	justify-content: space-between;
+}
+
+figcaption select{
+	width:140px;
+	margin-left:10px;
+}
+
+figcaption form{
+	max-width:320px;
+}
+
 .post-thumbnail figcaption{
 	display:flex;
 	justify-content:space-between;
@@ -1450,7 +1464,7 @@ figure img{
 }
 
 figcaption span{
-	padding: 0.5rem 0 0.5rem 0;
+	
 }
 
 @media screen and (max-width:640px){
@@ -1875,4 +1889,33 @@ main.narrow{
 
 nav.category-pagination{
 	max-width:380px;
+}
+/* --- Photo print ordering ------------------------------------------ */
+
+.wa-print-order{
+	display: flex;
+	align-items: center;
+	font-size:90%;
+}
+
+@media screen and (max-width:680px){
+	.wa-print-order{
+		display: block;
+	}
+	.wa-print-order select{
+		font-size:90%;
+	}
+}
+
+.wa-print-order__thanks{
+	background:var(--color-primary);
+	color:var(--color-light);
+	padding:1rem 2rem;
+	border-radius:3px;
+	margin-bottom:2rem;
+}
+
+.post-thumbnail .wa-print-order{
+	margin-top:0;
+	text-align:right;
 }
