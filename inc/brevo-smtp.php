@@ -18,6 +18,8 @@
  *
  * Optional:
  *   define( 'BREVO_SMTP_FROM_NAME', 'The Whitby Anchor' ); // defaults to the site title
+ *   define( 'BREVO_TEMPLATE_DOWNLOAD', 12 );  // Brevo template id: customer digital-download email
+ *   define( 'BREVO_TEMPLATE_ORDER',    13 );  // Brevo template id: new-order email to the owners
  *   define( 'BREVO_SMTP_LOGIN', '9xxxxx001@smtp-brevo.com' ); // SMTP fallback only
  *   define( 'BREVO_SMTP_KEY',   'xsmtpsib-...' );            // SMTP fallback only
  *
@@ -42,24 +44,13 @@ function wa_brevo_api_ready(): bool {
 		&& wa_brevo_from_email();
 }
 
-// ---------------------------------------------------------------------------
-// Preferred path: transactional HTTP API
-// ---------------------------------------------------------------------------
-
 /**
- * Short-circuit wp_mail and deliver via the Brevo API instead.
- *
- * Returns null (fall through to the default mailer) when the API is not
- * configured or the message uses features we do not map (attachments).
+ * Normalise a wp_mail-style "to" (string, comma list, or array) into the
+ * Brevo API's recipient shape.
  */
-function wa_brevo_api_send( $short_circuit, array $atts ) {
-	if ( ! wa_brevo_api_ready() || ! empty( $atts['attachments'] ) ) {
-		return $short_circuit;
-	}
-
-	$to = $atts['to'] ?? [];
+function wa_brevo_recipients( $to ): array {
 	if ( ! is_array( $to ) ) {
-		$to = explode( ',', $to );
+		$to = explode( ',', (string) $to );
 	}
 	$recipients = [];
 	foreach ( $to as $address ) {
@@ -68,25 +59,13 @@ function wa_brevo_api_send( $short_circuit, array $atts ) {
 			$recipients[] = [ 'email' => $address ];
 		}
 	}
-	if ( ! $recipients ) {
-		error_log( '[brevo-smtp] API send skipped — no valid recipients.' );
-		return false;
-	}
+	return $recipients;
+}
 
-	$headers = $atts['headers'] ?? '';
-	$headers = is_array( $headers ) ? implode( "\n", $headers ) : (string) $headers;
-	$is_html = false !== stripos( $headers, 'text/html' );
-
-	$payload = [
-		'sender'  => [
-			'email' => wa_brevo_from_email(),
-			'name'  => wa_brevo_from_name(),
-		],
-		'to'      => $recipients,
-		'subject' => (string) ( $atts['subject'] ?? '' ),
-	];
-	$payload[ $is_html ? 'htmlContent' : 'textContent' ] = (string) ( $atts['message'] ?? '' );
-
+/**
+ * POST one message to the Brevo transactional API. Returns true on 2xx.
+ */
+function wa_brevo_api_post( array $payload ): bool {
 	$response = wp_remote_post(
 		'https://api.brevo.com/v3/smtp/email',
 		[
@@ -112,6 +91,69 @@ function wa_brevo_api_send( $short_circuit, array $atts ) {
 	}
 
 	return true;
+}
+
+/**
+ * Send using a template designed in Brevo (Transactional > Email Templates).
+ * The template supplies the subject, sender, and design; $params fills its
+ * {{ params.NAME }} placeholders. Returns false when templates are not
+ * configured or the send fails — callers should fall back to plain wp_mail.
+ */
+function wa_brevo_send_template( int $template_id, $to, array $params ): bool {
+	if ( ! defined( 'BREVO_API_KEY' ) || ! BREVO_API_KEY || 'YOUR_BREVO_API_KEY_HERE' === BREVO_API_KEY || ! $template_id ) {
+		return false;
+	}
+
+	$recipients = wa_brevo_recipients( $to );
+	if ( ! $recipients ) {
+		return false;
+	}
+
+	return wa_brevo_api_post(
+		[
+			'templateId' => $template_id,
+			'to'         => $recipients,
+			'params'     => $params,
+		]
+	);
+}
+
+// ---------------------------------------------------------------------------
+// Preferred path: transactional HTTP API
+// ---------------------------------------------------------------------------
+
+/**
+ * Short-circuit wp_mail and deliver via the Brevo API instead.
+ *
+ * Returns null (fall through to the default mailer) when the API is not
+ * configured or the message uses features we do not map (attachments).
+ */
+function wa_brevo_api_send( $short_circuit, array $atts ) {
+	if ( ! wa_brevo_api_ready() || ! empty( $atts['attachments'] ) ) {
+		return $short_circuit;
+	}
+
+	$recipients = wa_brevo_recipients( $atts['to'] ?? [] );
+	if ( ! $recipients ) {
+		error_log( '[brevo-smtp] API send skipped — no valid recipients.' );
+		return false;
+	}
+
+	$headers = $atts['headers'] ?? '';
+	$headers = is_array( $headers ) ? implode( "\n", $headers ) : (string) $headers;
+	$is_html = false !== stripos( $headers, 'text/html' );
+
+	$payload = [
+		'sender'  => [
+			'email' => wa_brevo_from_email(),
+			'name'  => wa_brevo_from_name(),
+		],
+		'to'      => $recipients,
+		'subject' => (string) ( $atts['subject'] ?? '' ),
+	];
+	$payload[ $is_html ? 'htmlContent' : 'textContent' ] = (string) ( $atts['message'] ?? '' );
+
+	return wa_brevo_api_post( $payload );
 }
 add_filter( 'pre_wp_mail', 'wa_brevo_api_send', 10, 2 );
 

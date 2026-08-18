@@ -277,6 +277,8 @@ function wa_print_maybe_handle_webhook() {
 		exit( 'Webhook error: ' . $e->getMessage() );
 	}
 
+	error_log( '[print-orders] Received event: ' . $event->type . ' (' . $event->id . ')' );
+
 	if ( 'checkout.session.completed' === $event->type ) {
 		wa_print_handle_checkout_completed( $event->data->object );
 	}
@@ -288,8 +290,15 @@ function wa_print_maybe_handle_webhook() {
 function wa_print_handle_checkout_completed( $session ): void {
 	// Only act on print orders; the subscribe flow shares this Stripe account.
 	if ( empty( $session->metadata->wa_print_order ) ) {
+		error_log( '[print-orders] checkout.session.completed ignored — not a print order.' );
 		return;
 	}
+
+	error_log( sprintf(
+		'[print-orders] Processing order: %s (%s)',
+		$session->metadata->filename ?? '?',
+		$session->metadata->option ?? '?'
+	) );
 
 	wa_print_email_admin( $session );
 
@@ -316,6 +325,25 @@ function wa_print_send_download_email( $session ): void {
 	$download_url = add_query_arg( 'wa_print_download', $token, home_url( '/' ) );
 	$site_name    = get_bloginfo( 'name' );
 
+	// Branded Brevo template when configured; the plain-text build below is
+	// the fallback so a template problem never loses an order email.
+	if ( defined( 'BREVO_TEMPLATE_DOWNLOAD' ) && function_exists( 'wa_brevo_send_template' ) ) {
+		$sent = wa_brevo_send_template(
+			(int) BREVO_TEMPLATE_DOWNLOAD,
+			$email,
+			[
+				'FILENAME'     => (string) ( $session->metadata->filename ?? '' ),
+				'DOWNLOAD_URL' => $download_url,
+				'EXPIRY_DAYS'  => (string) ( WA_PRINT_DOWNLOAD_LIFETIME / DAY_IN_SECONDS ),
+			]
+		);
+		if ( $sent ) {
+			error_log( '[print-orders] Download link emailed (template) to ' . $email );
+			return;
+		}
+		error_log( '[print-orders] Template download email failed — falling back to plain text.' );
+	}
+
 	$body = sprintf(
 		/* translators: 1: photo filename, 2: download URL, 3: number of days, 4: site name */
 		__(
@@ -334,7 +362,9 @@ function wa_print_send_download_email( $session ): void {
 		$body
 	);
 
-	if ( ! $sent ) {
+	if ( $sent ) {
+		error_log( '[print-orders] Download link emailed to ' . $email );
+	} else {
 		error_log( '[print-orders] Digital delivery email failed for ' . $email );
 	}
 }
@@ -397,11 +427,46 @@ function wa_print_email_admin( $session ): void {
 		$session->payment_intent ?? ''
 	);
 
-	wp_mail(
+	if ( defined( 'BREVO_TEMPLATE_ORDER' ) && function_exists( 'wa_brevo_send_template' ) ) {
+		$address_parts = [];
+		if ( $address ) {
+			if ( ! empty( $shipping->name ) ) {
+				$address_parts[] = $shipping->name;
+			}
+			foreach ( [ 'line1', 'line2', 'city', 'state', 'postal_code', 'country' ] as $field ) {
+				if ( ! empty( $address->$field ) ) {
+					$address_parts[] = $address->$field;
+				}
+			}
+		}
+
+		$sent = wa_brevo_send_template(
+			(int) BREVO_TEMPLATE_ORDER,
+			WA_PRINT_ORDER_NOTIFY_EMAIL,
+			[
+				'OPTION'         => (string) ( $meta->option ?? '' ),
+				'FILENAME'       => (string) ( $meta->filename ?? '' ),
+				'ARTICLE'        => (string) ( $meta->article ?? '' ),
+				'EDIT_URL'       => admin_url( 'post.php?post=' . (int) ( $meta->attachment_id ?? 0 ) . '&action=edit' ),
+				'CUSTOMER_NAME'  => (string) ( $customer->name ?? '' ),
+				'CUSTOMER_EMAIL' => (string) ( $customer->email ?? '' ),
+				'ADDRESS'        => implode( ', ', $address_parts ),
+				'PAYMENT_URL'    => 'https://dashboard.stripe.com/payments/' . ( $session->payment_intent ?? '' ),
+			]
+		);
+		if ( $sent ) {
+			error_log( '[print-orders] Order email (template) sent to ' . WA_PRINT_ORDER_NOTIFY_EMAIL );
+			return;
+		}
+		error_log( '[print-orders] Template order email failed — falling back to plain text.' );
+	}
+
+	$sent = wp_mail(
 		WA_PRINT_ORDER_NOTIFY_EMAIL,
 		sprintf( __( 'Photo order: %s', 'whitbyanchor' ), $meta->filename ?? '' ),
 		implode( "\n", $lines )
 	);
+	error_log( '[print-orders] Order email ' . ( $sent ? 'sent to ' . WA_PRINT_ORDER_NOTIFY_EMAIL : 'FAILED' ) );
 }
 
 /**
