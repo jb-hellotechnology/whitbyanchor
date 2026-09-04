@@ -209,3 +209,112 @@ function ajax_load_announcements() {
 		'has_more' => $has_more,
 	] );
 }
+// ---------------------------------------------------------------------------
+// 7. SOCIAL SHARING IMAGE
+// ---------------------------------------------------------------------------
+
+/**
+ * True on the announcements archive and on its tag archives.
+ */
+function whitbyanchor_is_announcements_archive() {
+	return is_post_type_archive( 'announcement' ) || is_tax( 'announcement_tag' );
+}
+
+/**
+ * The image used when the announcements archive is shared.
+ *
+ * Replace /images/og-announcements.jpg to change it, or filter the URL with
+ * whitbyanchor_announcements_og_image (e.g. to point at a media library item).
+ * Returns an empty string if the file is missing, so we never advertise a 404.
+ */
+function whitbyanchor_announcements_og_image() {
+	$file = '/images/og-announcements.jpg';
+	$url  = file_exists( get_template_directory() . $file )
+		? get_template_directory_uri() . $file
+		: '';
+
+	return apply_filters( 'whitbyanchor_announcements_og_image', $url );
+}
+
+/**
+ * Yoast SEO: force the fixed image on the announcements archive so the
+ * crawler can't pick a featured image from one of the listed announcements.
+ */
+add_filter( 'wpseo_frontend_presentation', function( $presentation ) {
+	if ( ! whitbyanchor_is_announcements_archive() ) {
+		return $presentation;
+	}
+
+	$image = whitbyanchor_announcements_og_image();
+	if ( ! $image ) {
+		return $presentation;
+	}
+
+	$presentation->open_graph_images = [ [ 'url' => $image ] ];
+	$presentation->twitter_image     = $image;
+
+	return $presentation;
+}, 20 );
+
+// Older Yoast versions (pre-14) used these string filters instead.
+foreach ( [ 'wpseo_opengraph_image', 'wpseo_twitter_image' ] as $whitbyanchor_og_filter ) {
+	add_filter( $whitbyanchor_og_filter, function( $image ) {
+		if ( ! whitbyanchor_is_announcements_archive() ) {
+			return $image;
+		}
+
+		$fixed = whitbyanchor_announcements_og_image();
+
+		return $fixed ? $fixed : $image;
+	}, 20 );
+}
+unset( $whitbyanchor_og_filter );
+
+/**
+ * Output the sharing tags ourselves when Yoast isn't active.
+ */
+function whitbyanchor_announcements_social_meta() {
+	if ( defined( 'WPSEO_VERSION' ) ) {
+		return; // Yoast is writing these tags — see the filters above.
+	}
+
+	if ( ! whitbyanchor_is_announcements_archive() ) {
+		return;
+	}
+
+	$image = whitbyanchor_announcements_og_image();
+	if ( ! $image ) {
+		return;
+	}
+
+	$url = is_tax( 'announcement_tag' )
+		? get_term_link( get_queried_object() )
+		: get_post_type_archive_link( 'announcement' );
+
+	if ( ! $url || is_wp_error( $url ) ) {
+		$url = home_url( '/announcements/' );
+	}
+
+	$description = __( 'Announcements of births, deaths and marriages from around Whitby.', 'whitbyanchor' );
+
+	printf( '<meta property="og:type" content="website" />' . "\n" );
+	printf( '<meta property="og:site_name" content="%s" />' . "\n", esc_attr( get_bloginfo( 'name' ) ) );
+	printf( '<meta property="og:title" content="%s" />' . "\n", esc_attr( wp_get_document_title() ) );
+	printf( '<meta property="og:description" content="%s" />' . "\n", esc_attr( $description ) );
+	printf( '<meta property="og:url" content="%s" />' . "\n", esc_url( $url ) );
+	printf( '<meta property="og:image" content="%s" />' . "\n", esc_url( $image ) );
+	printf( '<meta property="og:image:alt" content="%s" />' . "\n", esc_attr__( 'The Whitby Anchor — Announcements', 'whitbyanchor' ) );
+
+	// Dimensions help Facebook render the card on first scrape.
+	$size = @getimagesize( get_template_directory() . '/images/og-announcements.jpg' );
+	if ( $size ) {
+		printf( '<meta property="og:image:width" content="%d" />' . "\n", $size[0] );
+		printf( '<meta property="og:image:height" content="%d" />' . "\n", $size[1] );
+	}
+
+	printf( '<meta name="twitter:card" content="summary_large_image" />' . "\n" );
+	printf( '<meta name="twitter:title" content="%s" />' . "\n", esc_attr( wp_get_document_title() ) );
+	printf( '<meta name="twitter:description" content="%s" />' . "\n", esc_attr( $description ) );
+	printf( '<meta name="twitter:image" content="%s" />' . "\n", esc_url( $image ) );
+}
+add_action( 'wp_head', 'whitbyanchor_announcements_social_meta', 5 );
