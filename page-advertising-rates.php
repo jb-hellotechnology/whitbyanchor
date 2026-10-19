@@ -39,7 +39,7 @@ get_header();
 		<!-- Hero -->
 		<header class="ad-hero">
 			<div class="ad-hero__copy flow">
-				<p class="ad-eyebrow">Launch pricing · Advertise with The Anchor</p>
+				<p class="ad-eyebrow">Advertise with The Anchor</p>
 				<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 				<p class="ad-lede">Showcase your business to a captive audience. We are keen to work with and promote local businesses, with bespoke advertising packages available.</p>
 				<div class="ad-hero__actions">
@@ -206,7 +206,7 @@ get_header();
 		<!-- Closing call to action -->
 		<section class="ad-cta">
 			<div class="flow">
-				<h2>Make the most of our launch pricing</h2>
+				<h2>Reach engaged readers with your message</h2>
 				<p>Tell us about your business and we will put together a package that fits — including placement advice, so your advert lands where it counts.</p>
 				<a class="button secondary" href="<?php echo esc_url( $contact_url ); ?>">Contact The Anchor</a>
 			</div>
