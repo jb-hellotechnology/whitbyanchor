@@ -2045,3 +2045,555 @@ nav.category-pagination{
 	margin-top:0;
 	text-align:right;
 }
+
+/* ===========================================================================
+   Advertising Rates page
+   =========================================================================== */
+
+main.site-main.ad-rates{
+	max-width:1440px;
+}
+
+.ad-rates article{
+	margin:0 auto;
+}
+
+/* The theme caps p/ul/ol at 76ch for readability; the layout grids here are
+   lists, so lift the cap and reapply it only to the prose that wants it. */
+.ad-rates p,
+.ad-rates ul,
+.ad-rates ol,
+.ad-rates li{
+	max-width:none;
+}
+
+.ad-rates section{
+	margin:5rem 0;
+}
+
+.ad-rates h2{
+	margin-bottom:0.5rem;
+}
+
+.ad-rates .ad-section-intro{
+	font-family:'Inter', sans-serif;
+	font-size:var(--size-step-0);
+	max-width:60ch;
+	margin-bottom:2.5rem;
+	opacity:0.8;
+}
+
+/* --- Hero --- */
+.ad-hero{
+	display:grid;
+	grid-template-columns:1.1fr 1fr;
+	gap:3rem;
+	align-items:center;
+	margin:2rem 0 5rem;
+}
+
+.ad-eyebrow{
+	font-family:'Inter', sans-serif;
+	font-size:0.8rem;
+	letter-spacing:0.12em;
+	text-transform:uppercase;
+	color:var(--color-secondary);
+	font-weight:700;
+	margin-bottom:0.75rem;
+}
+
+.ad-hero .entry-title{
+	margin:0;
+}
+
+.ad-rates .ad-lede{
+	font-size:var(--size-step-1);
+	max-width:40ch;
+	font-family:"miller-banner", serif;
+}
+
+.ad-hero__actions{
+	display:flex;
+	flex-wrap:wrap;
+	gap:1rem;
+	margin-top:2rem;
+}
+
+.ad-hero__actions .button{
+	display:inline-block;
+}
+
+a.button.ad-button-ghost{
+	background:none;
+	color:var(--color-primary);
+	box-shadow:inset 0 0 0 2px var(--color-primary);
+}
+
+a.button.ad-button-ghost:hover{
+	background:var(--color-primary);
+	color:var(--color-light);
+}
+
+.ad-hero__since{
+	font-family:'Inter', sans-serif;
+	font-size:0.85rem;
+	margin-top:1.5rem;
+	opacity:0.7;
+}
+
+.ad-hero__mosaic{
+	position:relative;
+	display:grid;
+	grid-template-columns:1fr 1fr;
+	gap:0.75rem;
+}
+
+/* .page-id-43 main figure caps figures at 50% elsewhere on this page — the
+   mosaic tiles need the full grid track, so win on specificity here. */
+.ad-rates .ad-hero__mosaic figure{
+	margin:0;
+	overflow:hidden;
+	border-radius:3px;
+	max-width:none;
+	height:auto;
+}
+
+.ad-hero__mosaic figure:first-child{
+	grid-column:1 / -1;
+}
+
+.ad-hero__mosaic img{
+	display:block;
+	width:100%;
+	height:100%;
+	aspect-ratio:16 / 9;
+	object-fit:cover;
+	border-radius:3px;
+}
+
+.ad-hero__mosaic figure:first-child img{
+	aspect-ratio:2 / 1;
+}
+
+.ad-hero__mosaic-label{
+	position:absolute;
+	left:0.75rem;
+	top:0.75rem;
+	background:var(--color-primary);
+	color:var(--color-light);
+	font-family:'Inter', sans-serif;
+	font-size:0.7rem;
+	letter-spacing:0.08em;
+	text-transform:uppercase;
+	padding:0.4rem 0.7rem;
+	border-radius:3px;
+}
+
+/* --- Stats band --- */
+.ad-stats{
+	background:var(--color-primary);
+	color:var(--color-light);
+	padding:3rem 2.5rem;
+	border-radius:3px;
+}
+
+.ad-stats h2{
+	color:var(--color-light);
+	margin:0 0 2rem;
+	font-size:var(--size-step-2);
+}
+
+.ad-stats__grid{
+	display:grid;
+	grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+	gap:2.5rem 2rem;
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+
+/* Four to a row reads better than an odd orphan on the end. */
+@media screen and (min-width:901px){
+	.ad-stats__grid{
+		grid-template-columns:repeat(4, 1fr);
+	}
+}
+
+.ad-stats__grid li{
+	display:flex;
+	flex-direction:column;
+	gap:0.25rem;
+}
+
+.ad-stat__value{
+	font-family:"miller-banner", serif;
+	font-weight:800;
+	font-size:var(--size-step-4);
+	line-height:1;
+	color:var(--color-secondary);
+}
+
+.ad-stat__figure{
+	font-family:'Inter', sans-serif;
+	font-weight:700;
+	font-size:0.95rem;
+}
+
+.ad-stat__label{
+	font-family:'Inter', sans-serif;
+	font-size:0.8rem;
+	opacity:0.75;
+	line-height:1.4;
+}
+
+/* Reminder shown only to logged-in editors. */
+.ad-editor-note{
+	border:2px dashed var(--color-secondary);
+	border-radius:3px;
+	padding:1.25rem 1.5rem;
+	margin:2rem 0;
+	font-family:'Inter', sans-serif;
+	font-size:0.85rem;
+}
+
+.ad-editor-note ul{
+	margin:0.5rem 0 0;
+}
+
+.ad-editor-note li{
+	max-width:none;
+}
+
+/* --- Why advertise --- */
+.ad-reasons__grid,
+.ad-placements__grid,
+.ad-group__cards{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+
+.ad-reasons__grid{
+	display:grid;
+	grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+	gap:2rem;
+	margin-top:2.5rem;
+}
+
+.ad-reason{
+	border-top:3px solid var(--color-secondary);
+	padding-top:1.25rem;
+	max-width:none;
+}
+
+.ad-reason .material-symbols-outlined{
+	font-size:2.25rem;
+	color:var(--color-secondary);
+	display:block;
+	margin-bottom:0.5rem;
+}
+
+.ad-reason h3{
+	font-size:var(--size-step-1);
+	margin-bottom:0.5rem;
+}
+
+.ad-reason p{
+	font-family:'Inter', sans-serif;
+	font-size:0.9rem;
+	max-width:none;
+}
+
+/* --- Where your advert appears --- */
+.ad-placements__grid{
+	display:grid;
+	grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+	gap:2rem;
+}
+
+.ad-placement h3{
+	font-size:var(--size-step-1);
+	margin:1rem 0 0.5rem;
+}
+
+.ad-placement p{
+	font-family:'Inter', sans-serif;
+	font-size:0.9rem;
+	max-width:none;
+}
+
+/* Little wireframes showing where the advert sits on the page. */
+.ad-wireframe{
+	position:relative;
+	display:flex;
+	flex-direction:column;
+	gap:0.4rem;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	border-radius:3px;
+	padding:0.9rem;
+	height:150px;
+	overflow:hidden;
+}
+
+.ad-wireframe__bar{
+	display:block;
+	height:0.4rem;
+	border-radius:2px;
+	background:#e4e4e4;
+}
+
+.ad-wireframe__bar:nth-of-type(even){
+	width:70%;
+}
+
+.ad-wireframe__slot{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background:var(--color-secondary);
+	color:#fff;
+	font-family:'Inter', sans-serif;
+	font-size:0.65rem;
+	letter-spacing:0.06em;
+	text-transform:uppercase;
+	border-radius:2px;
+	padding:0.5rem;
+	min-height:2.25rem;
+}
+
+.ad-wireframe--wide .ad-wireframe__slot{
+	min-height:3.25rem;
+}
+
+.ad-wireframe--column .ad-wireframe__slot{
+	order:-1;
+	min-height:2.75rem;
+}
+
+.ad-wireframe--inline .ad-wireframe__slot{
+	margin:0 auto;
+	width:80%;
+}
+
+.ad-wireframe--sticky .ad-wireframe__slot{
+	position:absolute;
+	left:0.9rem;
+	right:0.9rem;
+	bottom:0.9rem;
+	min-height:1.9rem;
+}
+
+/* --- Packages --- */
+.ad-group{
+	margin-bottom:4.5rem;
+}
+
+.ad-group__header{
+	margin-bottom:2rem;
+}
+
+.ad-group__header h3{
+	font-size:var(--size-step-2);
+	border-bottom:2px solid var(--color-primary);
+	padding-bottom:0.5rem;
+}
+
+.ad-rates .ad-group__header p{
+	font-family:'Inter', sans-serif;
+	font-size:0.95rem;
+	max-width:65ch;
+}
+
+.ad-group__cards{
+	display:grid;
+	grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+	gap:2rem;
+	align-items:stretch;
+}
+
+.ad-card{
+	position:relative;
+	display:flex;
+	flex-direction:column;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	border-radius:3px;
+	padding:2rem 1.75rem;
+	max-width:none;
+}
+
+.ad-card--featured{
+	border-color:var(--color-secondary);
+	box-shadow:0 0 0 2px var(--color-secondary);
+}
+
+.ad-card__badge{
+	position:absolute;
+	top:-0.8rem;
+	right:1.5rem;
+	background:var(--color-secondary);
+	color:#fff;
+	font-family:'Inter', sans-serif;
+	font-size:0.7rem;
+	letter-spacing:0.08em;
+	text-transform:uppercase;
+	padding:0.35rem 0.7rem;
+	border-radius:3px;
+}
+
+.ad-card__name{
+	font-family:"miller-banner", serif;
+	font-weight:800;
+	font-size:var(--size-step-1);
+	line-height:1.15;
+	margin-bottom:0.5rem;
+}
+
+.ad-card__blurb{
+	font-family:'Inter', sans-serif;
+	font-size:0.88rem;
+	opacity:0.85;
+	max-width:none;
+	margin-bottom:1.5rem;
+}
+
+.ad-card__prices{
+	list-style:none;
+	padding:0;
+	margin:0 0 1.5rem;
+	border-top:1px solid #e4e4e4;
+}
+
+.ad-card__prices li{
+	display:grid;
+	grid-template-columns:1fr auto;
+	align-items:baseline;
+	gap:0.25rem 1rem;
+	padding:0.75rem 0;
+	border-bottom:1px solid #e4e4e4;
+	max-width:none;
+}
+
+.ad-card__prices li.is-best{
+	background:rgba(217, 117, 26, 0.07);
+	padding-inline:0.75rem;
+	margin-inline:-0.75rem;
+}
+
+.ad-price__term{
+	font-family:'Inter', sans-serif;
+	font-size:0.85rem;
+	text-transform:uppercase;
+	letter-spacing:0.06em;
+	opacity:0.7;
+}
+
+.ad-price__value{
+	font-family:"miller-banner", serif;
+	font-weight:800;
+	font-size:var(--size-step-2);
+	line-height:1;
+	text-align:right;
+}
+
+.ad-price__sub,
+.ad-price__best{
+	grid-column:1 / -1;
+	font-family:'Inter', sans-serif;
+	font-size:0.75rem;
+	opacity:0.7;
+}
+
+.ad-price__best{
+	color:var(--color-secondary);
+	opacity:1;
+	font-weight:700;
+	text-transform:uppercase;
+	letter-spacing:0.06em;
+}
+
+.ad-card__features{
+	list-style:none;
+	padding:0;
+	margin:0 0 2rem;
+	font-family:'Inter', sans-serif;
+	font-size:0.88rem;
+}
+
+.ad-card__features li{
+	display:flex;
+	align-items:flex-start;
+	gap:0.5rem;
+	margin-bottom:0.6rem;
+	max-width:none;
+	line-height:1.45;
+}
+
+.ad-card__features .material-symbols-outlined{
+	font-size:1.1rem;
+	color:var(--color-secondary);
+	flex:0 0 auto;
+	margin-top:0.15rem;
+}
+
+a.button.ad-card__cta{
+	margin-top:auto;
+	text-align:center;
+	font-size:0.9rem;
+	padding:0.85rem 1.25rem;
+}
+
+/* --- Closing call to action --- */
+.ad-cta{
+	background:var(--color-primary);
+	color:var(--color-light);
+	border-radius:3px;
+	padding:3.5rem 2.5rem;
+	text-align:center;
+}
+
+.ad-cta h2{
+	color:var(--color-light);
+	margin-top:0;
+}
+
+.ad-rates .ad-cta p{
+	font-family:'Inter', sans-serif;
+	max-width:52ch;
+	margin:0 auto 2rem;
+}
+
+.ad-cta .button{
+	display:inline-block;
+}
+
+/* --- Narrower screens --- */
+@media screen and (max-width:900px){
+	.ad-hero{
+		grid-template-columns:1fr;
+		gap:2.5rem;
+	}
+	.ad-lede{
+		max-width:none;
+	}
+	.ad-stats,
+	.ad-cta{
+		padding:2.5rem 1.5rem;
+	}
+	.ad-rates section{
+		margin:3.5rem 0;
+	}
+}
+
+@media screen and (max-width:640px){
+	.ad-hero__actions .button,
+	.ad-cta .button{
+		display:block;
+		width:100%;
+		text-align:center;
+	}
+	.ad-card{
+		padding:1.75rem 1.25rem;
+	}
+}
