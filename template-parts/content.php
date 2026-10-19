@@ -22,6 +22,13 @@
 
 	<?php whitbyanchor_post_thumbnail(); ?>
 
+	<?php
+	// Sticky advert — pinned to the top of the browser on desktop, to the bottom on mobile.
+	if ( function_exists( 'npa_render_article_fixed_advert' ) ) {
+		npa_render_article_fixed_advert();
+	}
+	?>
+
 	<div class="entry-content flow">
 		<?php
 		if ( 'post' === get_post_type() ) :

@@ -1422,6 +1422,134 @@ article .npg-gallery__images figcaption{
 	}
 }
 
+/* Articles (inline) — dropped in after the 3rd paragraph, home page layout */
+.npa-adverts-injected--inline{
+	margin:2.5rem 0;
+}
+
+.npa-adverts-injected--inline .npa-advert{
+	margin-bottom:0;
+}
+
+.npa-adverts-injected--inline .npa-advert__image img{
+	width:200px;
+}
+
+.npa-adverts-injected--inline .npa-advert__text{
+	max-width:none;
+}
+
+@media screen and (max-width:768px){
+	.npa-adverts-injected--inline .npa-advert__image img{
+		width:100%;
+	}
+}
+
+/* Articles (fixed) — sticky in the right-hand margin on desktop */
+.npa-advert-fixed{
+	margin:1rem 0 2rem;
+}
+
+.npa-advert-fixed .npa-advert{
+	margin-bottom:0;
+}
+
+@media screen and (min-width:1240px){
+	.npa-advert-fixed{
+		float:right;
+		position:sticky;
+		top:1rem;
+		z-index:150;
+		/* Sits in the margin beside the 65ch article column, never over it. */
+		width:clamp(180px, calc((100% - 66ch) / 2), 260px);
+		margin:0 0 2rem 1.5rem;
+	}
+	.npa-advert-fixed .npa-advert{
+		font-size:0.8em;
+	}
+}
+
+/* ...and pinned across the bottom of the browser on tablet and mobile */
+@media screen and (max-width:1239px){
+	.npa-advert-fixed{
+		position:fixed;
+		left:0;
+		right:0;
+		bottom:0;
+		margin:0;
+		z-index:999;
+		background:#f8f8f8;
+		border-top:1px solid #d8d8d8;
+		box-shadow:0 -2px 8px rgba(29, 63, 105, 0.12);
+	}
+	.npa-advert-fixed .npa-advert,
+	.npa-advert-fixed .npa-advert__link{
+		display:flex;
+		align-items:center;
+		gap:0.75rem;
+	}
+	.npa-advert-fixed .npa-advert{
+		max-width:1440px;
+		height:64px;
+		margin:0 auto;
+		border:none;
+		border-radius:0;
+		background:none;
+		font-size:0.75em;
+	}
+	.npa-advert-fixed .npa-advert__link{
+		flex:1 1 auto;
+		height:100%;
+		padding-right:1rem;
+	}
+	.npa-advert-fixed .npa-advert__image{
+		flex:0 0 114px;
+	}
+	.npa-advert-fixed .npa-advert__image img{
+		width:114px;
+		height:64px;
+		aspect-ratio:auto;
+		border-radius:0;
+	}
+	.npa-advert-fixed .npa-advert__text{
+		padding:0;
+		max-width:none;
+		display:-webkit-box;
+		-webkit-line-clamp:2;
+		-webkit-box-orient:vertical;
+		overflow:hidden;
+	}
+	.npa-advert-fixed .npa-advert__text p{
+		margin:0;
+	}
+	.npa-advert-fixed .npa-advert__label{
+		position:absolute;
+		top:0;
+		right:0;
+		padding:1px 6px;
+		background:none;
+		border:none;
+		font-size:0.85em;
+	}
+	/* Keep the end of the page reachable above the pinned bar. */
+	body.npa-has-fixed-advert{
+		padding-bottom:72px;
+	}
+}
+
+/* Lift the floating newsletter button clear of the pinned bar. */
+@media screen and (min-width:681px) and (max-width:1239px){
+	body.npa-has-fixed-advert footer a.button{
+		bottom:calc(2rem + 72px);
+	}
+}
+
+@media print{
+	.npa-advert-fixed{
+		display:none;
+	}
+}
+
 figure{
 	
 }
