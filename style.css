@@ -2587,11 +2587,18 @@ a.button.ad-card__cta{
 }
 
 @media screen and (max-width:640px){
+	/* The theme's buttons are content-box, so width:100% would add the 2rem
+	   side padding on top and overrun the panel. */
 	.ad-hero__actions .button,
-	.ad-cta .button{
+	.ad-rates .ad-cta .button{
 		display:block;
 		width:100%;
+		box-sizing:border-box;
 		text-align:center;
+	}
+	.ad-rates .ad-cta .button{
+		max-width:22rem;
+		margin-inline:auto;
 	}
 	.ad-card{
 		padding:1.75rem 1.25rem;
