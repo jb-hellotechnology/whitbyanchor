@@ -326,6 +326,7 @@ function wa_advertising_packages() {
 							'Map of your location',
 							'Found by people already looking for you',
 						),
+						'cta_label' => 'Submit your listing',
 						'cta_url'   => '/submit-your-business/',
 					),
 					array(
