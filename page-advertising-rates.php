@@ -50,7 +50,7 @@ get_header();
 						<figure>
 							<a href="<?php echo esc_url( get_permalink( $item->ID ) ); ?>">
 								<?php echo get_the_post_thumbnail( $item->ID, 'medium_large' ); ?>
-								<figcaption><?php echo esc_html( get_the_title( $item->ID ) ); ?></figcaption>
+								<figcaption><span><?php echo esc_html( get_the_title( $item->ID ) ); ?></span></figcaption>
 							</a>
 						</figure>
 					<?php endforeach; ?>

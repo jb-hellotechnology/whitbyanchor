@@ -2177,10 +2177,16 @@ a.button.ad-button-ghost:hover{
 	background:linear-gradient(to top, rgba(29, 63, 105, 0.92), rgba(29, 63, 105, 0));
 	font-family:'Inter', sans-serif;
 	font-size:0.72rem;
-	line-height:1.35;
+	line-height:1.4;
 	color:#fff;
 	border:none;
 	margin:0;
+}
+
+/* The clamp lives on an element with no padding of its own: clipped at the
+   padding edge, a third line would otherwise paint into the bottom padding
+   and show as a half-cut line. */
+.ad-rates .ad-hero__mosaic figcaption span{
 	display:-webkit-box;
 	-webkit-line-clamp:2;
 	-webkit-box-orient:vertical;
