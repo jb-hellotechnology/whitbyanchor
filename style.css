@@ -2648,3 +2648,53 @@ a.button.ad-card__cta{
 		padding:1.75rem 1.25rem;
 	}
 }
+
+/* --- Village filter ------------------------------------------------- */
+
+form.village-filter{
+	display:grid;
+	grid-template-columns: minmax(240px, 420px) auto;
+	gap: 8px 16px;
+	align-items: end;
+	padding: 1rem;
+	border: 1px solid var(--color-primary);
+	border-radius: 6px;
+	margin-bottom: 2rem;
+	max-width: 760px;
+	box-sizing: border-box;
+}
+
+form.village-filter label{
+	display:block;
+	font-size:0.85rem;
+	font-weight:500;
+	margin-bottom:4px;
+	color:#555;
+}
+
+form.village-filter select{
+	width:100%;
+	padding:8px 10px;
+	border:1px solid #ccc;
+	border-radius:4px;
+	font-size:1rem;
+	background:#fff;
+	box-sizing:border-box;
+}
+
+form.village-filter select:focus{
+	outline:2px solid #0073aa;
+	outline-offset:1px;
+	border-color:transparent;
+}
+
+/* The submit button is only needed when the select can't auto-submit. */
+form.village-filter.village-filter--auto button{
+	display:none;
+}
+
+@media screen and (max-width:680px){
+	form.village-filter{
+		grid-template-columns:1fr;
+	}
+}

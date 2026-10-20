@@ -15,19 +15,33 @@ get_header();
 		$show_events = get_term_meta($category->term_id, 'show_events', true) === '1';
 		$paged       = get_query_var('paged') ? get_query_var('paged') : (get_query_var('page') ? get_query_var('page') : 1); 
 			
-		echo '<h1 class="category-heading">' . $category->cat_name . '</h1>';
+		// On the Villages page the dropdown can narrow the grid to one combined area.
+		$is_villages   = function_exists('whitbyanchor_render_village_filter') && $slug === WHITBYANCHOR_VILLAGE_PARENT_SLUG;
+		$village_group = $is_villages ? whitbyanchor_current_village_group() : null;
+
+		$heading = $village_group ? $village_group['label'] : $category->cat_name;
+		echo '<h1 class="category-heading">' . wp_kses($heading, []) . '</h1>';
+
+		if ($is_villages) {
+			whitbyanchor_render_village_filter($village_group ? $village_group['key'] : null);
+		}
 
 		echo '<section class="articles news'; if ($show_events) { echo ' has-events';} echo '">';
 		echo '<div>';
 		echo '<div class="cards-grid">';
 
 			$args = array(
-				'category_name'  => $slug,
 				'posts_per_page' => 21,
 				'orderby'        => 'date',
 				'order'          => 'DESC',
 				'paged'          => $paged,
 			);
+
+			if ($village_group) {
+				$args['category__in'] = $village_group['term_ids'];
+			} else {
+				$args['category_name'] = $slug;
+			}
 
 			$query = new WP_Query($args);
 
@@ -66,6 +80,7 @@ get_header();
 				'total'     => $query->max_num_pages,
 				'prev_text' => '&laquo; Previous',
 				'next_text' => 'Next &raquo;',
+				'add_args'  => $village_group ? [ WHITBYANCHOR_VILLAGE_QUERY_VAR => $village_group['key'] ] : [],
 			] );
 			if ( $pagination ) {
 				echo '<nav class="category-pagination" aria-label="Category pages">';
