@@ -320,12 +320,13 @@ function wa_advertising_packages() {
 						'prices'   => array(
 							array( 'term' => 'Per year', 'price' => '£120' ),
 						),
-						'features' => array(
+						'features'  => array(
 							'Business name and full description',
 							'Image, website link, email and phone',
 							'Map of your location',
 							'Found by people already looking for you',
 						),
+						'cta_url'   => '/submit-your-business/',
 					),
 					array(
 						'name'      => 'What’s On listing',
