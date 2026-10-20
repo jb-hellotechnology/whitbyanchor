@@ -27,25 +27,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 function wa_advertising_supplied_stats() {
 	$stats = array(
 		'monthly_views'   => array(
-			'value'  => null, // e.g. 48000
+			'value'  => 25600, // e.g. 48000
 			'figure' => 'Page views a month',
 			'label'  => 'Across news, What’s On and the directory',
 			'source' => 'Fathom Analytics',
 		),
 		'monthly_readers' => array(
-			'value'  => null, // e.g. 12500
+			'value'  => 19900, // e.g. 12500
 			'figure' => 'Readers a month',
 			'label'  => 'Locals and visitors planning a trip',
 			'source' => 'Fathom Analytics',
 		),
 		'newsletter'      => array(
-			'value'  => null, // e.g. 1400
+			'value'  => 700, // e.g. 1400
 			'figure' => 'Newsletter subscribers',
 			'label'  => 'Opened in inboxes every week',
 			'source' => 'Brevo',
 		),
 		'social'          => array(
-			'value'  => null, // e.g. 6200
+			'value'  => 8400, // e.g. 6200
 			'figure' => 'Social followers',
 			'label'  => 'Facebook and Instagram combined',
 			'source' => 'Your social accounts',
@@ -133,6 +133,64 @@ function wa_advertising_publishing_since() {
 	}
 
 	return get_the_date( 'F Y', $first[0] );
+}
+
+/**
+ * The advertorials shown in the hero mosaic, as proof of what we produce.
+ *
+ * Pin specific articles by slug below. Leave the list empty — or let a slug go
+ * stale — and the three most recent advertorials are used instead, so the
+ * mosaic never breaks.
+ */
+function wa_advertising_showcase_posts() {
+	$slugs = apply_filters(
+		'wa_advertising_showcase_slugs',
+		array(
+			'tapping-into-extra-business-with-opening-of-new-abbey-group-showroom',
+			'the-reaction-has-been-phenomenal-reflecting-on-first-year-in-business-as-saeweard',
+			'the-magpie-what-is-sacrosanct-and-why-it-wont-open-a-cafe-outside-of-whitby',
+		)
+	);
+
+	$posts = array();
+
+	if ( $slugs ) {
+		$posts = get_posts(
+			array(
+				'post_type'      => 'post',
+				'post_status'    => 'publish',
+				'post_name__in'  => $slugs,
+				'posts_per_page' => count( $slugs ),
+				'orderby'        => 'post_name__in',
+			)
+		);
+	}
+
+	// A renamed or unpublished article should not leave a hole in the mosaic.
+	if ( count( $posts ) < 3 ) {
+		$category = get_category_by_slug( 'advertorials' );
+		if ( $category ) {
+			$posts = get_posts(
+				array(
+					'post_type'      => 'post',
+					'post_status'    => 'publish',
+					'posts_per_page' => 3,
+					'cat'            => $category->term_id,
+					'meta_key'       => '_thumbnail_id',
+				)
+			);
+		}
+	}
+
+	// Only articles with an image are any use here.
+	return array_values(
+		array_filter(
+			$posts,
+			function ( $post ) {
+				return has_post_thumbnail( $post->ID );
+			}
+		)
+	);
 }
 
 /**
@@ -254,7 +312,7 @@ function wa_advertising_packages() {
 			array(
 				'id'    => 'listings',
 				'title' => 'Directory and What’s On Listings',
-				'intro' => 'Year-round presence in the resources local people use to find businesses and decide what to do.',
+				'intro' => 'Year-round presence in the resources local people use to find businesses and decide what to do. What’s On listings are free — we would far rather hear about what you are putting on.',
 				'cards' => array(
 					array(
 						'name'     => 'Business directory listing',
@@ -270,19 +328,32 @@ function wa_advertising_packages() {
 						),
 					),
 					array(
-						'name'     => 'What’s On premium listing',
-						'blurb'    => 'Promote your event, club, society, group or activity. Anyone may submit a free listing — a premium listing makes yours stand out.',
-						'prices'   => array(
-							array( 'term' => 'Weekly', 'price' => '£10' ),
-							array( 'term' => 'Monthly', 'price' => '£30' ),
-							array( 'term' => 'Yearly', 'price' => '£300', 'best' => true ),
+						'name'      => 'What’s On listing',
+						'blurb'     => 'Promote your event, club, society, group or activity. Listing is free and always will be — send it in and we will do the rest.',
+						'prices'    => array(
+							array( 'term' => 'Every event', 'price' => 'Free' ),
 						),
-						'features' => array(
+						'features'  => array(
+							'Title, date, time and a description',
+							'Listed on What’s On and the Events pages',
+							'Clubs, societies, groups and charities welcome',
+							'No catch — we simply want to hear what is on',
+						),
+						'cta_label' => 'Submit your event',
+					),
+					array(
+						'name'      => 'Promoted events',
+						'blurb'     => 'For commercial businesses running regular events who want them to stand out from the rest of the diary.',
+						'prices'    => array(
+							array( 'term' => 'Regular events', 'price' => 'By quote' ),
+						),
+						'features'  => array(
 							'Larger, eye-catching design',
 							'Image and a longer description',
 							'Direct link to your own site',
-							'Free listings include title, date, time and a short description',
+							'Priced around how often you run events',
 						),
+						'cta_label' => 'Contact us for a quote',
 					),
 				),
 			),

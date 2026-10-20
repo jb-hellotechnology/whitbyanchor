@@ -14,15 +14,8 @@ $derived     = wa_advertising_derived_stats();
 $since       = wa_advertising_publishing_since();
 $can_edit    = current_user_can( 'edit_pages' );
 
-// Recent articles make the hero mosaic — real, current, and never out of date.
-$recent = get_posts(
-	array(
-		'post_type'      => 'post',
-		'post_status'    => 'publish',
-		'posts_per_page' => 3,
-		'meta_key'       => '_thumbnail_id',
-	)
-);
+// Past advertorials make the hero mosaic — our own work, shown to advertisers.
+$showcase = wa_advertising_showcase_posts();
 
 get_header();
 ?>
@@ -51,14 +44,17 @@ get_header();
 				<?php endif; ?>
 			</div>
 
-			<?php if ( count( $recent ) >= 2 ) : ?>
-				<div class="ad-hero__mosaic" aria-hidden="true">
-					<?php foreach ( array_slice( $recent, 0, 3 ) as $item ) : ?>
+			<?php if ( count( $showcase ) >= 2 ) : ?>
+				<div class="ad-hero__mosaic">
+					<?php foreach ( array_slice( $showcase, 0, 3 ) as $item ) : ?>
 						<figure>
-							<?php echo get_the_post_thumbnail( $item->ID, 'medium_large' ); ?>
+							<a href="<?php echo esc_url( get_permalink( $item->ID ) ); ?>">
+								<?php echo get_the_post_thumbnail( $item->ID, 'medium_large' ); ?>
+								<figcaption><?php echo esc_html( get_the_title( $item->ID ) ); ?></figcaption>
+							</a>
 						</figure>
 					<?php endforeach; ?>
-					<span class="ad-hero__mosaic-label">Published this week on The Anchor</span>
+					<span class="ad-hero__mosaic-label">Advertorials we have produced</span>
 				</div>
 			<?php endif; ?>
 		</header>
@@ -183,8 +179,14 @@ get_header();
 									<?php endforeach; ?>
 								</ul>
 
-								<a class="button<?php echo ! empty( $card['featured'] ) ? ' secondary' : ''; ?> ad-card__cta" href="<?php echo esc_url( $contact_url ); ?>">
-									Enquire about <?php echo esc_html( $card['name'] ); ?>
+								<?php
+								$cta_label = ! empty( $card['cta_label'] )
+									? $card['cta_label']
+									: 'Enquire about ' . $card['name'];
+								$cta_url   = ! empty( $card['cta_url'] ) ? $card['cta_url'] : $contact_url;
+								?>
+								<a class="button<?php echo ! empty( $card['featured'] ) ? ' secondary' : ''; ?> ad-card__cta" href="<?php echo esc_url( $cta_url ); ?>">
+									<?php echo esc_html( $cta_label ); ?>
 								</a>
 							</li>
 						<?php endforeach; ?>
