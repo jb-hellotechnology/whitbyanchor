@@ -2047,35 +2047,36 @@ nav.category-pagination{
 }
 
 /* ===========================================================================
-   Advertising Rates page
+   Shared marketing-page layout (.ad-layout)
+   Used by the Advertising Rates and Subscribe pages.
    =========================================================================== */
 
-main.site-main.ad-rates{
+main.site-main.ad-layout{
 	max-width:1440px;
 }
 
-.ad-rates article{
+.ad-layout article{
 	margin:0 auto;
 }
 
 /* The theme caps p/ul/ol at 76ch for readability; the layout grids here are
    lists, so lift the cap and reapply it only to the prose that wants it. */
-.ad-rates p,
-.ad-rates ul,
-.ad-rates ol,
-.ad-rates li{
+.ad-layout p,
+.ad-layout ul,
+.ad-layout ol,
+.ad-layout li{
 	max-width:none;
 }
 
-.ad-rates section{
+.ad-layout section{
 	margin:5rem 0;
 }
 
-.ad-rates h2{
+.ad-layout h2{
 	margin-bottom:0.5rem;
 }
 
-.ad-rates .ad-section-intro{
+.ad-layout .ad-section-intro{
 	font-family:'Inter', sans-serif;
 	font-size:var(--size-step-0);
 	max-width:60ch;
@@ -2106,7 +2107,7 @@ main.site-main.ad-rates{
 	margin:0;
 }
 
-.ad-rates .ad-lede{
+.ad-layout .ad-lede{
 	font-size:var(--size-step-1);
 	max-width:40ch;
 	font-family:"miller-banner", serif;
@@ -2150,7 +2151,7 @@ a.button.ad-button-ghost:hover{
 
 /* .page-id-43 main figure caps figures at 50% elsewhere on this page — the
    mosaic tiles need the full grid track, so win on specificity here. */
-.ad-rates .ad-hero__mosaic figure{
+.ad-layout .ad-hero__mosaic figure{
 	position:relative;
 	margin:0;
 	overflow:hidden;
@@ -2168,7 +2169,7 @@ a.button.ad-button-ghost:hover{
 
 /* The article title doubles as the link text and as the label that makes the
    tile obviously clickable. */
-.ad-rates .ad-hero__mosaic figcaption{
+.ad-layout .ad-hero__mosaic figcaption{
 	position:absolute;
 	left:0;
 	right:0;
@@ -2186,7 +2187,7 @@ a.button.ad-button-ghost:hover{
 /* The clamp lives on an element with no padding of its own: clipped at the
    padding edge, a third line would otherwise paint into the bottom padding
    and show as a half-cut line. */
-.ad-rates .ad-hero__mosaic figcaption span{
+.ad-layout .ad-hero__mosaic figcaption span{
 	display:-webkit-box;
 	-webkit-line-clamp:2;
 	-webkit-box-orient:vertical;
@@ -2443,7 +2444,7 @@ a.button.ad-button-ghost:hover{
 	padding-bottom:0.5rem;
 }
 
-.ad-rates .ad-group__header p{
+.ad-layout .ad-group__header p{
 	font-family:'Inter', sans-serif;
 	font-size:0.95rem;
 	max-width:65ch;
@@ -2602,7 +2603,7 @@ a.button.ad-card__cta{
 	margin-top:0;
 }
 
-.ad-rates .ad-cta p{
+.ad-layout .ad-cta p{
 	font-family:'Inter', sans-serif;
 	max-width:52ch;
 	margin:0 auto 2rem;
@@ -2625,7 +2626,7 @@ a.button.ad-card__cta{
 	.ad-cta{
 		padding:2.5rem 1.5rem;
 	}
-	.ad-rates section{
+	.ad-layout section{
 		margin:3.5rem 0;
 	}
 }
@@ -2634,13 +2635,13 @@ a.button.ad-card__cta{
 	/* The theme's buttons are content-box, so width:100% would add the 2rem
 	   side padding on top and overrun the panel. */
 	.ad-hero__actions .button,
-	.ad-rates .ad-cta .button{
+	.ad-layout .ad-cta .button{
 		display:block;
 		width:100%;
 		box-sizing:border-box;
 		text-align:center;
 	}
-	.ad-rates .ad-cta .button{
+	.ad-layout .ad-cta .button{
 		max-width:22rem;
 		margin-inline:auto;
 	}
@@ -2696,5 +2697,149 @@ form.village-filter.village-filter--auto button{
 @media screen and (max-width:680px){
 	form.village-filter{
 		grid-template-columns:1fr;
+	}
+}
+
+/* ===========================================================================
+   Subscribe page
+   The surround uses the shared .ad-layout system; everything inside
+   .sub-content comes from the WordPress editor and is styled, not rebuilt.
+   =========================================================================== */
+
+/* Put a readable measure back on the prose — .ad-layout lifts it for the
+   marketing grids, but this section is real editorial copy. */
+.subscribe-page .sub-content > p,
+.subscribe-page .sub-content > ul,
+.subscribe-page .sub-content > ol,
+.subscribe-page .sub-content > h2,
+.subscribe-page .sub-content > h3,
+.subscribe-page .sub-content > figure{
+	max-width:68ch;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.subscribe-page .sub-content > h2{
+	font-size:var(--size-step-2);
+	margin-top:3rem;
+}
+
+/* A tall offer photo should not dominate the page. */
+.subscribe-page .sub-content > figure{
+	max-width:420px;
+}
+
+.subscribe-page .sub-content > figure img{
+	width:100%;
+	height:auto;
+	border-radius:3px;
+}
+
+/* Optional: wrap the monthly offer in a Group block with the class
+   "offer-panel" to give it a highlighted box of its own. */
+.subscribe-page .sub-content .offer-panel{
+	max-width:68ch;
+	margin:3rem auto;
+	padding:2rem;
+	border:2px solid var(--color-secondary);
+	border-radius:3px;
+	background:#fff;
+}
+
+.subscribe-page .sub-content .offer-panel > *:first-child{
+	margin-top:0;
+}
+
+.subscribe-page .sub-content .offer-panel p,
+.subscribe-page .sub-content .offer-panel ul,
+.subscribe-page .sub-content .offer-panel figure{
+	max-width:none;
+}
+
+/* --- The pricing columns from the editor, dressed as cards --- */
+.subscribe-page .sub-content .wp-block-columns.subscribe{
+	max-width:760px;
+	margin:3rem auto;
+	gap:2rem;
+	justify-content:center;
+	float:none;
+	scroll-margin-top:6rem;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column{
+	flex:1 1 300px;
+	max-width:340px;
+	background:#fff;
+	border:1px solid #d8d8d8;
+	border-radius:3px;
+	padding:2rem 1.75rem;
+}
+
+/* The supporter tier is the one we are actually asking for. */
+.subscribe-page .sub-content .subscribe .wp-block-column:first-child{
+	border-color:var(--color-secondary);
+	box-shadow:0 0 0 2px var(--color-secondary);
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column h2{
+	font-family:"miller-banner", serif;
+	font-weight:800;
+	font-size:var(--size-step-3);
+	line-height:1;
+	margin:0 0 1rem;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column h2.has-medium-font-size{
+	font-size:var(--size-step-1);
+	margin-bottom:0.25rem;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column p{
+	font-family:'Inter', sans-serif;
+	font-size:0.88rem;
+	font-weight:400;
+	opacity:0.85;
+	max-width:none;
+	margin-bottom:1.25rem;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column ul{
+	font-family:'Inter', sans-serif;
+	font-size:0.88rem;
+	max-width:none;
+	margin:0 0 2rem;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column ul li{
+	margin-bottom:0.6rem;
+	line-height:1.45;
+	max-width:none;
+}
+
+.subscribe-page .sub-content .subscribe .wp-block-column ul li:before{
+	content:'✓ ';
+	color:var(--color-secondary);
+	font-weight:700;
+}
+
+/* The theme pins this button to 288px, which overruns the card padding. */
+.subscribe-page .sub-content .subscribe button{
+	width:100%;
+	box-sizing:border-box;
+	margin-top:auto;
+}
+
+.subscribe-page .sub-content .subscribe stripe-buy-button{
+	display:block;
+	margin-top:auto;
+}
+
+@media screen and (max-width:640px){
+	.subscribe-page .sub-content .wp-block-columns.subscribe{
+		gap:1.5rem;
+	}
+	.subscribe-page .sub-content .subscribe .wp-block-column{
+		max-width:none;
+		padding:1.75rem 1.25rem;
 	}
 }

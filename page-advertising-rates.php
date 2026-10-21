@@ -20,7 +20,7 @@ $showcase = wa_advertising_showcase_posts();
 get_header();
 ?>
 
-<main id="primary" class="site-main ad-rates">
+<main id="primary" class="site-main ad-layout ad-rates">
 
 	<?php
 	while ( have_posts() ) :
