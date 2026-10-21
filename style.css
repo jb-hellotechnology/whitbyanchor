@@ -2707,14 +2707,23 @@ form.village-filter.village-filter--auto button{
    =========================================================================== */
 
 /* Put a readable measure back on the prose — .ad-layout lifts it for the
-   marketing grids, but this section is real editorial copy. */
+   marketing grids, but this section is real editorial copy.
+
+   The measure is in rem, not ch, on purpose: ch is the width of the element's
+   OWN "0" glyph, so 68ch on a 2rem heading is nearly twice 68ch on body text
+   and the headings would hang out past the paragraphs. rem is root-relative,
+   so every child lands on the same left edge. */
+.subscribe-page .sub-content{
+	--sub-measure:48rem;
+}
+
 .subscribe-page .sub-content > p,
 .subscribe-page .sub-content > ul,
 .subscribe-page .sub-content > ol,
 .subscribe-page .sub-content > h2,
 .subscribe-page .sub-content > h3,
 .subscribe-page .sub-content > figure{
-	max-width:68ch;
+	max-width:var(--sub-measure);
 	margin-left:auto;
 	margin-right:auto;
 }
@@ -2738,7 +2747,7 @@ form.village-filter.village-filter--auto button{
 /* Optional: wrap the monthly offer in a Group block with the class
    "offer-panel" to give it a highlighted box of its own. */
 .subscribe-page .sub-content .offer-panel{
-	max-width:68ch;
+	max-width:var(--sub-measure);
 	margin:3rem auto;
 	padding:2rem;
 	border:2px solid var(--color-secondary);
