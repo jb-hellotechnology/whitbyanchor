@@ -42,8 +42,6 @@
 	function fetchannouncements( { page = 1, append = false } = {} ) {
 		if ( isLoading ) return;
 		setLoading( true );
-		
-		console.log(currentTag);
 
 		const body = new FormData();
 		body.append( 'action',   'load_announcements' );

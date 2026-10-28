@@ -78,7 +78,7 @@ uasort( $tag_counts,      fn( $a, $b ) => strcasecmp( $a['name'], $b['name'] ) )
 				</div>
 
 				<?php if ( $has_more ) : ?>
-					<button id="businesses-load-more" type="button"
+					<button id="announcements-load-more" type="button"
 							data-page="1"
 							data-per-page="<?php echo esc_attr( $per_page ); ?>">
 						<?php esc_html_e( 'Load more announcements', 'whitbyanchor' ); ?>

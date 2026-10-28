@@ -118,7 +118,7 @@ function whitbyanchor_render_announcement_article( $announcement ) {
 
 		<?php if ( has_post_thumbnail( $post->ID ) ) : ?>
 			<figure class="business-card__image">
-				<?php echo get_the_post_thumbnail( $post->ID, 'medium', [ 'loading' => 'lazy', 'alt' => esc_attr( $post->post_title ) ] ); ?>
+				<?php echo get_the_post_thumbnail( $post->ID, 'medium_large', [ 'loading' => 'lazy', 'alt' => esc_attr( $post->post_title ) ] ); ?>
 			</figure>
 		<?php endif; ?>
 

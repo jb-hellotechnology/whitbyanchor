@@ -1809,6 +1809,17 @@ a.button.more-events{
 	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
+/* Announcement photos keep their own proportions, so portrait and square
+   images show in full instead of being cropped to landscape. */
+.businesses.announcements .business-card__image img{
+	aspect-ratio: auto;
+	object-fit: contain;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 480px;
+}
+
 .events .search,
 .businesses .search{
 	display:block;
