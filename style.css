@@ -1820,6 +1820,26 @@ a.button.more-events{
 	max-height: 480px;
 }
 
+/* An announcement card holds only a photo and a short body, so it opts out of
+   the business card's four-row area grid: the body was spanning every row and
+   space-between then dropped the excerpt to the foot of the card. */
+.businesses.announcements .business.premium{
+	grid-template-areas: none;
+	grid-template-rows: auto;
+	align-items: start;
+}
+
+.businesses.announcements .business-card__body{
+	grid-row: 1;
+	display: block;
+}
+
+@media screen and (max-width:700px){
+	.businesses.announcements .business-card__body{
+		grid-row: 2;
+	}
+}
+
 .events .search,
 .businesses .search{
 	display:block;
