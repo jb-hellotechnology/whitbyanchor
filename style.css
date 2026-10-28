@@ -1810,14 +1810,15 @@ a.button.more-events{
 }
 
 /* Announcement photos keep their own proportions, so portrait and square
-   images show in full instead of being cropped to landscape. */
+   images show in full instead of being cropped to landscape. The photo fills
+   the column and takes its height from its own ratio, which needs the image to
+   have an intrinsic ratio to lay out from — see
+   whitbyanchor_announcement_thumbnail() in inc/announcements.php. */
 .businesses.announcements .business-card__image img{
 	aspect-ratio: auto;
 	object-fit: contain;
-	width: auto;
+	width: 100%;
 	height: auto;
-	max-width: 100%;
-	max-height: 480px;
 }
 
 /* An announcement card holds only a photo and a short body, so it opts out of

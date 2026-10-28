@@ -104,6 +104,37 @@ function get_announcements( $args = [] ) {
 	return $announcements;
 }
 
+/**
+ * The photo for an announcement card, laid out at its own proportions.
+ *
+ * WordPress adds sizes="auto" to every lazy-loaded image, and the stylesheet
+ * that ships with the feature sets contain-intrinsic-size on those images.
+ * A size-contained image has no intrinsic ratio to lay out from, so a 3:2
+ * photo came out 1500px tall and object-fit then centred it in the gap. These
+ * cards show the photo uncropped, so they opt out of auto sizes.
+ */
+function whitbyanchor_announcement_thumbnail( $post ) {
+	add_filter( 'wp_get_attachment_image_attributes', 'whitbyanchor_strip_auto_sizes' );
+
+	$html = get_the_post_thumbnail( $post->ID, 'medium_large', [
+		'loading' => 'lazy',
+		'alt'     => esc_attr( $post->post_title ),
+		'sizes'   => '(max-width: 700px) 100vw, 350px',
+	] );
+
+	remove_filter( 'wp_get_attachment_image_attributes', 'whitbyanchor_strip_auto_sizes' );
+
+	return $html;
+}
+
+function whitbyanchor_strip_auto_sizes( $attr ) {
+	if ( isset( $attr['sizes'] ) ) {
+		$attr['sizes'] = preg_replace( '/^auto,\s*/i', '', $attr['sizes'] );
+	}
+
+	return $attr;
+}
+
 function whitbyanchor_render_announcement_article( $announcement ) {
 	$post    = $announcement['post'];
 	
@@ -118,7 +149,7 @@ function whitbyanchor_render_announcement_article( $announcement ) {
 
 		<?php if ( has_post_thumbnail( $post->ID ) ) : ?>
 			<figure class="business-card__image">
-				<?php echo get_the_post_thumbnail( $post->ID, 'medium_large', [ 'loading' => 'lazy', 'alt' => esc_attr( $post->post_title ) ] ); ?>
+				<?php echo whitbyanchor_announcement_thumbnail( $post ); ?>
 			</figure>
 		<?php endif; ?>
 
