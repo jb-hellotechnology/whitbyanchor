@@ -177,7 +177,7 @@ function bsub_create_checkout() {
 	$success_url = add_query_arg( [
 		'bsub_success' => 1,
 		'post_id'      => $post_id,
-	], get_permalink( $post_id ) ?: home_url( '/business-directory/' ) );
+	], home_url( '/business-listing-thank-you/' ) );
 
 	$cancel_url = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : home_url( '/' );
 
