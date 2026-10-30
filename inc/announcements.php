@@ -160,7 +160,7 @@ function whitbyanchor_render_announcement_article( $announcement ) {
 			</h2>
 			
 			<?php if ( $post->post_excerpt ) : ?>
-				<p class="business-card__excerpt"><?php echo esc_html( $post->post_excerpt ); ?></p>
+				<p class="business-card__excerpt" id="announcement-excerpt-<?php echo (int) $post->ID; ?>"><?php echo esc_html( $post->post_excerpt ); ?></p>
 			<?php endif; ?>
 
 			<!-- <a class="business-card__more" href="<?php echo esc_url( get_permalink( $post->ID ) ); ?>">

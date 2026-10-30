@@ -20,6 +20,7 @@
 	let currentTag      = '';
 	let searchTimer     = null;
 	let isLoading       = false;
+	let excerptId       = 0;
 
 	// ── Helpers ──────────────────────────────────────────────────────────────
 
@@ -35,6 +36,46 @@
 	function updateLoadMore( hasMore ) {
 		if ( ! loadMore ) return;
 		loadMore.style.display = hasMore ? '' : 'none';
+	}
+
+	// ── Read more ────────────────────────────────────────────────────────────
+
+	// Clamp an announcement that runs past the first couple of lines and give
+	// it a control to open and close it. Announcements that already fit are
+	// left alone, so no card carries a link that reveals nothing.
+	function addReadMore( excerpt ) {
+		if ( excerpt.dataset.readMore ) return;
+		excerpt.dataset.readMore = 'done';
+
+		excerpt.classList.add( 'is-clamped' );
+
+		if ( excerpt.scrollHeight - excerpt.clientHeight < 2 ) {
+			excerpt.classList.remove( 'is-clamped' );
+			return;
+		}
+
+		if ( ! excerpt.id ) {
+			excerpt.id = 'announcement-excerpt-' + ( ++excerptId );
+		}
+
+		const toggle = document.createElement( 'button' );
+		toggle.type = 'button';
+		toggle.className = 'business-card__read-more';
+		toggle.textContent = 'Read more';
+		toggle.setAttribute( 'aria-expanded', 'false' );
+		toggle.setAttribute( 'aria-controls', excerpt.id );
+
+		toggle.addEventListener( 'click', function () {
+			const open = ! excerpt.classList.toggle( 'is-clamped' );
+			toggle.textContent = open ? 'Read less' : 'Read more';
+			toggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+		} );
+
+		excerpt.insertAdjacentElement( 'afterend', toggle );
+	}
+
+	function addReadMoreLinks() {
+		list.querySelectorAll( '.business-card__excerpt' ).forEach( addReadMore );
 	}
 
 	// ── Core fetch ───────────────────────────────────────────────────────────
@@ -66,6 +107,8 @@
 					// Scroll to top of list if filtering (not appending)
 					list.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 				}
+
+				addReadMoreLinks();
 
 				currentPage = page;
 				updateLoadMore( data.data.has_more );
@@ -104,6 +147,13 @@
 				resetAndFetch();
 			}, 350 );
 		} );
+	}
+
+	// Measure once the webfonts are in, since they decide where lines break.
+	if ( document.fonts && document.fonts.ready ) {
+		document.fonts.ready.then( addReadMoreLinks );
+	} else {
+		addReadMoreLinks();
 	}
 
 	// Load more button

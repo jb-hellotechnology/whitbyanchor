@@ -1841,6 +1841,39 @@ a.button.more-events{
 	}
 }
 
+/* A long announcement is clamped to its first couple of lines until the reader
+   opens it. js/announcements.js adds the class, and only when the text really
+   is cut off, so without JavaScript the announcement reads in full. */
+.businesses.announcements .business-card__excerpt.is-clamped{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+}
+
+.businesses.announcements .business-card__read-more{
+	display: block;
+	margin-top: 0.5rem;
+	padding: 0;
+	border-radius: 0;
+	background: none;
+	color: currentColor;
+	font: inherit;
+	text-decoration: underline;
+	-webkit-text-decoration-color: var(--color-primary);
+	text-decoration-color: var(--color-primary);
+	text-decoration-thickness: 0.2ex;
+	text-underline-offset: 0.2ex;
+}
+
+.businesses.announcements .business-card__read-more:hover{
+	background: none;
+	color: var(--color-secondary);
+	-webkit-text-decoration-color: var(--color-secondary);
+	text-decoration-color: var(--color-secondary);
+}
+
 .events .search,
 .businesses .search{
 	display:block;

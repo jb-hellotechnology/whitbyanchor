@@ -14,6 +14,9 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Stop iOS Safari turning numbers, dates and addresses in the copy into
+	     its own links, which it styles itself and refuses to break across lines. -->
+	<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	
 	<link rel="preconnect" href="https://fonts.googleapis.com">
