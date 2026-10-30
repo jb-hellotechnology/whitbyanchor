@@ -22,6 +22,11 @@
 	let isLoading       = false;
 	let excerptId       = 0;
 
+	// Read more is a phone-sized concern: above this the card puts the text in a
+	// column of its own, with room to run. Matches the stacking breakpoint in
+	// style.css.
+	const narrow = window.matchMedia( '(max-width: 700px)' );
+
 	// ── Helpers ──────────────────────────────────────────────────────────────
 
 	function setLoading( loading ) {
@@ -74,8 +79,21 @@
 		excerpt.insertAdjacentElement( 'afterend', toggle );
 	}
 
-	function addReadMoreLinks() {
-		list.querySelectorAll( '.business-card__excerpt' ).forEach( addReadMore );
+	// Hand the announcement back in full: the wide card has room for it.
+	function removeReadMore( excerpt ) {
+		const toggle = excerpt.nextElementSibling;
+
+		if ( toggle && toggle.classList.contains( 'business-card__read-more' ) ) {
+			toggle.remove();
+		}
+
+		excerpt.classList.remove( 'is-clamped' );
+		delete excerpt.dataset.readMore;
+	}
+
+	function syncReadMore() {
+		list.querySelectorAll( '.business-card__excerpt' )
+			.forEach( narrow.matches ? addReadMore : removeReadMore );
 	}
 
 	// ── Core fetch ───────────────────────────────────────────────────────────
@@ -108,7 +126,7 @@
 					list.scrollIntoView( { behavior: 'smooth', block: 'start' } );
 				}
 
-				addReadMoreLinks();
+				syncReadMore();
 
 				currentPage = page;
 				updateLoadMore( data.data.has_more );
@@ -151,10 +169,14 @@
 
 	// Measure once the webfonts are in, since they decide where lines break.
 	if ( document.fonts && document.fonts.ready ) {
-		document.fonts.ready.then( addReadMoreLinks );
+		document.fonts.ready.then( syncReadMore );
 	} else {
-		addReadMoreLinks();
+		syncReadMore();
 	}
+
+	// Rotating a phone, or dragging a window across the breakpoint, switches
+	// between the two: the clamp must never outlive the control that opens it.
+	narrow.addEventListener( 'change', syncReadMore );
 
 	// Load more button
 	if ( loadMore ) {

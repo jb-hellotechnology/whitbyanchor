@@ -1841,9 +1841,11 @@ a.button.more-events{
 	}
 }
 
-/* A long announcement is clamped to its first couple of lines until the reader
-   opens it. js/announcements.js adds the class, and only when the text really
-   is cut off, so without JavaScript the announcement reads in full. */
+/* On phone-sized screens a long announcement is clamped to its first couple of
+   lines until the reader opens it. js/announcements.js decides when: both the
+   breakpoint and the overflow check live there, so the class is only ever on
+   an announcement that has a control to open it. The wide card, and the page
+   without JavaScript, read in full. */
 .businesses.announcements .business-card__excerpt.is-clamped{
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
