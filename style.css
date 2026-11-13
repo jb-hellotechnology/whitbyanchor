@@ -2036,6 +2036,11 @@ main.narrow{
 	margin-top:1rem;
 }
 
+/* Anchor the advertorial banner to the thumbnail, not the whole card. */
+.cards-grid article.flow figure{
+	position: relative;
+}
+
 .advertorial{
 	position: absolute;
 	bottom:0.5rem;
