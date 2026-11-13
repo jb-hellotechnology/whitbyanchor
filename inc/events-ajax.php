@@ -200,6 +200,7 @@ function whitbyanchor_ajax_get_events(): void {
 					$post->post_title . ' ' .
 					$post->post_excerpt . ' ' .
 					wp_strip_all_tags( $post->post_content ) . ' ' .
+					( $event['venue'] ?? '' ) . ' ' .
 					(string) $keywords
 				);
 
