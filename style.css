@@ -2041,6 +2041,12 @@ main.narrow{
 	position: relative;
 }
 
+/* On single posts, anchor the banner to the image (not the caption below it). */
+.post-thumbnail__media{
+	display: block;
+	position: relative;
+}
+
 .advertorial{
 	position: absolute;
 	bottom:0.5rem;

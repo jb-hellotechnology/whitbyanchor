@@ -131,7 +131,12 @@ if ( ! function_exists( 'whitbyanchor_post_thumbnail' ) ) :
 
 			<div class="post-thumbnail">
 				<figure>
-				<?php the_post_thumbnail(); ?>
+				<span class="post-thumbnail__media">
+					<?php the_post_thumbnail(); ?>
+					<?php if ( in_category( 'advertorials' ) ) : ?>
+						<span class="advertorial">Advertorial</span>
+					<?php endif; ?>
+				</span>
 				<?php
 				$thumbnail_id      = get_post_thumbnail_id();
 				$thumbnail_post    = get_post( $thumbnail_id );
